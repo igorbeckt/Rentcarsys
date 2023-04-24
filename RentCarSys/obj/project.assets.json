@@ -3722,11 +3722,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\igor.vasconcellos\\source\\repos\\RentCarSys\\RentCarSys\\RentCarSys.csproj",
+      "projectUniqueName": "C:\\Users\\igor.vasconcellos\\source\\rentcarsys\\RentCarSys\\RentCarSys.csproj",
       "projectName": "RentCarSys",
-      "projectPath": "C:\\Users\\igor.vasconcellos\\source\\repos\\RentCarSys\\RentCarSys\\RentCarSys.csproj",
+      "projectPath": "C:\\Users\\igor.vasconcellos\\source\\rentcarsys\\RentCarSys\\RentCarSys.csproj",
       "packagesPath": "C:\\Users\\igor.vasconcellos\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\igor.vasconcellos\\source\\repos\\RentCarSys\\RentCarSys\\obj\\",
+      "outputPath": "C:\\Users\\igor.vasconcellos\\source\\rentcarsys\\RentCarSys\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
