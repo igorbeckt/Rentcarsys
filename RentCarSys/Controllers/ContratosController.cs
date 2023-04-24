@@ -92,7 +92,8 @@ namespace Localdorateste.Controllers
 
                 var contrato = new Contrato
                 {
-                    ReservaId = model.ReservaId,
+                    StatusReserva = reserva.StatusReserva,
+                    ReservaId = reserva.ReservaId,
                     NomeCompleto = reserva.NomeCompleto,                     
                     ClienteId = reserva.ClienteId,
                     CPF = reserva.CPF,
@@ -132,7 +133,7 @@ namespace Localdorateste.Controllers
         }
 
         //PUT: PORT/v1/contratos/1
-        [HttpPut("{contratoid}")]
+        [HttpPut("{contratoid}-{reservaid}")]
         public async Task<IActionResult> EditarContratos(
         [FromRoute] int contratoid, int reservaid,
         [FromBody] EditorContratoViewModel model,
@@ -173,6 +174,13 @@ namespace Localdorateste.Controllers
                 contrato.ReservaId = model.ReservaId;
                 contrato.FormaPagamento = model.FormaPagamento;
                 contrato.Parcelas = model.Parcelas;
+
+                if (contrato.FormaPagamento != "dinheiro")
+                if (contrato.FormaPagamento != "boleto")
+                if (contrato.FormaPagamento != "cartao")
+                if (contrato.FormaPagamento != "pix")
+                                return NotFound(new ResultViewModel<Contrato>(erro: "Forma de pagamento incorreta! Digite: 'dinheiro' para pagamento no dinheiro. Digite: 'boleto' para pagamento no boleto. Digite: 'pix' para pagamaento no pix. Digite: 'cartao' para pagamento no cartão de crédito"));
+                // Validação da forma de pagamento
 
                 context.Contratos.Update(contrato);
                 await context.SaveChangesAsync();

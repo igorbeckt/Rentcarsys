@@ -8,7 +8,7 @@ namespace Localdorateste.ViewModels
         public int ReservaId { get; set; }
 
         [Required(ErrorMessage = "A Forma de pagamento é obrigatório!")]
-
+        
         public string FormaPagamento { get; set; }
 
         [Required(ErrorMessage = "O número de parcelas é obrigatório!")]
