@@ -9,6 +9,7 @@ namespace Localdorateste.Models
         
         public int ContratoId { get; set; }
         public int ReservaId { get; set; }
+        public string StatusReserva { get; set; }
         public string DataReserva { get; set; }
         public string DataRetirada { get; set; }
         public string DataEntrega { get; set; }

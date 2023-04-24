@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace RentCarSys.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20230424173747_Contrato")]
-    partial class Contrato
+    [Migration("20230424185548_Oficina")]
+    partial class Oficina
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -107,6 +107,10 @@ namespace RentCarSys.Migrations
                     b.Property<int>("ReservaId")
                         .HasColumnType("int");
 
+                    b.Property<string>("StatusReserva")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<double>("ValorLocacao")
                         .HasColumnType("float");
 
@@ -116,6 +120,44 @@ namespace RentCarSys.Migrations
                     b.HasKey("ContratoId");
 
                     b.ToTable("Contratos");
+                });
+
+            modelBuilder.Entity("Localdorateste.Models.EntregaVeiculo", b =>
+                {
+                    b.Property<int>("EntregaVeiculoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EntregaVeiculoId"));
+
+                    b.Property<int>("ClienteId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Modelo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NomeCompleto")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Operacao")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Placa")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ReservaId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VeiculoId")
+                        .HasColumnType("int");
+
+                    b.HasKey("EntregaVeiculoId");
+
+                    b.ToTable("Entregas");
                 });
 
             modelBuilder.Entity("Localdorateste.Models.Reserva", b =>
@@ -173,6 +215,44 @@ namespace RentCarSys.Migrations
                     b.HasKey("ReservaId");
 
                     b.ToTable("Reservas");
+                });
+
+            modelBuilder.Entity("Localdorateste.Models.RetiradaVeiculo", b =>
+                {
+                    b.Property<int>("RetiradaVeiculoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RetiradaVeiculoId"));
+
+                    b.Property<int>("ClienteId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Modelo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NomeCompleto")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Operacao")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Placa")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ReservaId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VeiculoId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RetiradaVeiculoId");
+
+                    b.ToTable("Retiradas");
                 });
 
             modelBuilder.Entity("Localdorateste.Models.Veiculo", b =>
