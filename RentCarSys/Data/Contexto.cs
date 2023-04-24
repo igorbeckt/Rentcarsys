@@ -16,7 +16,7 @@ namespace Localdorateste.Data
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Veiculo> Veiculos { get; set; }
         public DbSet<Reserva> Reservas { get; set; }
-
+        public DbSet<Contrato> Contratos { get; set; }
     }
 }
 
