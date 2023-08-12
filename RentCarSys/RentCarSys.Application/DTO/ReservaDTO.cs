@@ -2,20 +2,19 @@
 using System.ComponentModel.DataAnnotations;
 using System.Configuration;
 
-namespace Localdorateste.ViewModels
+namespace RentCarSys.Application.DTO
 {
-    public class EditorReservaViewModel
+    public class ReservaDTO
     {
-        /*[Required(ErrorMessage = "O ClienteId é obrigatório!")]
-        public virtual ICollection<Cliente> Cliente {get; set; }*/
+        
+        public int Id { get; set; }
 
         public int ClienteId { get; set; }
-
         public int VeiculoId { get; set; }
 
-        /*[Required(ErrorMessage = "O VeiculoId é obrigatório!")]
-        
-        public virtual ICollection<Veiculo> veiculoid { get; set; }*/
+        public ClienteDTOGetAll Cliente { get; set; }
+
+        public VeiculoDTOGetAll Veiculo { get; set; }        
 
         [Required(ErrorMessage = "A data da reserva é obrigatório!")]
         public string DataReserva { get; set; }

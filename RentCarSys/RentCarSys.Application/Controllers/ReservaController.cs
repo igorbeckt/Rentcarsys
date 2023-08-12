@@ -1,8 +1,9 @@
 ﻿using Localdorateste.Extensions;
 using Localdorateste.Models;
-using Localdorateste.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using RentCarSys.Application.DTO;
+using RentCarSys.Application.Extensions;
 using RentCarSys.Application.Interfaces;
 using RentCarSys.Application.Services;
 using RentCarSys.Enums;
@@ -53,7 +54,7 @@ namespace RentCarSys.Application.Controllers
 
         [HttpPost("cadastrar")]
         public async Task<IActionResult> CriarReservas(
-        [FromBody] EditorReservaViewModel model)
+        [FromBody] ReservaDTO model)
         {
             if (!ModelState.IsValid)
             {
@@ -73,7 +74,7 @@ namespace RentCarSys.Application.Controllers
         [HttpPut("alterar/{reservaid:int}")]
         public async Task<IActionResult> EditarClientes(
         [FromRoute] int reservaid,
-        [FromBody] EditorReservaViewModel model)
+        [FromBody] ReservaDTO model)
         {
             if (!ModelState.IsValid)
             {

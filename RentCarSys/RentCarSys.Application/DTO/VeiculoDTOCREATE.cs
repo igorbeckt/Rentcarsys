@@ -1,11 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
-namespace Localdorateste.ViewModels
+namespace RentCarSys.Application.DTO
 {
-    public class EditorVeiculoViewModel
+    public class VeiculoDTOCREATE
     {
+        [JsonIgnore]
+        public int Id { get; set; }
+
         [Required(ErrorMessage = "A placa é obrigatório!")]
-        [StringLength(7, MinimumLength = 7,ErrorMessage ="A Placa deve conter 4 letras e 3 números!")]
+        [StringLength(7, MinimumLength = 7, ErrorMessage = "A Placa deve conter 4 letras e 3 números!")]
         public string Placa { get; set; }
 
         [Required(ErrorMessage = "A marca é obrigatório!")]

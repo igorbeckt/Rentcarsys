@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "UKQxhHydGudhaETgV2qWHkJ7JNDIhVpBS+1TShWj64znYq30THBWiEtU4fgmBTXlcceObl76SGt3d4sMkdAtLA==",
+  "dgSpecHash": "OMblRpGbRKO0fF4/rg6u6o1GSIPlhS74CQAxCMfQzt7H73qpQctm6VMbCx12kNgyNbNyEOTtjhZJuFaPxGW3Jw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\igorb\\Documents\\Projetos\\Back-end\\C#\\Projetos\\RentCarSys\\RentCarSys.Application\\RentCarSys.Application.csproj",
+  "projectFilePath": "C:\\Users\\igorb\\Documents\\Projetos\\RentCarSys\\RentCarSys\\RentCarSys.Application\\RentCarSys.Application.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\igorb\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
+    "C:\\Users\\igorb\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
     "C:\\Users\\igorb\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\igorb\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
     "C:\\Users\\igorb\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
@@ -12,7 +14,7 @@
     "C:\\Users\\igorb\\.nuget\\packages\\microsoft.aspnet.webpages\\3.2.9\\microsoft.aspnet.webpages.3.2.9.nupkg.sha512",
     "C:\\Users\\igorb\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\6.0.21\\microsoft.aspnetcore.authentication.jwtbearer.6.0.21.nupkg.sha512",
     "C:\\Users\\igorb\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
-    "C:\\Users\\igorb\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
+    "C:\\Users\\igorb\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\igorb\\.nuget\\packages\\microsoft.data.sqlclient\\5.0.2\\microsoft.data.sqlclient.5.0.2.nupkg.sha512",
     "C:\\Users\\igorb\\.nuget\\packages\\microsoft.data.sqlclient.sni.runtime\\5.0.1\\microsoft.data.sqlclient.sni.runtime.5.0.1.nupkg.sha512",
     "C:\\Users\\igorb\\.nuget\\packages\\microsoft.entityframeworkcore\\7.0.10\\microsoft.entityframeworkcore.7.0.10.nupkg.sha512",

@@ -2,6 +2,7 @@ using Localdorateste.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using RentCarSys.Application.DTO.AutoMapper;
 using RentCarSys.Application.Interfaces;
 using RentCarSys.Application.Repository;
 using RentCarSys.Application.Services;
@@ -26,9 +27,12 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 builder.Services.AddScoped<IClientesRepository, ClientesRepository>();
 builder.Services.AddScoped<IVeiculosRepository, VeiculosRepository>();
 builder.Services.AddScoped<IReservasRepository, ReservasRepository>();
+
 builder.Services.AddScoped<ClienteService>();
 builder.Services.AddScoped<VeiculoService>();
 builder.Services.AddScoped<ReservaService>();
+
+builder.Services.AddAutoMapper(typeof(EntitiesDTOMappingProfile));
 
 
 
