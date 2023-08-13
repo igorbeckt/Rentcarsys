@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace RentCarSys.Application.DTO
+namespace RentCarSys.Application.DTO.ClienteDTOs
 {
-    public class ClienteDTO
-    {        
+    public class ClienteDTOCreate
+    {
+        [JsonIgnore]
         public int Id { get; set; }
 
         [Required(ErrorMessage = "O nome é obrigatório!")]

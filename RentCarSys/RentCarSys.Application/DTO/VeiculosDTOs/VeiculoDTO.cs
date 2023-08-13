@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace RentCarSys.Application.DTO
+namespace RentCarSys.Application.DTO.VeiculosDTOs
 {
     public class VeiculoDTO
-    {        
+    {
         public int Id { get; set; }
 
         [Required(ErrorMessage = "A placa é obrigatório!")]

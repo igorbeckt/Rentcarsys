@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace RentCarSys.Application.DTO
+namespace RentCarSys.Application.DTO.ClienteDTOs
 {
     public class ClienteDTOGetAll
     {

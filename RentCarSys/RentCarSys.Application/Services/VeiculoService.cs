@@ -4,10 +4,10 @@ using Localdorateste.Extensions;
 using Localdorateste.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using RentCarSys.Application.DTO;
+using RentCarSys.Application.DTO.VeiculosDTOs;
 using RentCarSys.Application.Extensions;
 using RentCarSys.Application.Interfaces;
-using RentCarSys.Enums;
+using RentCarSys.Application.Models.Enums;
 
 namespace RentCarSys.Application.Services
 {
@@ -76,7 +76,7 @@ namespace RentCarSys.Application.Services
             }
         }
 
-        public async Task<ResultViewModel<VeiculoDTOCREATE>> CriarVeiculo(VeiculoDTOCREATE model)
+        public async Task<ResultViewModel<VeiculoDTO>> CriarVeiculo(VeiculoDTOCreate model)
         {
             try
             {
@@ -95,17 +95,17 @@ namespace RentCarSys.Application.Services
 
                 await _repositorioVeiculos.AdicionarVeiculoAsync(veiculo);
 
-                var veiculoDto = _mapper.Map<VeiculoDTOCREATE>(veiculo);
+                var veiculoDto = _mapper.Map<VeiculoDTO>(veiculo);
 
-                return new ResultViewModel<VeiculoDTOCREATE>(veiculoDto);
+                return new ResultViewModel<VeiculoDTO>(veiculoDto);
             }
             catch
             {
-                return new ResultViewModel<VeiculoDTOCREATE>("05X10 - Falha interna no servidor!");
+                return new ResultViewModel<VeiculoDTO>("05X10 - Falha interna no servidor!");
             }
         }
 
-        public async Task<ResultViewModel<VeiculoDTO>> EditarVeiculo(int veiculoId, VeiculoDTO model)
+        public async Task<ResultViewModel<VeiculoDTO>> EditarVeiculo(int veiculoId, VeiculoDTOUpdate model)
         {
 
             try

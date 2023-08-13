@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace RentCarSys.Application.DTO
+namespace RentCarSys.Application.DTO.ClientesDTOs
 {
-    public class ClienteDTOCREATE
+    public class ClienteDTOUpdate
     {
         [JsonIgnore]
         public int Id { get; set; }

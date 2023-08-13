@@ -2,11 +2,10 @@
 using Localdorateste.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using RentCarSys.Application.DTO;
+using RentCarSys.Application.DTO.ReservasDTOs;
 using RentCarSys.Application.Extensions;
 using RentCarSys.Application.Interfaces;
 using RentCarSys.Application.Services;
-using RentCarSys.Enums;
 
 namespace RentCarSys.Application.Controllers
 {
@@ -28,7 +27,7 @@ namespace RentCarSys.Application.Controllers
         }
 
         [HttpGet("buscarTodas")]
-        public async Task<IActionResult> BuscarReserva()
+        public async Task<IActionResult> BuscarReservas()
         {
             var result = await _reservaService.BuscarTodasReservas();
             if (result.Erros.Count > 0)
@@ -40,7 +39,7 @@ namespace RentCarSys.Application.Controllers
         }
 
         [HttpGet("buscarPorId/{reservaid:int}")]
-        public async Task<IActionResult> BuscarReservasId(
+        public async Task<IActionResult> BuscarReservaId(
         [FromRoute] int reservaid)
         {
             var result = await _reservaService.BuscarReservaPorId(reservaid);
@@ -54,11 +53,11 @@ namespace RentCarSys.Application.Controllers
 
         [HttpPost("cadastrar")]
         public async Task<IActionResult> CriarReservas(
-        [FromBody] ReservaDTO model)
+        [FromBody] ReservaDTOCreate model)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(new ResultViewModel<Reserva>(ModelState.PegarErros()));
+                return BadRequest(new ResultViewModel<ReservaDTOCreate>(ModelState.PegarErros()));
             }
 
             var result = await _reservaService.CriarReserva(model);
@@ -74,11 +73,11 @@ namespace RentCarSys.Application.Controllers
         [HttpPut("alterar/{reservaid:int}")]
         public async Task<IActionResult> EditarClientes(
         [FromRoute] int reservaid,
-        [FromBody] ReservaDTO model)
+        [FromBody] ReservaDTOUpdate model)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(new ResultViewModel<Reserva>(ModelState.PegarErros()));
+                return BadRequest(new ResultViewModel<ReservaDTOUpdate>(ModelState.PegarErros()));
             }
 
 

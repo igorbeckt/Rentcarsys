@@ -1,7 +1,6 @@
 ﻿using Localdorateste.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using RentCarSys.Enums;
 
 namespace RentCarSys.Application.Data.Mappings
 {
@@ -28,7 +27,7 @@ namespace RentCarSys.Application.Data.Mappings
                 .HasColumnName("DATA_RETIRADA");
 
             builder.Property(e => e.DataEntrega)
-                .HasColumnName("DATA_ENTREGA");
+                .HasColumnName("DATA_ENTREGA");           
 
         }
     }

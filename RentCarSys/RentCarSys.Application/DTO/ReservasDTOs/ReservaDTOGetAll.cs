@@ -1,20 +1,12 @@
-﻿using Localdorateste.Models;
+﻿using RentCarSys.Application.DTO.ClienteDTOs;
+using RentCarSys.Application.DTO.VeiculosDTOs;
 using System.ComponentModel.DataAnnotations;
-using System.Configuration;
 
-namespace RentCarSys.Application.DTO
+namespace RentCarSys.Application.DTO.ReservasDTOs
 {
-    public class ReservaDTO
+    public class ReservaDTOGetAll
     {
-        
         public int Id { get; set; }
-
-        public int ClienteId { get; set; }
-        public int VeiculoId { get; set; }
-
-        public ClienteDTOGetAll Cliente { get; set; }
-
-        public VeiculoDTOGetAll Veiculo { get; set; }        
 
         [Required(ErrorMessage = "A data da reserva é obrigatório!")]
         public string DataReserva { get; set; }
@@ -25,5 +17,9 @@ namespace RentCarSys.Application.DTO
 
         [Required(ErrorMessage = "A data de entrega é obrigatório!")]
         public string DataEntrega { get; set; }
+
+        public List<ClienteDTOGetAll> Cliente { get; set; }
+
+        public List<VeiculoDTOGetAll> Veiculo { get; set; }
     }
 }

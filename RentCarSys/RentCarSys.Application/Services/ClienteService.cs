@@ -2,10 +2,11 @@
 using Localdorateste.Extensions;
 using Localdorateste.Models;
 using Microsoft.AspNetCore.Mvc;
-using RentCarSys.Application.DTO;
+using RentCarSys.Application.DTO.ClienteDTOs;
+using RentCarSys.Application.DTO.ClientesDTOs;
 using RentCarSys.Application.Extensions;
 using RentCarSys.Application.Interfaces;
-using RentCarSys.Enums;
+using RentCarSys.Application.Models.Enums;
 using System.Web.Mvc;
 
 namespace RentCarSys.Application.Services
@@ -76,7 +77,7 @@ namespace RentCarSys.Application.Services
             }
         }
 
-        public async Task<ResultViewModel<ClienteDTOCREATE>> CriarCliente(ClienteDTOCREATE model)
+        public async Task<ResultViewModel<ClienteDTO>> CriarCliente(ClienteDTOCreate model)
         {
             try
             {
@@ -91,16 +92,16 @@ namespace RentCarSys.Application.Services
 
                 await _repositorioClientes.AdicionarClienteAsync(cliente);
 
-                var clienteDto = _mapper.Map<ClienteDTOCREATE>(cliente);
-                return new ResultViewModel<ClienteDTOCREATE>(clienteDto);
+                var clienteDto = _mapper.Map<ClienteDTO>(cliente);
+                return new ResultViewModel<ClienteDTO>(clienteDto);
             }
             catch
             {
-                return new ResultViewModel<ClienteDTOCREATE>("05X10 - Falha interna no servidor!");
+                return new ResultViewModel<ClienteDTO>("05X10 - Falha interna no servidor!");
             }
         }
 
-        public async Task<ResultViewModel<ClienteDTO>> EditarCliente(int clienteId, ClienteDTO model)
+        public async Task<ResultViewModel<ClienteDTO>> EditarCliente(int clienteId, ClienteDTOUpdate model)
         {
 
             try
