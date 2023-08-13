@@ -14,7 +14,7 @@
           "Microsoft.NET.Test.Sdk": "17.7.0",
           "Moq": "4.20.2",
           "RentCarSys.Application": "1.0.0",
-          "ReportGenerator": "5.1.23",
+          "ReportGenerator": "5.1.24",
           "coverlet.collector": "6.0.0",
           "xunit": "2.5.0",
           "xunit.runner.visualstudio": "2.5.0"
@@ -905,7 +905,7 @@
           }
         }
       },
-      "ReportGenerator/5.1.23": {},
+      "ReportGenerator/5.1.24": {},
       "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {},
       "runtime.fedora.23-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {},
       "runtime.fedora.24-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {},
@@ -1770,7 +1770,8 @@
           "Microsoft.AspNetCore.Authentication.JwtBearer": "6.0.21",
           "Microsoft.EntityFrameworkCore": "7.0.10",
           "Microsoft.EntityFrameworkCore.SqlServer": "7.0.10",
-          "Swashbuckle.AspNetCore": "6.5.0"
+          "Swashbuckle.AspNetCore": "6.5.0",
+          "xunit": "2.5.0"
         },
         "runtime": {
           "RentCarSys.Application.dll": {}
@@ -2190,12 +2191,12 @@
       "path": "nuget.frameworks/6.5.0",
       "hashPath": "nuget.frameworks.6.5.0.nupkg.sha512"
     },
-    "ReportGenerator/5.1.23": {
+    "ReportGenerator/5.1.24": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-+LqP+L5t61pf8E6B3LKp/tcYi9Uzo+WF03MrAQnqy/VeRQ9kOqyNbdR+cKSLqrJ/iEStcPwSvKgz4l78ruTfKg==",
-      "path": "reportgenerator/5.1.23",
-      "hashPath": "reportgenerator.5.1.23.nupkg.sha512"
+      "sha512": "sha512-BD0HWIbvf7UReE7eVQr9LJvRTS/smjE7CkdQ0qL235QQ0EHPR3Nw9G92SlxkKXaT6RkVCvjCWSAxDkWJ2L1cjw==",
+      "path": "reportgenerator/5.1.24",
+      "hashPath": "reportgenerator.5.1.24.nupkg.sha512"
     },
     "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
       "type": "package",

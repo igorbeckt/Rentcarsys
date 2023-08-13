@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RentCarSys.Application.Models.Enums;
 
-namespace Localdorateste.Models
+namespace RentCarSys.Application.Models
 {
 
     public class Veiculo
@@ -19,6 +19,6 @@ namespace Localdorateste.Models
 
         public int? ReservaId { get; set; }
         public virtual Reserva? Reserva { get; set; }
- 
+
     }
 }

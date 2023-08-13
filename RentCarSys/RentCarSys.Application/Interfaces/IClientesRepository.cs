@@ -1,4 +1,4 @@
-﻿using Localdorateste.Models;
+﻿using RentCarSys.Application.Models;
 
 namespace RentCarSys.Application.Interfaces
 {

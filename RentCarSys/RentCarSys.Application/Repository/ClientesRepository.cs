@@ -1,7 +1,7 @@
-﻿using Localdorateste.Data;
-using Localdorateste.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using RentCarSys.Application.Data;
 using RentCarSys.Application.Interfaces;
+using RentCarSys.Application.Models;
 
 namespace RentCarSys.Application.Repository
 {

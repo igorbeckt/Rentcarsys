@@ -1,6 +1,4 @@
-﻿using Localdorateste.Extensions;
-using Localdorateste.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RentCarSys.Application.DTO.ReservasDTOs;
 using RentCarSys.Application.Extensions;

@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using Localdorateste.Models;
-using RentCarSys.Application.DTO.ClienteDTOs;
+using RentCarSys.Application.DTO.ClientesDTOs;
 using RentCarSys.Application.DTO.ReservasDTOs;
 using RentCarSys.Application.DTO.VeiculosDTOs;
+using RentCarSys.Application.Models;
 
 namespace RentCarSys.Application.DTO.AutoMapper
 {

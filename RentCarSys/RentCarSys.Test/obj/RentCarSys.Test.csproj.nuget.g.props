@@ -16,7 +16,7 @@
   <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <Import Project="$(NuGetPackageRoot)xunit.runner.visualstudio\2.5.0\build\net6.0\xunit.runner.visualstudio.props" Condition="Exists('$(NuGetPackageRoot)xunit.runner.visualstudio\2.5.0\build\net6.0\xunit.runner.visualstudio.props')" />
     <Import Project="$(NuGetPackageRoot)xunit.core\2.5.0\build\xunit.core.props" Condition="Exists('$(NuGetPackageRoot)xunit.core\2.5.0\build\xunit.core.props')" />
-    <Import Project="$(NuGetPackageRoot)reportgenerator\5.1.23\build\netstandard2.0\ReportGenerator.props" Condition="Exists('$(NuGetPackageRoot)reportgenerator\5.1.23\build\netstandard2.0\ReportGenerator.props')" />
+    <Import Project="$(NuGetPackageRoot)reportgenerator\5.1.24\build\netstandard2.0\ReportGenerator.props" Condition="Exists('$(NuGetPackageRoot)reportgenerator\5.1.24\build\netstandard2.0\ReportGenerator.props')" />
     <Import Project="$(NuGetPackageRoot)microsoft.entityframeworkcore\7.0.10\buildTransitive\net6.0\Microsoft.EntityFrameworkCore.props" Condition="Exists('$(NuGetPackageRoot)microsoft.entityframeworkcore\7.0.10\buildTransitive\net6.0\Microsoft.EntityFrameworkCore.props')" />
     <Import Project="$(NuGetPackageRoot)microsoft.entityframeworkcore.design\7.0.10\build\net6.0\Microsoft.EntityFrameworkCore.Design.props" Condition="Exists('$(NuGetPackageRoot)microsoft.entityframeworkcore.design\7.0.10\build\net6.0\Microsoft.EntityFrameworkCore.Design.props')" />
     <Import Project="$(NuGetPackageRoot)microsoft.testplatform.testhost\17.7.0\build\netcoreapp3.1\Microsoft.TestPlatform.TestHost.props" Condition="Exists('$(NuGetPackageRoot)microsoft.testplatform.testhost\17.7.0\build\netcoreapp3.1\Microsoft.TestPlatform.TestHost.props')" />
@@ -26,7 +26,7 @@
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <Pkgxunit_analyzers Condition=" '$(Pkgxunit_analyzers)' == '' ">C:\Users\igorb\.nuget\packages\xunit.analyzers\1.2.0</Pkgxunit_analyzers>
     <PkgMicrosoft_Extensions_ApiDescription_Server Condition=" '$(PkgMicrosoft_Extensions_ApiDescription_Server)' == '' ">C:\Users\igorb\.nuget\packages\microsoft.extensions.apidescription.server\6.0.5</PkgMicrosoft_Extensions_ApiDescription_Server>
-    <PkgReportGenerator Condition=" '$(PkgReportGenerator)' == '' ">C:\Users\igorb\.nuget\packages\reportgenerator\5.1.23</PkgReportGenerator>
+    <PkgReportGenerator Condition=" '$(PkgReportGenerator)' == '' ">C:\Users\igorb\.nuget\packages\reportgenerator\5.1.24</PkgReportGenerator>
     <PkgMicrosoft_EntityFrameworkCore_Tools Condition=" '$(PkgMicrosoft_EntityFrameworkCore_Tools)' == '' ">C:\Users\igorb\.nuget\packages\microsoft.entityframeworkcore.tools\7.0.10</PkgMicrosoft_EntityFrameworkCore_Tools>
   </PropertyGroup>
 </Project>

@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
-using Localdorateste.Extensions;
-using Localdorateste.Models;
 using Microsoft.AspNetCore.Mvc;
-using RentCarSys.Application.DTO.ClienteDTOs;
 using RentCarSys.Application.DTO.ClientesDTOs;
 using RentCarSys.Application.Extensions;
 using RentCarSys.Application.Interfaces;
+using RentCarSys.Application.Models;
 using RentCarSys.Application.Services;
 
 namespace RentCarSys.Application.Controllers

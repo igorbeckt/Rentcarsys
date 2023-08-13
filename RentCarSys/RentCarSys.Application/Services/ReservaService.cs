@@ -1,12 +1,10 @@
 ﻿using AutoMapper;
-using Localdorateste.Data;
-using Localdorateste.Extensions;
-using Localdorateste.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RentCarSys.Application.DTO.ReservasDTOs;
 using RentCarSys.Application.Extensions;
 using RentCarSys.Application.Interfaces;
+using RentCarSys.Application.Models;
 using RentCarSys.Application.Models.Enums;
 
 namespace RentCarSys.Application.Services

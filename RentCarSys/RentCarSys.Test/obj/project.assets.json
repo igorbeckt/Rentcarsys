@@ -1215,7 +1215,7 @@
           "lib/netstandard2.0/NuGet.Frameworks.dll": {}
         }
       },
-      "ReportGenerator/5.1.23": {
+      "ReportGenerator/5.1.24": {
         "type": "package",
         "build": {
           "build/netstandard2.0/ReportGenerator.props": {}
@@ -2933,7 +2933,8 @@
           "Microsoft.AspNetCore.Authentication.JwtBearer": "6.0.21",
           "Microsoft.EntityFrameworkCore": "7.0.10",
           "Microsoft.EntityFrameworkCore.SqlServer": "7.0.10",
-          "Swashbuckle.AspNetCore": "6.5.0"
+          "Swashbuckle.AspNetCore": "6.5.0",
+          "xunit": "2.5.0"
         },
         "compile": {
           "bin/placeholder/RentCarSys.Application.dll": {}
@@ -4728,10 +4729,10 @@
         "nuget.frameworks.nuspec"
       ]
     },
-    "ReportGenerator/5.1.23": {
-      "sha512": "+LqP+L5t61pf8E6B3LKp/tcYi9Uzo+WF03MrAQnqy/VeRQ9kOqyNbdR+cKSLqrJ/iEStcPwSvKgz4l78ruTfKg==",
+    "ReportGenerator/5.1.24": {
+      "sha512": "BD0HWIbvf7UReE7eVQr9LJvRTS/smjE7CkdQ0qL235QQ0EHPR3Nw9G92SlxkKXaT6RkVCvjCWSAxDkWJ2L1cjw==",
       "type": "package",
-      "path": "reportgenerator/5.1.23",
+      "path": "reportgenerator/5.1.24",
       "hasTools": true,
       "files": [
         ".nupkg.metadata",
@@ -4741,7 +4742,7 @@
         "Readme.txt",
         "build/netstandard2.0/ReportGenerator.props",
         "icon.png",
-        "reportgenerator.5.1.23.nupkg.sha512",
+        "reportgenerator.5.1.24.nupkg.sha512",
         "reportgenerator.nuspec",
         "tools/net47/DotNetConfig.dll",
         "tools/net47/Microsoft.Bcl.AsyncInterfaces.dll",
@@ -9254,7 +9255,7 @@
       "Microsoft.NET.Test.Sdk >= 17.7.0",
       "Moq >= 4.20.2",
       "RentCarSys.Application >= 1.0.0",
-      "ReportGenerator >= 5.1.23",
+      "ReportGenerator >= 5.1.24",
       "coverlet.collector >= 6.0.0",
       "xunit >= 2.5.0",
       "xunit.runner.visualstudio >= 2.5.0"
@@ -9333,7 +9334,7 @@
           },
           "ReportGenerator": {
             "target": "Package",
-            "version": "[5.1.23, )"
+            "version": "[5.1.24, )"
           },
           "coverlet.collector": {
             "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",

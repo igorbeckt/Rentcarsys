@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
-using Localdorateste.Extensions;
-using Localdorateste.Models;
 using Microsoft.AspNetCore.Mvc;
-using RentCarSys.Application.DTO.ClienteDTOs;
 using RentCarSys.Application.DTO.ClientesDTOs;
 using RentCarSys.Application.Extensions;
 using RentCarSys.Application.Interfaces;
+using RentCarSys.Application.Models;
 using RentCarSys.Application.Models.Enums;
 using System.Web.Mvc;
 
@@ -161,5 +159,7 @@ namespace RentCarSys.Application.Services
                 return new ResultViewModel<ClienteDTO>("05X12 - Falha interna no servidor!");
             }
         }
+
+
     }
 }

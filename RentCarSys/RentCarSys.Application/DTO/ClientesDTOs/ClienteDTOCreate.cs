@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace RentCarSys.Application.DTO.ClienteDTOs
+namespace RentCarSys.Application.DTO.ClientesDTOs
 {
     public class ClienteDTOCreate
     {

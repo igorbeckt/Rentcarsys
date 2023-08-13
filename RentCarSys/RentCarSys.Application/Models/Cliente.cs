@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RentCarSys.Application.Models.Enums;
 
-namespace Localdorateste.Models
+namespace RentCarSys.Application.Models
 {
     public class Cliente
-    {        
+    {
         public int Id { get; set; }
         public ClienteStatus Status { get; set; }
         public string NomeCompleto { get; set; }
