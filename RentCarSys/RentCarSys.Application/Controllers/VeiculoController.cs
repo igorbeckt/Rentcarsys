@@ -1,11 +1,11 @@
 ﻿using Localdorateste.Extensions;
 using Localdorateste.Models;
-using Localdorateste.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using RentCarSys.Application.DTO.VeiculosDTOs;
+using RentCarSys.Application.Extensions;
 using RentCarSys.Application.Interfaces;
 using RentCarSys.Application.Repository;
 using RentCarSys.Application.Services;
-using RentCarSys.Enums;
 
 namespace RentCarSys.Application.Controllers
 {
@@ -62,11 +62,11 @@ namespace RentCarSys.Application.Controllers
 
         [HttpPost("cadastrar")]
         public async Task<IActionResult> CriarVeiculo(
-        [FromBody] EditorVeiculoViewModel model)
+        [FromBody] VeiculoDTOCreate model)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(new ResultViewModel<Veiculo>(ModelState.PegarErros()));
+                return BadRequest(new ResultViewModel<VeiculoDTOCreate>(ModelState.PegarErros()));
             }
 
             var result = await _veiculoService.CriarVeiculo(model);
@@ -82,7 +82,7 @@ namespace RentCarSys.Application.Controllers
         [HttpPut("alterar/{veiculoid:int}")]
         public async Task<IActionResult> EditarVeiculo(
         [FromRoute] int veiculoid,
-        [FromBody] EditorVeiculoViewModel model)
+        [FromBody] VeiculoDTOUpdate model)
         {
             if (!ModelState.IsValid)
             {

@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RentCarSys.Enums;
+using RentCarSys.Application.Models.Enums;
 
 namespace Localdorateste.Models
-{    
+{
     public class Cliente
     {        
         public int Id { get; set; }

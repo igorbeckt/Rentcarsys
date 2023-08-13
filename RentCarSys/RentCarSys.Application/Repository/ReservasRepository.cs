@@ -18,11 +18,13 @@ namespace RentCarSys.Application.Repository
         {
 
             return await _contexto.Reservas.Include(x => x.Cliente).Include(x => x.Veiculo).ToListAsync();
+
+            //return await _contexto.Reservas.ToListAsync();
         }
 
         public async Task<Reserva> ObterReservaPorIdAsync(int reservaId)
         {
-            return await _contexto.Reservas.FirstOrDefaultAsync(x => x.Id == reservaId);   
+            return await _contexto.Reservas.Include(x => x.Cliente).Include(x => x.Veiculo).FirstOrDefaultAsync(x => x.Id == reservaId);   
         }
 
         public async Task AdicionarReservaAsync(Reserva reserva)

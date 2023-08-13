@@ -1,14 +1,18 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
-namespace Localdorateste.ViewModels
+namespace RentCarSys.Application.DTO.ClientesDTOs
 {
-    public class EditorClienteViewModel
+    public class ClienteDTOUpdate
     {
+        [JsonIgnore]
+        public int Id { get; set; }
+
         [Required(ErrorMessage = "O nome é obrigatório!")]
         public string NomeCompleto { get; set; }
 
         [Required(ErrorMessage = "O E-mail é obrigatório!")]
-        [EmailAddress(ErrorMessage ="Insira um e-mail válido")]
+        [EmailAddress(ErrorMessage = "Insira um e-mail válido")]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "O RG é obrigatório!")]

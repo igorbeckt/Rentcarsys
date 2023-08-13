@@ -1,14 +1,14 @@
-﻿namespace Localdorateste.ViewModels
+﻿namespace RentCarSys.Application.Extensions
 {
     public class ResultViewModel<T>
     {
-        public ResultViewModel(T dados, List<string> erros) 
+        public ResultViewModel(T dados, List<string> erros)
         {
             Dados = dados;
-            Erros = erros;        
+            Erros = erros;
         }
 
-        public ResultViewModel(T dados) 
+        public ResultViewModel(T dados)
         {
             Dados = dados;
         }

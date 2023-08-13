@@ -1,8 +1,8 @@
 ﻿using System.Runtime.Serialization;
 
-namespace RentCarSys.Enums
+namespace RentCarSys.Application.Models.Enums
 {
-    public enum ClienteStatus
+    public enum ReservaStatus
     {
         [EnumMember(Value = "Online")]
         Online = 1,

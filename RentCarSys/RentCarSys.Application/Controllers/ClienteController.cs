@@ -1,11 +1,12 @@
-﻿using Localdorateste.Extensions;
+﻿using AutoMapper;
+using Localdorateste.Extensions;
 using Localdorateste.Models;
-using Localdorateste.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using RentCarSys.Application.DTO;
+using RentCarSys.Application.DTO.ClienteDTOs;
+using RentCarSys.Application.DTO.ClientesDTOs;
+using RentCarSys.Application.Extensions;
 using RentCarSys.Application.Interfaces;
 using RentCarSys.Application.Services;
-using RentCarSys.Enums;
 
 namespace RentCarSys.Application.Controllers
 {
@@ -13,11 +14,12 @@ namespace RentCarSys.Application.Controllers
     [Route("/clientes")]
     public class ClienteController : ControllerBase
     {
-        private readonly ClienteService _clienteService;       
+        private readonly ClienteService _clienteService;  
+        
 
         public ClienteController(ClienteService clienteService)
         {
-            _clienteService = clienteService;
+            _clienteService = clienteService;            
         }
 
         [HttpGet("buscarTodos")]
@@ -60,11 +62,11 @@ namespace RentCarSys.Application.Controllers
 
         [HttpPost("cadastrar")]
         public async Task<IActionResult> CriarClientes(
-        [FromBody] EditorClienteViewModel model)
+        [FromBody] ClienteDTOCreate model)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(new ResultViewModel<Cliente>(ModelState.PegarErros()));
+                return BadRequest(new ResultViewModel<ClienteDTOCreate>(ModelState.PegarErros()));
             }
 
             var result = await _clienteService.CriarCliente(model);
@@ -80,7 +82,7 @@ namespace RentCarSys.Application.Controllers
         [HttpPut("alterar/{clienteid:int}")]
         public async Task<IActionResult> EditarClientes(
         [FromRoute] int clienteid,
-        [FromBody] EditorClienteViewModel model)
+        [FromBody] ClienteDTOUpdate model)
         {
             if (!ModelState.IsValid)
             {

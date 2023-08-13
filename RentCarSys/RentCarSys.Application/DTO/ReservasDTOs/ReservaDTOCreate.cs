@@ -1,21 +1,15 @@
-﻿using Localdorateste.Models;
-using System.ComponentModel.DataAnnotations;
-using System.Configuration;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
-namespace Localdorateste.ViewModels
+namespace RentCarSys.Application.DTO.ReservasDTOs
 {
-    public class EditorReservaViewModel
+    public class ReservaDTOCreate
     {
-        /*[Required(ErrorMessage = "O ClienteId é obrigatório!")]
-        public virtual ICollection<Cliente> Cliente {get; set; }*/
-
         public int ClienteId { get; set; }
-
         public int VeiculoId { get; set; }
 
-        /*[Required(ErrorMessage = "O VeiculoId é obrigatório!")]
-        
-        public virtual ICollection<Veiculo> veiculoid { get; set; }*/
+        [JsonIgnore]
+        public int Id { get; set; }
 
         [Required(ErrorMessage = "A data da reserva é obrigatório!")]
         public string DataReserva { get; set; }

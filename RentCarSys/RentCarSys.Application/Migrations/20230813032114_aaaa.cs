@@ -5,7 +5,7 @@
 namespace RentCarSys.Application.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class aaaa : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

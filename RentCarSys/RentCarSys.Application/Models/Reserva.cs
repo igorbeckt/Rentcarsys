@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RentCarSys.Enums;
+using RentCarSys.Application.Models.Enums;
 using System.Collections.Generic;
 using System.Numerics;
 
 namespace Localdorateste.Models
-{    
+{
     public class Reserva
     {
         public int Id { get; set; }
