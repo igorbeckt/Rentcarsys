@@ -123,6 +123,22 @@ namespace RentCarSys.Test.UnitTest.Services
         }
 
         [Fact]
+        public async void BuscarVeiculoPorPlaca_VeiculoNulo()
+        {
+            var mockVeiculo = MockData.VeiculoMockData.VeiculoGetById();
+            string veiculoPlaca = mockVeiculo.Placa;
+
+            veiculosRepository.Setup(repo => repo.ObterVeiculoPorPlacaAsync(veiculoPlaca))
+                             .ReturnsAsync((Veiculo)null);
+
+            var result = await veiculoService.BuscarVeiculoPorPlaca(veiculoPlaca);
+
+
+            Assert.NotNull(result);
+            Assert.NotEmpty(result.Erros);
+        }
+
+        [Fact]
         public async void BuscarVeiculoPorPlaca_Sucess()
         {
             var mockVeiculo = MockData.VeiculoMockData.VeiculoGetById();

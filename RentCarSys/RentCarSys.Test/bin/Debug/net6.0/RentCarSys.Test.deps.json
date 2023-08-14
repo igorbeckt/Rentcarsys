@@ -12,7 +12,7 @@
           "Microsoft.EntityFrameworkCore": "7.0.10",
           "Microsoft.EntityFrameworkCore.Tools": "7.0.10",
           "Microsoft.NET.Test.Sdk": "17.7.0",
-          "Moq": "4.20.2",
+          "Moq": "4.20.69",
           "RentCarSys.Application": "1.0.0",
           "ReportGenerator": "5.1.24",
           "coverlet.collector": "6.0.0",
@@ -830,14 +830,14 @@
           }
         }
       },
-      "Moq/4.20.2": {
+      "Moq/4.20.69": {
         "dependencies": {
           "Castle.Core": "5.1.1"
         },
         "runtime": {
           "lib/net6.0/Moq.dll": {
-            "assemblyVersion": "4.20.2.0",
-            "fileVersion": "4.20.2.0"
+            "assemblyVersion": "4.20.69.0",
+            "fileVersion": "4.20.69.0"
           }
         }
       },
@@ -1770,6 +1770,7 @@
           "Microsoft.AspNetCore.Authentication.JwtBearer": "6.0.21",
           "Microsoft.EntityFrameworkCore": "7.0.10",
           "Microsoft.EntityFrameworkCore.SqlServer": "7.0.10",
+          "Moq": "4.20.69",
           "Swashbuckle.AspNetCore": "6.5.0",
           "xunit": "2.5.0"
         },
@@ -2163,12 +2164,12 @@
       "path": "mono.texttemplating/2.2.1",
       "hashPath": "mono.texttemplating.2.2.1.nupkg.sha512"
     },
-    "Moq/4.20.2": {
+    "Moq/4.20.69": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-jJ/VSoq9rTLXAfqjJxaCJux1BB9CeqohVMott3WQCKYD7ojuegitumWrNHwrSRqad5Nmq95VNKLiNTmFeHnTjA==",
-      "path": "moq/4.20.2",
-      "hashPath": "moq.4.20.2.nupkg.sha512"
+      "sha512": "sha512-8P/oAUOL8ZVyXnzBBcgdhTsOD1kQbAWfOcMI7KDQO3HqQtzB/0WYLdnMa4Jefv8nu/MQYiiG0IuoJdvG0v0Nig==",
+      "path": "moq/4.20.69",
+      "hashPath": "moq.4.20.69.nupkg.sha512"
     },
     "NETStandard.Library/1.6.1": {
       "type": "package",

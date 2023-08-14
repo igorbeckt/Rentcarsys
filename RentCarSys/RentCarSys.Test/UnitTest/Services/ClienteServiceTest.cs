@@ -119,6 +119,22 @@ public class ClienteServiceTest
     }
 
     [Fact]
+    public async void BuscarClientePorCPF_ClienteNulo()
+    {
+        var mockCliente = MockData.ClienteMockData.ClienteGetById();
+        var clienteCpf = mockCliente.CPF;
+
+        clientesRepository.Setup(repo => repo.ObterClientePorCPFAsync(clienteCpf))
+                         .ReturnsAsync((Cliente)null);
+
+        var result = await clienteService.BuscarClientePorCPF(clienteCpf);
+
+
+        Assert.NotNull(result);
+        Assert.NotEmpty(result.Erros);
+    }
+
+    [Fact]
     public async void BuscarClientePorCPF_Success()
     {
         var mockCliente = MockData.ClienteMockData.ClienteGetById();

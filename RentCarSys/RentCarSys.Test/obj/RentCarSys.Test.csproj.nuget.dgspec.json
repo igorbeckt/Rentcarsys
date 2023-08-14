@@ -71,6 +71,10 @@
               "target": "Package",
               "version": "[7.0.10, )"
             },
+            "Moq": {
+              "target": "Package",
+              "version": "[4.20.69, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.5.0, )"
@@ -168,7 +172,7 @@
             },
             "Moq": {
               "target": "Package",
-              "version": "[4.20.2, )"
+              "version": "[4.20.69, )"
             },
             "ReportGenerator": {
               "target": "Package",

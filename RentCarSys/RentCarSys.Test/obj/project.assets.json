@@ -1128,7 +1128,7 @@
           "lib/netstandard2.0/Mono.TextTemplating.dll": {}
         }
       },
-      "Moq/4.20.2": {
+      "Moq/4.20.69": {
         "type": "package",
         "dependencies": {
           "Castle.Core": "5.1.1"
@@ -2933,6 +2933,7 @@
           "Microsoft.AspNetCore.Authentication.JwtBearer": "6.0.21",
           "Microsoft.EntityFrameworkCore": "7.0.10",
           "Microsoft.EntityFrameworkCore.SqlServer": "7.0.10",
+          "Moq": "4.20.69",
           "Swashbuckle.AspNetCore": "6.5.0",
           "xunit": "2.5.0"
         },
@@ -4653,10 +4654,10 @@
         "mono.texttemplating.nuspec"
       ]
     },
-    "Moq/4.20.2": {
-      "sha512": "jJ/VSoq9rTLXAfqjJxaCJux1BB9CeqohVMott3WQCKYD7ojuegitumWrNHwrSRqad5Nmq95VNKLiNTmFeHnTjA==",
+    "Moq/4.20.69": {
+      "sha512": "8P/oAUOL8ZVyXnzBBcgdhTsOD1kQbAWfOcMI7KDQO3HqQtzB/0WYLdnMa4Jefv8nu/MQYiiG0IuoJdvG0v0Nig==",
       "type": "package",
-      "path": "moq/4.20.2",
+      "path": "moq/4.20.69",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -4669,7 +4670,7 @@
         "lib/netstandard2.0/Moq.xml",
         "lib/netstandard2.1/Moq.dll",
         "lib/netstandard2.1/Moq.xml",
-        "moq.4.20.2.nupkg.sha512",
+        "moq.4.20.69.nupkg.sha512",
         "moq.nuspec",
         "readme.md"
       ]
@@ -9253,7 +9254,7 @@
       "Microsoft.EntityFrameworkCore >= 7.0.10",
       "Microsoft.EntityFrameworkCore.Tools >= 7.0.10",
       "Microsoft.NET.Test.Sdk >= 17.7.0",
-      "Moq >= 4.20.2",
+      "Moq >= 4.20.69",
       "RentCarSys.Application >= 1.0.0",
       "ReportGenerator >= 5.1.24",
       "coverlet.collector >= 6.0.0",
@@ -9330,7 +9331,7 @@
           },
           "Moq": {
             "target": "Package",
-            "version": "[4.20.2, )"
+            "version": "[4.20.69, )"
           },
           "ReportGenerator": {
             "target": "Package",
