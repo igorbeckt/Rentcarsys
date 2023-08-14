@@ -1,9 +1,9 @@
-﻿using Localdorateste.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using RentCarSys.Application.Data.Mappings;
+using RentCarSys.Application.Models;
 using System.Collections.Generic;
 
-namespace Localdorateste.Data
+namespace RentCarSys.Application.Data
 {
     public class Contexto : DbContext
 

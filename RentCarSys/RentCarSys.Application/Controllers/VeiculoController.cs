@@ -1,9 +1,8 @@
-﻿using Localdorateste.Extensions;
-using Localdorateste.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using RentCarSys.Application.DTO.VeiculosDTOs;
 using RentCarSys.Application.Extensions;
 using RentCarSys.Application.Interfaces;
+using RentCarSys.Application.Models;
 using RentCarSys.Application.Repository;
 using RentCarSys.Application.Services;
 

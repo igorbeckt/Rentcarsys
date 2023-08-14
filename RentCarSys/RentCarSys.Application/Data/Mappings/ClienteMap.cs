@@ -1,6 +1,6 @@
-﻿using Localdorateste.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using RentCarSys.Application.Models;
 
 namespace RentCarSys.Application.Data.Mappings
 {

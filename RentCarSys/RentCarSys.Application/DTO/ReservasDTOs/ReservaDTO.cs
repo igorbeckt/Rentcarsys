@@ -1,4 +1,4 @@
-﻿using RentCarSys.Application.DTO.ClienteDTOs;
+﻿using RentCarSys.Application.DTO.ClientesDTOs;
 using RentCarSys.Application.DTO.VeiculosDTOs;
 using System.ComponentModel.DataAnnotations;
 

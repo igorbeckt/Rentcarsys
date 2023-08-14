@@ -1,7 +1,7 @@
-﻿using Localdorateste.Data;
-using Localdorateste.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using RentCarSys.Application.Data;
 using RentCarSys.Application.Interfaces;
+using RentCarSys.Application.Models;
 
 namespace RentCarSys.Application.Repository
 {
@@ -16,10 +16,7 @@ namespace RentCarSys.Application.Repository
 
         public async Task<List<Reserva>> ObterTodasReservasAsync()
         {
-
-            return await _contexto.Reservas.Include(x => x.Cliente).Include(x => x.Veiculo).ToListAsync();
-
-            //return await _contexto.Reservas.ToListAsync();
+            return await _contexto.Reservas.Include(x => x.Cliente).Include(x => x.Veiculo).ToListAsync();            
         }
 
         public async Task<Reserva> ObterReservaPorIdAsync(int reservaId)

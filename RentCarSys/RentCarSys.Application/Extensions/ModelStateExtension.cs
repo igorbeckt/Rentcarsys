@@ -2,7 +2,7 @@
 using System.Net;
 using System.Linq;
 
-namespace Localdorateste.Extensions
+namespace RentCarSys.Application.Extensions
 {
     public static class ModelStateExtension
     {
