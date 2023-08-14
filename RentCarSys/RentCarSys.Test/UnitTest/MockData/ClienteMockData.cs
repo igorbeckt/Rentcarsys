@@ -19,7 +19,7 @@ namespace RentCarSys.Test.UnitTest.MockData
             };
         }
 
-        public static Cliente CLienteGetById() 
+        public static Cliente ClienteGetById() 
         {
             return new Cliente
             {

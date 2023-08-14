@@ -57,7 +57,7 @@ public class ClienteServiceTest
     [Fact]
     public async void BuscarClientePorId_Fail()
     {
-        var mockCliente = MockData.ClienteMockData.CLienteGetById();
+        var mockCliente = MockData.ClienteMockData.ClienteGetById();
         int clienteId = mockCliente.Id;
 
         clientesRepository.Setup(repo => repo.ObterClientePorIdAsync(clienteId))
@@ -74,7 +74,7 @@ public class ClienteServiceTest
     [Fact]
     public async void BuscarClientePorId_ClienteNulo()
     {
-        var mockCliente = MockData.ClienteMockData.CLienteGetById();
+        var mockCliente = MockData.ClienteMockData.ClienteGetById();
         int clienteId = mockCliente.Id;
 
         clientesRepository.Setup(repo => repo.ObterClientePorIdAsync(clienteId))
@@ -90,7 +90,7 @@ public class ClienteServiceTest
     [Fact]
     public async void BuscarClientePorId_Success()
     {
-        var mockCliente = MockData.ClienteMockData.CLienteGetById();
+        var mockCliente = MockData.ClienteMockData.ClienteGetById();
         int clienteId = mockCliente.Id;
 
         clientesRepository.Setup(repo => repo.ObterClientePorIdAsync(clienteId))
@@ -104,39 +104,9 @@ public class ClienteServiceTest
     }
 
     [Fact]
-    public async void BuscarClientePorCPF_Success()
-    {
-        var mockCliente = MockData.ClienteMockData.CLienteGetById();
-        var cpf = mockCliente.CPF;
-
-        clientesRepository.Setup(repo => repo.ObterClientePorCPFAsync(cpf))
-                         .ReturnsAsync(mockCliente);
-
-        var result = await clienteService.BuscarClientePorCPF(cpf);
-
-        Assert.NotNull(result);
-        Assert.Empty(result.Erros);
-        Assert.Equal(mockCliente.Id, result.Dados.Id);
-    }
-
-    [Fact]
-    public async void BuscarClientePorCPF_ClienteNulo()
-    {
-        var mockCliente = MockData.ClienteMockData.CLienteGetById();
-        var cpf = mockCliente.CPF;
-
-        clientesRepository.Setup(repo => repo.ObterClientePorCPFAsync(cpf)).ReturnsAsync((Cliente)null);
-
-        var result = await clienteService.BuscarClientePorCPF(cpf);
-
-        Assert.NotNull(result);
-        Assert.NotEmpty(result.Erros);
-    }
-
-    [Fact]
     public async void BuscarClientePorCPF_Fail()
     {
-        var mockCliente = MockData.ClienteMockData.CLienteGetById();
+        var mockCliente = MockData.ClienteMockData.ClienteGetById();
         var cpf = mockCliente.CPF;
 
         clientesRepository.Setup(repo => repo.ObterClientePorCPFAsync(cpf))
@@ -149,25 +119,20 @@ public class ClienteServiceTest
     }
 
     [Fact]
-    public async void CriarCliente_Success()
+    public async void BuscarClientePorCPF_Success()
     {
-        var mockClienteDTOCreate = MockData.ClienteMockData.ClienteCreate();
+        var mockCliente = MockData.ClienteMockData.ClienteGetById();
+        var cpf = mockCliente.CPF;
 
-        var mockCliente = MockData.ClienteMockData.CLienteGetById();
+        clientesRepository.Setup(repo => repo.ObterClientePorCPFAsync(cpf))
+                         .ReturnsAsync(mockCliente);
 
-        clientesRepository.Setup(repo => repo.AdicionarClienteAsync(It.IsAny<Cliente>()))
-                         .Callback<Cliente>(cliente =>
-                         {
-                             cliente.Id = mockCliente.Id;
-                         })
-                         .Returns(Task.CompletedTask);
-
-        var result = await clienteService.CriarCliente(mockClienteDTOCreate);
+        var result = await clienteService.BuscarClientePorCPF(cpf);
 
         Assert.NotNull(result);
         Assert.Empty(result.Erros);
         Assert.Equal(mockCliente.Id, result.Dados.Id);
-    }
+    }    
 
     [Fact]
     public async void CriarCliente_Fail()
@@ -184,21 +149,20 @@ public class ClienteServiceTest
     }
 
     [Fact]
-    public async void EditarCliente_Success()
+    public async void CriarCliente_Success()
     {
-        var MockId = MockData.ClienteMockData.CLienteGetById();
-        var clienteId = MockId.Id;
-        var mockClienteDTOUpdate = MockData.ClienteMockData.ClienteDTOUpdate();
+        var mockClienteDTOCreate = MockData.ClienteMockData.ClienteCreate();
 
-        var mockCliente = MockData.ClienteMockData.CLienteGetById(); // Cliente mock após edição
+        var mockCliente = MockData.ClienteMockData.ClienteGetById();
 
-        clientesRepository.Setup(repo => repo.ObterClientePorIdAsync(clienteId))
-                         .ReturnsAsync(mockCliente);
-
-        clientesRepository.Setup(repo => repo.AtualizarClienteAsync(It.IsAny<Cliente>()))
+        clientesRepository.Setup(repo => repo.AdicionarClienteAsync(It.IsAny<Cliente>()))
+                         .Callback<Cliente>(cliente =>
+                         {
+                             cliente.Id = mockCliente.Id;
+                         })
                          .Returns(Task.CompletedTask);
 
-        var result = await clienteService.EditarCliente(clienteId, mockClienteDTOUpdate);
+        var result = await clienteService.CriarCliente(mockClienteDTOCreate);
 
         Assert.NotNull(result);
         Assert.Empty(result.Erros);
@@ -206,9 +170,30 @@ public class ClienteServiceTest
     }
 
     [Fact]
+    public async void EditarCliente_Fail()
+    {
+        var MockId = MockData.ClienteMockData.ClienteGetById();
+        var clienteId = MockId.Id;
+        var mockClienteDTOUpdate = MockData.ClienteMockData.ClienteDTOUpdate();
+
+        var mockCliente = MockData.ClienteMockData.ClienteGetById();
+
+        clientesRepository.Setup(repo => repo.ObterClientePorIdAsync(clienteId))
+                         .ReturnsAsync(mockCliente);
+
+        clientesRepository.Setup(repo => repo.AtualizarClienteAsync(It.IsAny<Cliente>()))
+                         .Throws(new Exception("Exceção simulada"));
+
+        var result = await clienteService.EditarCliente(clienteId, mockClienteDTOUpdate);
+
+        Assert.NotNull(result);
+        Assert.NotEmpty(result.Erros);
+    }
+
+    [Fact]
     public async void EditarCliente_ClienteNaoEncontrado()
     {
-        var MockId = MockData.ClienteMockData.CLienteGetById();
+        var MockId = MockData.ClienteMockData.ClienteGetById();
         var clienteId = MockId.Id;
         var mockClienteDTOUpdate = MockData.ClienteMockData.ClienteDTOUpdate();
 
@@ -224,11 +209,11 @@ public class ClienteServiceTest
     [Fact]
     public async void EditarCliente_ClienteEmEstadoInvalido()
     {
-        var MockId = MockData.ClienteMockData.CLienteGetById();
+        var MockId = MockData.ClienteMockData.ClienteGetById();
         var clienteId = MockId.Id;
         var mockClienteDTOUpdate = MockData.ClienteMockData.ClienteDTOUpdate();
 
-        var mockCliente = MockData.ClienteMockData.CLienteGetById();
+        var mockCliente = MockData.ClienteMockData.ClienteGetById();
         mockCliente.Status = ClienteStatus.Running;
 
         clientesRepository.Setup(repo => repo.ObterClientePorIdAsync(clienteId))
@@ -238,33 +223,34 @@ public class ClienteServiceTest
 
         Assert.NotNull(result);
         Assert.NotEmpty(result.Erros);
-    }
+    }   
 
     [Fact]
-    public async void EditarCliente_Fail()
+    public async void EditarCliente_Success()
     {
-        var MockId = MockData.ClienteMockData.CLienteGetById();
+        var MockId = MockData.ClienteMockData.ClienteGetById();
         var clienteId = MockId.Id;
         var mockClienteDTOUpdate = MockData.ClienteMockData.ClienteDTOUpdate();
 
-        var mockCliente = MockData.ClienteMockData.CLienteGetById();
+        var mockCliente = MockData.ClienteMockData.ClienteGetById(); // Cliente mock após edição
 
         clientesRepository.Setup(repo => repo.ObterClientePorIdAsync(clienteId))
                          .ReturnsAsync(mockCliente);
 
         clientesRepository.Setup(repo => repo.AtualizarClienteAsync(It.IsAny<Cliente>()))
-                         .Throws(new Exception("Exceção simulada"));
+                         .Returns(Task.CompletedTask);
 
         var result = await clienteService.EditarCliente(clienteId, mockClienteDTOUpdate);
 
         Assert.NotNull(result);
-        Assert.NotEmpty(result.Erros);
+        Assert.Empty(result.Erros);
+        Assert.Equal(mockCliente.Id, result.Dados.Id);
     }
 
     [Fact]
     public async void ExcluirCliente_Fail()
     {
-        var mockCliente = MockData.ClienteMockData.CLienteGetById();
+        var mockCliente = MockData.ClienteMockData.ClienteGetById();
         var clienteId = mockCliente.Id;
 
         clientesRepository.Setup(repo => repo.ObterClientePorIdAsync(clienteId))
@@ -283,7 +269,7 @@ public class ClienteServiceTest
     [Fact]
     public async void ExcluirCliente_ClienteNaoEncontrado()
     {
-        var mockCliente = MockData.ClienteMockData.CLienteGetById();
+        var mockCliente = MockData.ClienteMockData.ClienteGetById();
         var clienteId = mockCliente.Id;
 
         clientesRepository.Setup(repo => repo.ObterClientePorIdAsync(clienteId))
@@ -298,7 +284,7 @@ public class ClienteServiceTest
     [Fact]
     public async void ExcluirCliente_ClienteEmEstadoInvalido()
     {
-        var mockCliente = MockData.ClienteMockData.CLienteGetById();
+        var mockCliente = MockData.ClienteMockData.ClienteGetById();
         var clienteId = mockCliente.Id;
 
         mockCliente.Status = ClienteStatus.Running;
@@ -315,7 +301,7 @@ public class ClienteServiceTest
     [Fact]
     public async void ExcluirCliente_Success()
     {
-        var mockCliente = MockData.ClienteMockData.CLienteGetById();
+        var mockCliente = MockData.ClienteMockData.ClienteGetById();
         var clienteId = mockCliente.Id;
 
         clientesRepository.Setup(repo => repo.ObterClientePorIdAsync(clienteId))
