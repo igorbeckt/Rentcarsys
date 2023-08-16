@@ -4,12 +4,11 @@ using RentCarSys.Application.DTO.ClientesDTOs;
 using RentCarSys.Application.Interfaces;
 using RentCarSys.Application.Models;
 using RentCarSys.Application.Services;
-using RentCarSys.Application.Services.RentCarSys.Application.Services;
 
 namespace RentCarSys.Application.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("cliente")]
     public class ClienteController : ControllerBase
     {
         private readonly ClienteService _clienteService;
@@ -29,7 +28,7 @@ namespace RentCarSys.Application.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Erro = ex.Message });
+                return StatusCode(404, new { Erro = ex.Message });
             }
         }
 
@@ -43,7 +42,7 @@ namespace RentCarSys.Application.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Erro = ex.Message });
+                return StatusCode(404, new { Erro = ex.Message });
             }
         }
 
@@ -57,7 +56,7 @@ namespace RentCarSys.Application.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Erro = ex.Message });
+                return StatusCode(404, new { Erro = ex.Message });
             }
         }
 
@@ -71,7 +70,7 @@ namespace RentCarSys.Application.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Erro = ex.Message });
+                return StatusCode(400, new { Erro = ex.Message });
             }
         }
 
@@ -85,7 +84,7 @@ namespace RentCarSys.Application.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Erro = ex.Message });
+                return StatusCode(400, new { Erro = ex.Message });
             }
         }
 
@@ -99,7 +98,7 @@ namespace RentCarSys.Application.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Erro = ex.Message });
+                return StatusCode(404, new { Erro = ex.Message });
             }
         }
     }

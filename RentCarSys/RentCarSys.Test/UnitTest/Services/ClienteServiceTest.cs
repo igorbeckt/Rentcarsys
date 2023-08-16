@@ -8,7 +8,6 @@ using RentCarSys.Application.Interfaces;
 using RentCarSys.Application.Models;
 using RentCarSys.Application.Models.Enums;
 using RentCarSys.Application.Services;
-using RentCarSys.Application.Services.RentCarSys.Application.Services;
 using Xunit;
 
 namespace RentCarSys.Test.UnitTest.Services;

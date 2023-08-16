@@ -6,7 +6,6 @@ using RentCarSys.Application.DTO.AutoMapper;
 using RentCarSys.Application.Interfaces;
 using RentCarSys.Application.Repository;
 using RentCarSys.Application.Services;
-using RentCarSys.Application.Services.RentCarSys.Application.Services;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -79,3 +78,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+public partial class Program { }

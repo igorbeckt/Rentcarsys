@@ -8,7 +8,7 @@ using RentCarSys.Application.Services;
 namespace RentCarSys.Application.Controllers
 {
     [ApiController]
-    [Route("/veiculos")]
+    [Route("veiculo")]
     public class VeiculoController : ControllerBase
     {
         private readonly VeiculoService _veiculoService;

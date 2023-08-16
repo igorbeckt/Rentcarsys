@@ -8,156 +8,111 @@ using System.Web.Mvc;
 
 namespace RentCarSys.Application.Services
 {
-    namespace RentCarSys.Application.Services
+    public class ClienteService
     {
-        public class ClienteService
+        private readonly IClientesRepository _repositorioClientes;
+        private readonly IMapper _mapper;
+
+        public ClienteService(IClientesRepository repositorioClientes, IMapper mapper)
         {
-            private readonly IClientesRepository _repositorioClientes;
-            private readonly IMapper _mapper;
+            _repositorioClientes = repositorioClientes;
+            _mapper = mapper;
+        }
 
-            public ClienteService(IClientesRepository repositorioClientes, IMapper mapper)
+        public async Task<List<ClienteDTOGetAll>> BuscarTodosClientes()
+        {
+            var clientes = await _repositorioClientes.ObterTodosClientesAsync();
+
+            var clienteDto = _mapper.Map<List<ClienteDTOGetAll>>(clientes);
+            return clienteDto;
+        }
+
+        public async Task<ClienteDTO> BuscarClientePorId(int clienteId)
+        {
+            var cliente = await _repositorioClientes.ObterClientePorIdAsync(clienteId);
+            if (cliente == null)
             {
-                _repositorioClientes = repositorioClientes;
-                _mapper = mapper;
+                throw new Exception("Cliente não encontrado, verifique se o cliente já foi cadastrado!");
             }
 
-            public async Task<List<ClienteDTOGetAll>> BuscarTodosClientes()
-            {
-                try
-                {
-                    var clientes = await _repositorioClientes.ObterTodosClientesAsync();
+            var clienteDto = _mapper.Map<ClienteDTO>(cliente);
 
-                    var clienteDto = _mapper.Map<List<ClienteDTOGetAll>>(clientes);
-                    return clienteDto;
-                }
-                catch
-                {
-                    throw new Exception("05X05 - Falha interna no servidor!");
-                }
+            return clienteDto;
+        }
+
+        public async Task<ClienteDTO> BuscarClientePorCPF(long cpf)
+        {
+            var cliente = await _repositorioClientes.ObterClientePorCPFAsync(cpf);
+            if (cliente == null)
+            {
+                throw new Exception("Cliente não encontrado, verifique se o CPF está correto!");
             }
 
-            public async Task<ClienteDTO> BuscarClientePorId(int clienteId)
+            var clienteDto = _mapper.Map<ClienteDTO>(cliente);
+
+            return clienteDto;
+        }
+
+        public async Task<ClienteDTO> CriarCliente(ClienteDTOCreate model)
+        {
+            var cliente = new Cliente
             {
-                try
-                {
-                    var cliente = await _repositorioClientes.ObterClientePorIdAsync(clienteId);
-                    if (cliente == null)
-                    {
-                        throw new Exception("Cliente não encontrado, verifique se o cliente já foi cadastrado!");
-                    }
+                Status = ClienteStatus.Online,
+                NomeCompleto = model.NomeCompleto,
+                Email = model.Email,
+                RG = model.RG,
+                CPF = model.CPF,
+            };
 
-                    var clienteDto = _mapper.Map<ClienteDTO>(cliente);
+            await _repositorioClientes.AdicionarClienteAsync(cliente);
 
-                    return clienteDto;
-                }
-                catch
-                {
-                    throw new Exception("Falha interna no servidor!");
-                }
+            var clienteDto = _mapper.Map<ClienteDTO>(cliente);
+            return clienteDto;
+        }
+
+        public async Task<ClienteDTO> EditarCliente(int clienteId, ClienteDTOUpdate model)
+        {
+            var cliente = await _repositorioClientes.ObterClientePorIdAsync(clienteId);
+            if (cliente == null)
+            {
+                throw new Exception("Cliente não encontrado!");
             }
 
-            public async Task<ClienteDTO> BuscarClientePorCPF(long cpf)
+            if (cliente.Status == ClienteStatus.Running)
             {
-                try
-                {
-                    var cliente = await _repositorioClientes.ObterClientePorCPFAsync(cpf);
-                    if (cliente == null)
-                    {
-                        throw new Exception("Cliente não encontrado, verifique se o CPF está correto!");
-                    }
-
-                    var clienteDto = _mapper.Map<ClienteDTO>(cliente);
-
-                    return clienteDto;
-                }
-                catch
-                {
-                    throw new Exception("Falha interna no servidor!");
-                }
+                throw new Exception("Não foi possível alterar o cliente, possui reserva em andamento");
             }
 
-            public async Task<ClienteDTO> CriarCliente(ClienteDTOCreate model)
+            cliente.NomeCompleto = model.NomeCompleto;
+            cliente.Email = model.Email;
+            cliente.RG = model.RG;
+            cliente.CPF = model.CPF;
+
+            var clienteDto = _mapper.Map<ClienteDTO>(cliente);
+
+            await _repositorioClientes.AtualizarClienteAsync(cliente);
+
+            return clienteDto;
+        }
+
+        public async Task<ClienteDTO> ExcluirCliente(int clienteId)
+        {
+            var cliente = await _repositorioClientes.ObterClientePorIdAsync(clienteId);
+            if (cliente == null)
             {
-                try
-                {
-                    var cliente = new Cliente
-                    {
-                        Status = ClienteStatus.Online,
-                        NomeCompleto = model.NomeCompleto,
-                        Email = model.Email,
-                        RG = model.RG,
-                        CPF = model.CPF,
-                    };
-
-                    await _repositorioClientes.AdicionarClienteAsync(cliente);
-
-                    var clienteDto = _mapper.Map<ClienteDTO>(cliente);
-                    return clienteDto;
-                }
-                catch
-                {
-                    throw new Exception("05X10 - Falha interna no servidor!");
-                }
+                throw new Exception("Cliente não encontrado!");
             }
 
-            public async Task<ClienteDTO> EditarCliente(int clienteId, ClienteDTOUpdate model)
+            if (cliente.Status == ClienteStatus.Running)
             {
-                try
-                {
-                    var cliente = await _repositorioClientes.ObterClientePorIdAsync(clienteId);
-                    if (cliente == null)
-                    {
-                        throw new Exception("Cliente não encontrado!");
-                    }
-
-                    if (cliente.Status == ClienteStatus.Running)
-                    {
-                        throw new Exception("Não foi possível alterar o cliente, possui reserva em andamento");
-                    }
-
-                    cliente.NomeCompleto = model.NomeCompleto;
-                    cliente.Email = model.Email;
-                    cliente.RG = model.RG;
-                    cliente.CPF = model.CPF;
-
-                    var clienteDto = _mapper.Map<ClienteDTO>(cliente);
-
-                    await _repositorioClientes.AtualizarClienteAsync(cliente);
-
-                    return clienteDto;
-                }
-                catch
-                {
-                    throw new Exception("05X11 - Falha interna no servidor!");
-                }
+                throw new Exception("Não foi possível excluir o cliente, possui reserva em andamento");
             }
 
-            public async Task<ClienteDTO> ExcluirCliente(int clienteId)
-            {
-                try
-                {
-                    var cliente = await _repositorioClientes.ObterClientePorIdAsync(clienteId);
-                    if (cliente == null)
-                    {
-                        throw new Exception("Cliente não encontrado!");
-                    }
+            var clienteDto = _mapper.Map<ClienteDTO>(cliente);
 
-                    if (cliente.Status == ClienteStatus.Running)
-                    {
-                        throw new Exception("Não foi possível excluir o cliente, possui reserva em andamento");
-                    }
+            await _repositorioClientes.ExcluirClienteAsync(cliente);
 
-                    var clienteDto = _mapper.Map<ClienteDTO>(cliente);
-
-                    await _repositorioClientes.ExcluirClienteAsync(cliente);
-
-                    return clienteDto;
-                }
-                catch
-                {
-                    throw new Exception("05X12 - Falha interna no servidor!");
-                }
-            }
+            return clienteDto;
         }
     }
 }
