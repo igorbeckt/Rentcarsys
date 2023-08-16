@@ -8,6 +8,8 @@ using RentCarSys.Application.Interfaces;
 using RentCarSys.Application.Models;
 using RentCarSys.Application.Models.Enums;
 using RentCarSys.Application.Services;
+using RentCarSys.Application.Services.RentCarSys.Application.Services;
+using Xunit;
 
 namespace RentCarSys.Test.UnitTest.Services;
 public class ClienteServiceTest
@@ -27,19 +29,16 @@ public class ClienteServiceTest
     }
 
     [Fact]
-    public async void BuscarTodosClientes_Fail()
+    public async Task BuscarTodosClientes_Fail()
     {
         clientesRepository.Setup(repo => repo.ObterTodosClientesAsync())
                          .Throws(new Exception("Exceção simulada"));
-
-        var result = await clienteService.BuscarTodosClientes();
-
-        Assert.NotNull(result);
-        Assert.NotEmpty(result.Erros);
+        
+        await Assert.ThrowsAsync<Exception>(async () => await clienteService.BuscarTodosClientes());
     }
 
     [Fact]
-    public async void BuscarTodosClientes_Success()
+    public async Task BuscarTodosClientes_Success()
     {
         var mockClientes = MockData.ClienteMockData.ClientesGetAll();
 
@@ -47,15 +46,15 @@ public class ClienteServiceTest
                          .ReturnsAsync(mockClientes);
 
         var result = await clienteService.BuscarTodosClientes();
-
-
-        Assert.NotNull(result);
-        Assert.Empty(result.Erros);
-        Assert.Equal(mockClientes.Count, result.Dados.Count);
+        
+        Assert.NotNull(result);        
+        Assert.IsType<List<ClienteDTOGetAll>>(result);        
+        Assert.Equal(mockClientes.Count, result.Count);
     }
 
+
     [Fact]
-    public async void BuscarClientePorId_Fail()
+    public async Task BuscarClientePorId_Fail()
     {
         var mockCliente = MockData.ClienteMockData.ClienteGetById();
         int clienteId = mockCliente.Id;
@@ -63,12 +62,7 @@ public class ClienteServiceTest
         clientesRepository.Setup(repo => repo.ObterClientePorIdAsync(clienteId))
                          .Throws(new Exception("Exceção simulada"));
 
-
-        var result = await clienteService.BuscarClientePorId(clienteId);
-
-
-        Assert.NotNull(result);
-        Assert.NotEmpty(result.Erros);
+        await Assert.ThrowsAsync<Exception>(async () => await clienteService.BuscarClientePorId(clienteId));
     }
 
     [Fact]
@@ -80,11 +74,7 @@ public class ClienteServiceTest
         clientesRepository.Setup(repo => repo.ObterClientePorIdAsync(clienteId))
                          .ReturnsAsync((Cliente)null);
 
-        var result = await clienteService.BuscarClientePorId(clienteId);
-
-
-        Assert.NotNull(result);
-        Assert.NotEmpty(result.Erros);
+        await Assert.ThrowsAsync<Exception>(async () => await clienteService.BuscarClientePorId(clienteId));
     }
 
     [Fact]
@@ -99,8 +89,7 @@ public class ClienteServiceTest
         var result = await clienteService.BuscarClientePorId(clienteId);
 
         Assert.NotNull(result);
-        Assert.Empty(result.Erros);
-        Assert.Equal(mockCliente.Id, result.Dados.Id);
+        Assert.IsType<ClienteDTO>(result);
     }
 
     [Fact]
@@ -110,12 +99,9 @@ public class ClienteServiceTest
         var cpf = mockCliente.CPF;
 
         clientesRepository.Setup(repo => repo.ObterClientePorCPFAsync(cpf))
-                         .Throws(new Exception("Exceção simulada"));
+                         .Throws(new Exception("Exceção simulada"));        
 
-        var result = await clienteService.BuscarClientePorCPF(cpf);
-
-        Assert.NotNull(result);
-        Assert.NotEmpty(result.Erros);
+        await Assert.ThrowsAsync<Exception>(async () => await clienteService.BuscarClientePorCPF(cpf));
     }
 
     [Fact]
@@ -127,11 +113,7 @@ public class ClienteServiceTest
         clientesRepository.Setup(repo => repo.ObterClientePorCPFAsync(clienteCpf))
                          .ReturnsAsync((Cliente)null);
 
-        var result = await clienteService.BuscarClientePorCPF(clienteCpf);
-
-
-        Assert.NotNull(result);
-        Assert.NotEmpty(result.Erros);
+        await Assert.ThrowsAsync<Exception>(async () => await clienteService.BuscarClientePorCPF(clienteCpf));
     }
 
     [Fact]
@@ -146,28 +128,24 @@ public class ClienteServiceTest
         var result = await clienteService.BuscarClientePorCPF(cpf);
 
         Assert.NotNull(result);
-        Assert.Empty(result.Erros);
-        Assert.Equal(mockCliente.Id, result.Dados.Id);
+        Assert.IsType<ClienteDTO>(result);
     }    
 
     [Fact]
-    public async void CriarCliente_Fail()
+    public async void CriarClienteFail_Exception()
     {
-        var mockClienteDTOCreate = MockData.ClienteMockData.ClienteCreate();
+        var mockClienteCreate = MockData.ClienteMockData.ClienteCreate();
 
         clientesRepository.Setup(repo => repo.AdicionarClienteAsync(It.IsAny<Cliente>()))
-                         .Throws(new Exception("Exceção simulada"));
+                         .Throws(new Exception("Exceção simulada"));        
 
-        var result = await clienteService.CriarCliente(mockClienteDTOCreate);
-
-        Assert.NotNull(result);
-        Assert.NotEmpty(result.Erros);
+        await Assert.ThrowsAsync<Exception>(async () => await clienteService.CriarCliente(mockClienteCreate));
     }
 
     [Fact]
     public async void CriarCliente_Success()
     {
-        var mockClienteDTOCreate = MockData.ClienteMockData.ClienteCreate();
+        var mockClienteCreate = MockData.ClienteMockData.ClienteCreate();
 
         var mockCliente = MockData.ClienteMockData.ClienteGetById();
 
@@ -178,11 +156,10 @@ public class ClienteServiceTest
                          })
                          .Returns(Task.CompletedTask);
 
-        var result = await clienteService.CriarCliente(mockClienteDTOCreate);
+        var result = await clienteService.CriarCliente(mockClienteCreate);
 
         Assert.NotNull(result);
-        Assert.Empty(result.Erros);
-        Assert.Equal(mockCliente.Id, result.Dados.Id);
+        Assert.Equal(mockCliente.Id, result.Id);
     }
 
     [Fact]
@@ -190,7 +167,7 @@ public class ClienteServiceTest
     {
         var MockId = MockData.ClienteMockData.ClienteGetById();
         var clienteId = MockId.Id;
-        var mockClienteDTOUpdate = MockData.ClienteMockData.ClienteDTOUpdate();
+        var mockClienteUpdate = MockData.ClienteMockData.ClienteDTOUpdate();
 
         var mockCliente = MockData.ClienteMockData.ClienteGetById();
 
@@ -200,55 +177,42 @@ public class ClienteServiceTest
         clientesRepository.Setup(repo => repo.AtualizarClienteAsync(It.IsAny<Cliente>()))
                          .Throws(new Exception("Exceção simulada"));
 
-        var result = await clienteService.EditarCliente(clienteId, mockClienteDTOUpdate);
-
-        Assert.NotNull(result);
-        Assert.NotEmpty(result.Erros);
+        await Assert.ThrowsAsync<Exception>(async () => await clienteService.EditarCliente(clienteId, mockClienteUpdate));
     }
 
     [Fact]
     public async void EditarCliente_ClienteNaoEncontrado()
     {
-        var MockId = MockData.ClienteMockData.ClienteGetById();
-        var clienteId = MockId.Id;
-        var mockClienteDTOUpdate = MockData.ClienteMockData.ClienteDTOUpdate();
+        var mockClienteUpdate = MockData.ClienteMockData.ClienteDTOUpdate();
+        var clienteId = mockClienteUpdate.Id;
+        
 
         clientesRepository.Setup(repo => repo.ObterClientePorIdAsync(clienteId))
                          .ReturnsAsync((Cliente)null);
 
-        var result = await clienteService.EditarCliente(clienteId, mockClienteDTOUpdate);
-
-        Assert.NotNull(result);
-        Assert.NotEmpty(result.Erros);
+        await Assert.ThrowsAsync<Exception>(async () => await clienteService.EditarCliente(clienteId, mockClienteUpdate));
     }
 
     [Fact]
     public async void EditarCliente_ClienteEmEstadoInvalido()
     {
-        var MockId = MockData.ClienteMockData.ClienteGetById();
-        var clienteId = MockId.Id;
-        var mockClienteDTOUpdate = MockData.ClienteMockData.ClienteDTOUpdate();
-
-        var mockCliente = MockData.ClienteMockData.ClienteGetById();
-        mockCliente.Status = ClienteStatus.Running;
+        var mockClienteUpdate = MockData.ClienteMockData.ClienteDTOUpdate();
+        var clienteId = mockClienteUpdate.Id;
+        var mockStatus = new Cliente { Status = ClienteStatus.Running };
 
         clientesRepository.Setup(repo => repo.ObterClientePorIdAsync(clienteId))
-                         .ReturnsAsync(mockCliente);
+                         .ReturnsAsync(mockStatus);
 
-        var result = await clienteService.EditarCliente(clienteId, mockClienteDTOUpdate);
-
-        Assert.NotNull(result);
-        Assert.NotEmpty(result.Erros);
+        await Assert.ThrowsAsync<Exception>(async () => await clienteService.EditarCliente(clienteId, mockClienteUpdate));
     }   
 
     [Fact]
     public async void EditarCliente_Success()
     {
-        var MockId = MockData.ClienteMockData.ClienteGetById();
-        var clienteId = MockId.Id;
-        var mockClienteDTOUpdate = MockData.ClienteMockData.ClienteDTOUpdate();
-
-        var mockCliente = MockData.ClienteMockData.ClienteGetById(); // Cliente mock após edição
+        var mockCliente = MockData.ClienteMockData.ClienteGetById();
+        var clienteId = mockCliente.Id;
+        var mockClienteUpdate = MockData.ClienteMockData.ClienteDTOUpdate();
+        
 
         clientesRepository.Setup(repo => repo.ObterClientePorIdAsync(clienteId))
                          .ReturnsAsync(mockCliente);
@@ -256,11 +220,10 @@ public class ClienteServiceTest
         clientesRepository.Setup(repo => repo.AtualizarClienteAsync(It.IsAny<Cliente>()))
                          .Returns(Task.CompletedTask);
 
-        var result = await clienteService.EditarCliente(clienteId, mockClienteDTOUpdate);
+        var result = await clienteService.EditarCliente(clienteId, mockClienteUpdate);
 
         Assert.NotNull(result);
-        Assert.Empty(result.Erros);
-        Assert.Equal(mockCliente.Id, result.Dados.Id);
+        Assert.Equal(mockCliente.Id, result.Id);
     }
 
     [Fact]
@@ -273,12 +236,9 @@ public class ClienteServiceTest
                          .ReturnsAsync(mockCliente);
 
         clientesRepository.Setup(repo => repo.ExcluirClienteAsync(It.IsAny<Cliente>()))
-                         .Throws(new Exception("Exceção simulada"));
+                         .Throws(new Exception("Exceção simulada"));       
 
-        var result = await clienteService.ExcluirCliente(clienteId);
-
-        Assert.NotNull(result);
-        Assert.NotEmpty(result.Erros);
+        await Assert.ThrowsAsync<Exception>(async () => await clienteService.ExcluirCliente(clienteId));
     }
 
 
@@ -291,10 +251,7 @@ public class ClienteServiceTest
         clientesRepository.Setup(repo => repo.ObterClientePorIdAsync(clienteId))
                          .ReturnsAsync((Cliente)null);
 
-        var result = await clienteService.ExcluirCliente(clienteId);
-
-        Assert.NotNull(result);
-        Assert.NotEmpty(result.Erros);
+        await Assert.ThrowsAsync<Exception>(async () => await clienteService.ExcluirCliente(clienteId));
     }
 
     [Fact]
@@ -302,16 +259,12 @@ public class ClienteServiceTest
     {
         var mockCliente = MockData.ClienteMockData.ClienteGetById();
         var clienteId = mockCliente.Id;
-
         mockCliente.Status = ClienteStatus.Running;
 
         clientesRepository.Setup(repo => repo.ObterClientePorIdAsync(clienteId))
                          .ReturnsAsync(mockCliente);
 
-        var result = await clienteService.ExcluirCliente(clienteId);
-
-        Assert.NotNull(result);
-        Assert.NotEmpty(result.Erros);
+        await Assert.ThrowsAsync<Exception>(async () => await clienteService.ExcluirCliente(clienteId));
     }
 
     [Fact]
@@ -329,7 +282,6 @@ public class ClienteServiceTest
         var result = await clienteService.ExcluirCliente(clienteId);
 
         Assert.NotNull(result);
-        Assert.Empty(result.Erros);
-        Assert.Equal(mockCliente.Id, result.Dados.Id);
+        Assert.Equal(mockCliente.Id, result.Id);
     }
 }

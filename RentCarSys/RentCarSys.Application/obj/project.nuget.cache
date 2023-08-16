@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Ils8LSasl8cknawCemEkQt9uClQgW6LUUj4tjW74zCUa8w1qIvYS8eJoMNh4XJKvlFqgqiNqsoghEmt7s1VmQA==",
+  "dgSpecHash": "IX4W4vcpDyVZmyjAnsvIInQGFDL8UwX7HzPEqG6kFfrfSzurmvpSZZQvas2DiPPTyBMctQTCIxIxWhy79B58fQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\igorb\\Documents\\Projetos\\RentCarSys\\RentCarSys\\RentCarSys.Application\\RentCarSys.Application.csproj",
+  "projectFilePath": "C:\\Users\\igorb\\Documents\\Projetos\\locadora\\RentCarSys\\RentCarSys.Application\\RentCarSys.Application.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\igorb\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\igorb\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",

@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RentCarSys.Application.DTO.ReservasDTOs;
-using RentCarSys.Application.Extensions;
 using RentCarSys.Application.Interfaces;
 using RentCarSys.Application.Services;
+using RentCarSys.Application.Services.RentCarSys.Application.Services;
 
 namespace RentCarSys.Application.Controllers
 {
@@ -16,91 +16,83 @@ namespace RentCarSys.Application.Controllers
         private readonly ReservaService _reservaService;
 
         public ReservaController(ClienteService clienteService,
-                                 VeiculoService veiculo,
+                                 VeiculoService veiculoService,
                                  ReservaService reservaService)
         {
             _clienteService = clienteService;
-            _veiculoService = veiculo;
+            _veiculoService = veiculoService;
             _reservaService = reservaService;
         }
 
         [HttpGet("buscarTodas")]
         public async Task<IActionResult> BuscarReservas()
         {
-            var result = await _reservaService.BuscarTodasReservas();
-            if (result.Erros.Count > 0)
+            try
             {
-                return StatusCode(500, result);
+                var result = await _reservaService.BuscarTodasReservas();
+                return Ok(result);
             }
-
-            return Ok(result);
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Erro = ex.Message });
+            }
         }
 
         [HttpGet("buscarPorId/{reservaid:int}")]
-        public async Task<IActionResult> BuscarReservaId(
-        [FromRoute] int reservaid)
+        public async Task<IActionResult> BuscarReservaId(int reservaid)
         {
-            var result = await _reservaService.BuscarReservaPorId(reservaid);
-            if (result.Erros.Count > 0)
+            try
             {
-                return StatusCode(500, result);
+                var result = await _reservaService.BuscarReservaPorId(reservaid);
+                return Ok(result);
             }
-
-            return Ok(result);
-        }        
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Erro = ex.Message });
+            }
+        }
 
         [HttpPost("cadastrar")]
-        public async Task<IActionResult> CriarReservas(
-        [FromBody] ReservaDTOCreate model)
+        public async Task<IActionResult> CriarReservas([FromBody] ReservaDTOCreate model)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(new ResultViewModel<ReservaDTOCreate>(ModelState.PegarErros()));
+                var result = await _reservaService.CriarReserva(model);
+                return Created($"reservas/{result.Id}", result);
             }
-
-            var result = await _reservaService.CriarReserva(model);
-
-            if (result.Erros.Count > 0)
+            catch (Exception ex)
             {
-                return StatusCode(500, result);
+                return StatusCode(500, new { Erro = ex.Message });
             }
-
-            return Created($"reservas/{result.Dados.Id}", result);
         }
 
         [HttpPut("alterar/{reservaid:int}")]
-        public async Task<IActionResult> EditarClientes(
-        [FromRoute] int reservaid,
-        [FromBody] ReservaDTOUpdate model)
+        public async Task<IActionResult> EditarReserva(int reservaid, [FromBody] ReservaDTOUpdate model)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(new ResultViewModel<ReservaDTOUpdate>(ModelState.PegarErros()));
+                var result = await _reservaService.EditarReserva(reservaid, model);
+                return Ok(result);
             }
-
-
-            var result = await _reservaService.EditarReserva(reservaid, model);
-
-            if (result.Erros.Count > 0)
+            catch (Exception ex)
             {
-                return StatusCode(500, result);
+                return StatusCode(500, new { Erro = ex.Message });
             }
-
-            return Ok(result);
         }
 
         [HttpDelete("excluir/{reservaid:int}")]
-        public async Task<IActionResult> ExcluirClientes(
-        [FromRoute] int reservaid)
+        public async Task<IActionResult> ExcluirReserva(int reservaid)
         {
-            var result = await _reservaService.ExcluirReserva(reservaid);
-
-            if (result.Erros.Count > 0)
+            try
             {
-                return StatusCode(500, result);
+                var result = await _reservaService.ExcluirReserva(reservaid);
+                return Ok(result);
             }
-
-            return Ok(result);
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Erro = ex.Message });
+            }
         }
     }
+
 }

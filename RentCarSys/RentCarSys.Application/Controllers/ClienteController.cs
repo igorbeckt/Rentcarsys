@@ -1,115 +1,107 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using RentCarSys.Application.DTO.ClientesDTOs;
-using RentCarSys.Application.Extensions;
 using RentCarSys.Application.Interfaces;
 using RentCarSys.Application.Models;
 using RentCarSys.Application.Services;
+using RentCarSys.Application.Services.RentCarSys.Application.Services;
 
 namespace RentCarSys.Application.Controllers
 {
     [ApiController]
-    [Route("/clientes")]
+    [Route("api/[controller]")]
     public class ClienteController : ControllerBase
     {
-        private readonly ClienteService _clienteService;  
-        
+        private readonly ClienteService _clienteService;
 
         public ClienteController(ClienteService clienteService)
         {
-            _clienteService = clienteService;            
+            _clienteService = clienteService;
         }
 
         [HttpGet("buscarTodos")]
         public async Task<IActionResult> BuscarClientes()
         {
-            var result = await _clienteService.BuscarTodosClientes();
-            if (result.Erros.Count > 0)
+            try
             {
-                return StatusCode(500, result);
+                var result = await _clienteService.BuscarTodosClientes();
+                return Ok(result);
             }
-
-            return Ok(result);
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Erro = ex.Message });
+            }
         }
 
         [HttpGet("buscarPorId/{clienteid:int}")]
-        public async Task<IActionResult> BuscarClientesId(
-        [FromRoute] int clienteid)
+        public async Task<IActionResult> BuscarClientesId([FromRoute] int clienteid)
         {
-            var result = await _clienteService.BuscarClientePorId(clienteid);
-            if (result.Erros.Count > 0)
+            try
             {
-                return StatusCode(500, result);
+                var result = await _clienteService.BuscarClientePorId(clienteid);
+                return Ok(result);
             }
-
-            return Ok(result);
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Erro = ex.Message });
+            }
         }
 
         [HttpGet("buscarPorCpf/{cpf}")]
-        public async Task<IActionResult> BuscarClientesCPF(
-        [FromRoute] long cpf)
+        public async Task<IActionResult> BuscarClientesCPF([FromRoute] long cpf)
         {
-            var result = await _clienteService.BuscarClientePorCPF(cpf);
-            if (result.Erros.Count > 0)
+            try
             {
-                return StatusCode(500, result);
+                var result = await _clienteService.BuscarClientePorCPF(cpf);
+                return Ok(result);
             }
-
-            return Ok(result);
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Erro = ex.Message });
+            }
         }
 
         [HttpPost("cadastrar")]
-        public async Task<IActionResult> CriarClientes(
-        [FromBody] ClienteDTOCreate model)
+        public async Task<IActionResult> CriarClientes([FromBody] ClienteDTOCreate model)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(new ResultViewModel<ClienteDTOCreate>(ModelState.PegarErros()));
+                var result = await _clienteService.CriarCliente(model);
+                return Created($"clientes/{result.Id}", result);
             }
-
-            var result = await _clienteService.CriarCliente(model);
-
-            if (result.Erros.Count > 0)
+            catch (Exception ex)
             {
-                return StatusCode(500, result);
+                return StatusCode(500, new { Erro = ex.Message });
             }
-
-            return Created($"clientes/{result.Dados.Id}", result);
         }
 
         [HttpPut("alterar/{clienteid:int}")]
-        public async Task<IActionResult> EditarClientes(
-        [FromRoute] int clienteid,
-        [FromBody] ClienteDTOUpdate model)
+        public async Task<IActionResult> EditarClientes([FromRoute] int clienteid, [FromBody] ClienteDTOUpdate model)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(new ResultViewModel<Cliente>(ModelState.PegarErros()));
+                var result = await _clienteService.EditarCliente(clienteid, model);
+                return Ok(result);
             }
-
-
-            var result = await _clienteService.EditarCliente(clienteid, model);
-
-            if (result.Erros.Count > 0)
+            catch (Exception ex)
             {
-                return StatusCode(500, result);
+                return StatusCode(500, new { Erro = ex.Message });
             }
-
-            return Ok(result);
         }
 
         [HttpDelete("excluir/{clienteid:int}")]
-        public async Task<IActionResult> ExcluirClientes(
-        [FromRoute] int clienteid)
+        public async Task<IActionResult> ExcluirClientes([FromRoute] int clienteid)
         {
-            var result = await _clienteService.ExcluirCliente(clienteid);
-
-            if (result.Erros.Count > 0)
+            try
             {
-                return StatusCode(500, result);
+                var result = await _clienteService.ExcluirCliente(clienteid);
+                return Ok(result);
             }
-
-            return Ok(result);
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Erro = ex.Message });
+            }
         }
     }
+
 }

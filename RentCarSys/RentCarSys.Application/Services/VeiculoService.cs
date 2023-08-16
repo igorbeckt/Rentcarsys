@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RentCarSys.Application.DTO.VeiculosDTOs;
-using RentCarSys.Application.Extensions;
 using RentCarSys.Application.Interfaces;
 using RentCarSys.Application.Models;
 using RentCarSys.Application.Models.Enums;
@@ -20,151 +19,108 @@ namespace RentCarSys.Application.Services
             _mapper = mapper;
         }
 
-        public async Task<ResultViewModel<List<VeiculoDTOGetAll>>> BuscarTodosVeiculos()
+        public async Task<List<VeiculoDTOGetAll>> BuscarTodosVeiculos()
         {
-            try
-            {
-                var veiculos = await _repositorioVeiculos.ObterTodosVeiculosAsync();
-
-                var veiculoDto = _mapper.Map<List<VeiculoDTOGetAll>>(veiculos);
-                return new ResultViewModel<List<VeiculoDTOGetAll>>(veiculoDto);
-            }
-            catch
-            {
-                return new ResultViewModel<List<VeiculoDTOGetAll>>(erro: "05X05 - Falha interna no servidor!");
-            }
+            var veiculos = await _repositorioVeiculos.ObterTodosVeiculosAsync();
+            var veiculoDto = _mapper.Map<List<VeiculoDTOGetAll>>(veiculos);
+            return veiculoDto;
         }
 
-        public async Task<ResultViewModel<VeiculoDTO>> BuscarVeiculoPorId(int veiculoId)
+        public async Task<VeiculoDTO> BuscarVeiculoPorId(int veiculoId)
         {
-            try
+            var veiculo = await _repositorioVeiculos.ObterVeiculoPorIdAsync(veiculoId);
+            if (veiculo == null)
             {
-                var veiculo = await _repositorioVeiculos.ObterVeiculoPorIdAsync(veiculoId);
-                if (veiculo == null)
-                {
-                    return new ResultViewModel<VeiculoDTO>(erro: "Veiculo não encontrado, verifique se o veiculo já foi cadastrado!");
-                }
-
-                var veiculoDto = _mapper.Map<VeiculoDTO>(veiculo);
-
-                return new ResultViewModel<VeiculoDTO>(veiculoDto);
+                throw new Exception("Veiculo não encontrado, verifique se o veiculo já foi cadastrado!");
             }
-            catch
-            {
-                return new ResultViewModel<VeiculoDTO>(erro: "Falha interna no servidor!");
-            }
+
+            var veiculoDto = _mapper.Map<VeiculoDTO>(veiculo);
+
+            return veiculoDto;
         }
 
-        public async Task<ResultViewModel<VeiculoDTO>> BuscarVeiculoPorPlaca(string placa)
+        public async Task<VeiculoDTO> BuscarVeiculoPorPlaca(string placa)
         {
-            try
+            var veiculo = await _repositorioVeiculos.ObterVeiculoPorPlacaAsync(placa);
+            if (veiculo == null)
             {
-                var veiculo = await _repositorioVeiculos.ObterVeiculoPorPlacaAsync(placa);
-                if (veiculo == null)
-                {
-                    return new ResultViewModel<VeiculoDTO>("Veiculo não encontrado, verifique se a placa está correta!");
-                }
+                throw new Exception("Veiculo não encontrado, verifique se a placa está correta!");
+            }
 
-                var veiculoDto = _mapper.Map<VeiculoDTO>(veiculo);
-                return new ResultViewModel<VeiculoDTO>(veiculoDto);
-            }
-            catch
-            {
-                return new ResultViewModel<VeiculoDTO>("Falha interna no servidor!");
-            }
+            var veiculoDto = _mapper.Map<VeiculoDTO>(veiculo);
+            return veiculoDto;
         }
 
-        public async Task<ResultViewModel<VeiculoDTO>> CriarVeiculo(VeiculoDTOCreate model)
+        public async Task<VeiculoDTO> CriarVeiculo(VeiculoDTOCreate model)
         {
-            try
+            var veiculo = new Veiculo
             {
-                var veiculo = new Veiculo
-                {
-                    Status = VeiculoStatus.Online,
-                    Placa = model.Placa,
-                    Marca = model.Marca,
-                    Modelo = model.Modelo,
-                    AnoFabricacao = model.AnoFabricacao,
-                    KM = model.KM,
-                    QuantidadePortas = model.QuantidadePortas,
-                    Cor = model.Cor,
-                    Automatico = model.Automatico
-                };
+                Status = VeiculoStatus.Online,
+                Placa = model.Placa,
+                Marca = model.Marca,
+                Modelo = model.Modelo,
+                AnoFabricacao = model.AnoFabricacao,
+                KM = model.KM,
+                QuantidadePortas = model.QuantidadePortas,
+                Cor = model.Cor,
+                Automatico = model.Automatico
+            };
 
-                await _repositorioVeiculos.AdicionarVeiculoAsync(veiculo);
+            await _repositorioVeiculos.AdicionarVeiculoAsync(veiculo);
 
-                var veiculoDto = _mapper.Map<VeiculoDTO>(veiculo);
+            var veiculoDto = _mapper.Map<VeiculoDTO>(veiculo);
 
-                return new ResultViewModel<VeiculoDTO>(veiculoDto);
-            }
-            catch
-            {
-                return new ResultViewModel<VeiculoDTO>("05X10 - Falha interna no servidor!");
-            }
+            return veiculoDto;
         }
 
-        public async Task<ResultViewModel<VeiculoDTO>> EditarVeiculo(int veiculoId, VeiculoDTOUpdate model)
+        public async Task<VeiculoDTO> EditarVeiculo(int veiculoId, VeiculoDTOUpdate model)
         {
-
-            try
+            var veiculo = await _repositorioVeiculos.ObterVeiculoPorIdAsync(veiculoId);
+            if (veiculo == null)
             {
-                var veiculo = await _repositorioVeiculos.ObterVeiculoPorIdAsync(veiculoId);
-                if (veiculo == null)
-                {
-                    return new ResultViewModel<VeiculoDTO>("Veiculo não encontrado!");
-                }
-
-                if (veiculo.Status == VeiculoStatus.Running)
-                {
-                    return new ResultViewModel<VeiculoDTO>("Não foi possível alterar o veiculo, possui reserva em andamento");
-                }
-
-                veiculo.Placa = model.Placa;
-                veiculo.Marca = model.Marca;
-                veiculo.Modelo = model.Modelo;
-                veiculo.AnoFabricacao = model.AnoFabricacao;
-                veiculo.KM = model.KM;
-                veiculo.QuantidadePortas = model.QuantidadePortas;
-                veiculo.Cor = model.Cor;
-                veiculo.Automatico = model.Automatico;
-
-                var veiculoDto = _mapper.Map<VeiculoDTO>(veiculo);
-
-                await _repositorioVeiculos.AtualizarVeiculoAsync(veiculo);
-
-                return new ResultViewModel<VeiculoDTO>(veiculoDto);
+                throw new Exception("Veiculo não encontrado!");
             }
-            catch
+
+            if (veiculo.Status == VeiculoStatus.Running)
             {
-                return new ResultViewModel<VeiculoDTO>("05X11 - Falha interna no servidor!");
+                throw new Exception("Não foi possível alterar o veiculo, possui reserva em andamento");
             }
+
+            veiculo.Placa = model.Placa;
+            veiculo.Marca = model.Marca;
+            veiculo.Modelo = model.Modelo;
+            veiculo.AnoFabricacao = model.AnoFabricacao;
+            veiculo.KM = model.KM;
+            veiculo.QuantidadePortas = model.QuantidadePortas;
+            veiculo.Cor = model.Cor;
+            veiculo.Automatico = model.Automatico;
+
+            await _repositorioVeiculos.AtualizarVeiculoAsync(veiculo);
+
+            var veiculoDto = _mapper.Map<VeiculoDTO>(veiculo);
+
+            return veiculoDto;
         }
 
-        public async Task<ResultViewModel<VeiculoDTO>> ExcluirVeiculo(int veiculoId)
+        public async Task<VeiculoDTO> ExcluirVeiculo(int veiculoId)
         {
-            try
+            var veiculo = await _repositorioVeiculos.ObterVeiculoPorIdAsync(veiculoId);
+            if (veiculo == null)
             {
-                var veiculo = await _repositorioVeiculos.ObterVeiculoPorIdAsync(veiculoId);
-                if (veiculo == null)
-                {
-                    return new ResultViewModel<VeiculoDTO>("Veiculo não encontrado!");
-                }
-
-                if (veiculo.Status == VeiculoStatus.Running)
-                {
-                    return new ResultViewModel<VeiculoDTO>("Não foi possível excluir o veiculo, possui reserva em andamento");
-                }
-
-                var veiculoDto = _mapper.Map<VeiculoDTO>(veiculo);
-
-                await _repositorioVeiculos.ExcluirVeiculoAsync(veiculo);
-
-                return new ResultViewModel<VeiculoDTO>(veiculoDto);
+                throw new Exception("Veiculo não encontrado!");
             }
-            catch
+
+            if (veiculo.Status == VeiculoStatus.Running)
             {
-                return new ResultViewModel<VeiculoDTO>("05X12 - Falha interna no servidor!");
+                throw new Exception("Não foi possível excluir o veiculo, possui reserva em andamento");
             }
+
+            await _repositorioVeiculos.ExcluirVeiculoAsync(veiculo);
+
+            var veiculoDto = _mapper.Map<VeiculoDTO>(veiculo);
+
+            return veiculoDto;
         }
     }
+
 }

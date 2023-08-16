@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RentCarSys.Application.DTO.ReservasDTOs;
-using RentCarSys.Application.Extensions;
 using RentCarSys.Application.Interfaces;
 using RentCarSys.Application.Models;
 using RentCarSys.Application.Models.Enums;
@@ -16,8 +15,8 @@ namespace RentCarSys.Application.Services
         private readonly IReservasRepository _repositorioReservas;
         private readonly IMapper _mapper;
 
-        public ReservaService(IClientesRepository repositorioClientes, 
-                              IVeiculosRepository repositorioVeiculos, 
+        public ReservaService(IClientesRepository repositorioClientes,
+                              IVeiculosRepository repositorioVeiculos,
                               IReservasRepository repositorioReservas,
                               IMapper mapper)
         {
@@ -27,165 +26,113 @@ namespace RentCarSys.Application.Services
             _mapper = mapper;
         }
 
-        public async Task<ResultViewModel<List<ReservaDTOGetAll>>> BuscarTodasReservas()
+        public async Task<List<ReservaDTOGetAll>> BuscarTodasReservas()
         {
-            try
-            {
-                var reservas = await _repositorioReservas.ObterTodasReservasAsync();
-                
-                var reservaDto = _mapper.Map<List<ReservaDTOGetAll>>(reservas);
-                return new ResultViewModel<List<ReservaDTOGetAll>>(reservaDto);
-            }
-            catch
-            {
-                return new ResultViewModel<List<ReservaDTOGetAll>>(erro: "05X05 - Falha interna no servidor!");
-            }
+            var reservas = await _repositorioReservas.ObterTodasReservasAsync();
+
+            var reservaDto = _mapper.Map<List<ReservaDTOGetAll>>(reservas);
+            return reservaDto;
         }
 
-        public async Task<ResultViewModel<ReservaDTO>> BuscarReservaPorId(int reservaId)
+        public async Task<ReservaDTO> BuscarReservaPorId(int reservaId)
         {
-            try
+            var reserva = await _repositorioReservas.ObterReservaPorIdAsync(reservaId);
+            if (reserva == null)
             {
-                var reserva = await _repositorioReservas.ObterReservaPorIdAsync(reservaId);
-                if (reserva == null)
-                {
-                    return new ResultViewModel<ReservaDTO>(erro: "Reserva não encontrada, verifique se a reserva já foi cadastrada!");
-                }
+                throw new Exception("Reserva não encontrada, verifique se a reserva já foi cadastrada!");
+            }
 
-                var reservaDto = _mapper.Map<ReservaDTO>(reserva);
-                return new ResultViewModel<ReservaDTO>(reservaDto);
-            }
-            catch
-            {
-                return new ResultViewModel<ReservaDTO>(erro: "Falha interna no servidor!");
-            }
+            var reservaDto = _mapper.Map<ReservaDTO>(reserva);
+            return reservaDto;
         }
 
-        public async Task<ResultViewModel<ReservaDTO>> CriarReserva(ReservaDTOCreate model)
+        public async Task<ReservaDTO> CriarReserva(ReservaDTOCreate model)
         {
-            try
+            var cliente = await _repositorioClientes.ObterClientePorIdAsync(model.ClienteId);
+            if (cliente == null)
             {
-                var cliente = await _repositorioClientes.ObterClientePorIdAsync(model.ClienteId);
-                if (cliente == null)
-                {
-                    return new ResultViewModel<ReservaDTO>(erro: "Cliente não encontrado, verifique se o cliente já foi cadastrado!");
-                }
-
-                var veiculo = await _repositorioVeiculos.ObterVeiculoPorIdAsync(model.VeiculoId);
-                if (veiculo == null)
-                {
-                    return new ResultViewModel<ReservaDTO>(erro: "Veiculo não encontrado, verifique se o veiculo já foi cadastrado!");
-                }
-
-                if (cliente.Status == ClienteStatus.Running)
-                {
-                    return new ResultViewModel<ReservaDTO>("Não foi possível alterar o cliente, possui reserva em andamento");
-                }
-
-                if (veiculo.Status == VeiculoStatus.Running)
-                {
-                    return new ResultViewModel<ReservaDTO>("Não foi possível alterar o veiculo, possui reserva em andamento");
-                }
-
-                var reserva = new Reserva
-
-                {
-                    Status = ReservaStatus.Online,
-                    DataReserva = model.DataReserva,
-                    ValorLocacao = model.ValorLocacao,
-                    DataRetirada = model.DataRetirada,
-                    DataEntrega = model.DataRetirada,
-                    Cliente = new List<Cliente> { cliente },
-                    Veiculo = new List<Veiculo> { veiculo }
-                };
-
-                await _repositorioReservas.AdicionarReservaAsync(reserva);
-
-                var reservaDto = _mapper.Map<ReservaDTO>(reserva);
-                return new ResultViewModel<ReservaDTO>(reservaDto);
-
+                throw new Exception("Cliente não encontrado, verifique se o cliente já foi cadastrado!");
             }
-            catch (DbUpdateException ex)
+
+            var veiculo = await _repositorioVeiculos.ObterVeiculoPorIdAsync(model.VeiculoId);
+            if (veiculo == null)
             {
-                return new ResultViewModel<ReservaDTO>(erro: "05XE8 - Não foi possível criar a reserva!");
+                throw new Exception("Veiculo não encontrado, verifique se o veiculo já foi cadastrado!");
             }
-            catch
+
+            if (cliente.Status == ClienteStatus.Running || veiculo.Status == VeiculoStatus.Running)
             {
-                return new ResultViewModel<ReservaDTO>(erro: "05X10 - Falha interna no servidor!");
+                throw new Exception("Não foi possível criar a reserva, cliente ou veículo possui reserva em andamento");
             }
+
+            var reserva = new Reserva
+            {
+                Status = ReservaStatus.Online,
+                DataReserva = model.DataReserva,
+                ValorLocacao = model.ValorLocacao,
+                DataRetirada = model.DataRetirada,
+                DataEntrega = model.DataRetirada,
+                Cliente = new List<Cliente> { cliente },
+                Veiculo = new List<Veiculo> { veiculo }
+            };
+
+            await _repositorioReservas.AdicionarReservaAsync(reserva);
+
+            var reservaDto = _mapper.Map<ReservaDTO>(reserva);
+            return reservaDto;
         }
 
-        public async Task<ResultViewModel<ReservaDTOUpdate>> EditarReserva(int reservaId, ReservaDTOUpdate model)
+        public async Task<ReservaDTOUpdate> EditarReserva(int reservaId, ReservaDTOUpdate model)
         {
-
-            try
+            var reserva = await _repositorioReservas.ObterReservaPorIdAsync(reservaId);
+            if (reserva == null)
             {
-                var reserva = await _repositorioReservas.ObterReservaPorIdAsync(reservaId);
-                if (reserva == null)
-                {
-                    return new ResultViewModel<ReservaDTOUpdate>("Cliente não encontrado!");
-                }
-
-                if (reserva.Status == ReservaStatus.Running)
-                {
-                    return new ResultViewModel<ReservaDTOUpdate>("Não foi possivel alterar a reserva, o veiculo já foi retirado e a reserva está em andamento!");
-                }
-
-                if (reserva.Status == ReservaStatus.Offline)
-                {
-                    return new ResultViewModel<ReservaDTOUpdate>("Não é possivel alterar uma reserva finalizada!");
-                }
-
-                reserva.DataRetirada = model.DataRetirada;
-                reserva.DataEntrega = model.DataEntrega;
-                reserva.ValorLocacao = model.ValorLocacao;
-
-                var reservaDto = _mapper.Map<ReservaDTOUpdate>(reserva);
-
-                await _repositorioReservas.AtualizarReservaAsync(reserva);
-                
-                return new ResultViewModel<ReservaDTOUpdate>(reservaDto);
+                throw new Exception("Reserva não encontrada!");
             }
-            catch (DbUpdateException ex)
+
+            if (reserva.Status == ReservaStatus.Running)
             {
-                return new ResultViewModel<ReservaDTOUpdate>(erro: "05XE8 - Não foi possível alterar a reserva!");
+                throw new Exception("Não foi possivel alterar a reserva, o veiculo já foi retirado e a reserva está em andamento!");
             }
-            catch (Exception ex)
+
+            if (reserva.Status == ReservaStatus.Offline)
             {
-                return new ResultViewModel<ReservaDTOUpdate>("05X11 - Falha interna no servidor!");
+                throw new Exception("Não é possivel alterar uma reserva finalizada!");
             }
+
+            reserva.DataRetirada = model.DataRetirada;
+            reserva.DataEntrega = model.DataEntrega;
+            reserva.ValorLocacao = model.ValorLocacao;
+
+            await _repositorioReservas.AtualizarReservaAsync(reserva);
+
+            var reservaDto = _mapper.Map<ReservaDTOUpdate>(reserva);
+            return reservaDto;
         }
 
-        public async Task<ResultViewModel<ReservaDTODelete>> ExcluirReserva(int reservaId)
+        public async Task<ReservaDTODelete> ExcluirReserva(int reservaId)
         {
-            try
+            var reserva = await _repositorioReservas.ObterReservaPorIdAsync(reservaId);
+            if (reserva == null)
             {
-                var reserva = await _repositorioReservas.ObterReservaPorIdAsync(reservaId);
-                if (reserva == null)
-                {
-                    return new ResultViewModel<ReservaDTODelete>("Reserva não encontrada!");
-                }
-
-                if (reserva.Status == ReservaStatus.Running)
-                {
-                    return new ResultViewModel<ReservaDTODelete>("Não foi possível excluir a reserva, possui reserva em andamento");
-                }
-
-                if (reserva.Status == ReservaStatus.Offline)
-                {
-                    return new ResultViewModel<ReservaDTODelete>("Não é possivel alterar uma reserva finalizada!");
-                }
-
-                var reservaDto = _mapper.Map<ReservaDTODelete>(reserva);
-
-                await _repositorioReservas.ExcluirReservaAsync(reserva);
-
-                return new ResultViewModel<ReservaDTODelete>(reservaDto);
+                throw new Exception("Reserva não encontrada!");
             }
-            catch
+
+            if (reserva.Status == ReservaStatus.Running)
             {
-                return new ResultViewModel<ReservaDTODelete>("05X12 - Falha interna no servidor!");
+                throw new Exception("Não foi possível excluir a reserva, possui reserva em andamento");
             }
+
+            if (reserva.Status == ReservaStatus.Offline)
+            {
+                throw new Exception("Não é possivel alterar uma reserva finalizada!");
+            }
+
+            await _repositorioReservas.ExcluirReservaAsync(reserva);
+
+            var reservaDto = _mapper.Map<ReservaDTODelete>(reserva);
+            return reservaDto;
         }
     }
+
 }

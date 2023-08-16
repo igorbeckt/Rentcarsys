@@ -6,16 +6,13 @@ using RentCarSys.Application.DTO.AutoMapper;
 using RentCarSys.Application.Interfaces;
 using RentCarSys.Application.Repository;
 using RentCarSys.Application.Services;
+using RentCarSys.Application.Services.RentCarSys.Application.Services;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers().ConfigureApiBehaviorOptions(options =>
-{
-    options.SuppressModelStateInvalidFilter = true;
-});
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
