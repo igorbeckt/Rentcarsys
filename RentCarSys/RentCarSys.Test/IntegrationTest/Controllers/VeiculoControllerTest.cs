@@ -57,6 +57,21 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
         }
 
         [Fact]
+        public async Task BuscarVeiculoPorId_Fail()
+        {
+            await using var application = new RentCarSysApplication();
+
+            var url = "veiculo/buscarPorId/1";
+            var veiculo = application.CreateClient();
+
+            var response = await veiculo.GetAsync(url);
+            Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
+
+            var errorResponse = await response.Content.ReadAsStringAsync();
+            Assert.Contains("Veiculo não encontrado, verifique se o veiculo já foi cadastrado!", errorResponse);
+        }
+
+        [Fact]
         public async Task BuscarVeiculoPorId_Sucess()
         {
             await using var application = new RentCarSysApplication();
@@ -71,6 +86,21 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
             var result = await response.Content.ReadFromJsonAsync<VeiculoDTO>();
             Assert.NotNull(result);
             Assert.Equal(1, result.Id);
+        }
+
+        [Fact]
+        public async Task BuscarVeiculoPorPlaca_Fail()
+        {
+            await using var application = new RentCarSysApplication();            
+
+            var url = "veiculo/buscarPorPlaca/Placaa1";
+            var veiculo = application.CreateClient();
+
+            var response = await veiculo.GetAsync(url);
+            Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
+
+            var errorResponse = await response.Content.ReadAsStringAsync();
+            Assert.Contains("Veiculo não encontrado, verifique se a placa está correta!", errorResponse);
         }
 
         [Fact]

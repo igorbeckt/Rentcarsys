@@ -54,7 +54,7 @@ namespace RentCarSys.Application.Services
         }
 
         public async Task<ClienteDTO> CriarCliente(ClienteDTOCreate model)
-        {
+        {    
             var cliente = new Cliente
             {
                 Status = ClienteStatus.Online,

@@ -87,7 +87,7 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
 
             var errorResponse = await response.Content.ReadAsStringAsync();
-            Assert.Contains("Cliente não encontrado", errorResponse);
+            Assert.Contains("Cliente não encontrado, verifique se o cliente já foi cadastrado!", errorResponse);
         }
 
         [Fact]
@@ -143,17 +143,16 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
         [Fact]
         public async Task CriarCliente_Fail()
         {
-            // Arrange
             await using var application = new RentCarSysApplication();
             var url = "cliente/cadastrar";
             var cliente = application.CreateClient();
 
             var clienteCreateModel = new ClienteDTOCreate
             {
-                NomeCompleto = "Novo Cliente",
-                CPF = 98765492109,
-                RG = 987658,
-                Email = "novo_cliente@example.com"
+                NomeCompleto = "",
+                CPF = 987654921091,
+                RG = 98765844,
+                Email = ""
             };
 
             var content = new StringContent(JsonConvert.SerializeObject(clienteCreateModel), Encoding.UTF8, "application/json");
@@ -165,7 +164,10 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode); // Verifica se o status code é 400 (BadRequest)
 
             var errorResponse = await response.Content.ReadAsStringAsync();
-            Assert.Contains("O RG deve conter 7 dígitos!", errorResponse); // Verifica se a mensagem de erro é a esperada
+            Assert.Contains("O nome é obrigatório!", errorResponse); // Verifica se a mensagem de erro é a esperada
+            Assert.Contains("Insira um e-mail válido", errorResponse); // Verifica se a mensagem de erro é a esperada            
+            Assert.Contains("O RG deve conter 7 dígitos!", errorResponse); // Verifica se a mensagem de erro é a esperada            
+            Assert.Contains("O CPF deve conter 11 dígitos!", errorResponse); // Verifica se a mensagem de erro é a esperada
         }     
 
         [Fact]
@@ -203,16 +205,18 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
         public async Task EditarCliente_Sucess()
         {
             await using var application = new RentCarSysApplication();
+            await ClienteMockData.CreateClientes(application, true);
             var url = "cliente/alterar/1"; 
             var cliente = application.CreateClient();
 
             var clienteUpdateModel = new ClienteDTOUpdate
             {
+                Id = 1,
                 NomeCompleto = "Cliente Editado",
                 Email = "cliente_editado@example.com",
                 RG = 1234567,
                 CPF = 12345678911              
-            };
+            };            
 
             var content = new StringContent(JsonConvert.SerializeObject(clienteUpdateModel), Encoding.UTF8, "application/json");
 
@@ -232,9 +236,34 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
         }
 
         [Fact]
+        public async Task EditarCliente_Fail()
+        {            
+            await using var application = new RentCarSysApplication();
+
+            var url = "cliente/alterar/1";
+            var cliente = application.CreateClient();
+
+            var clienteUpdateModel = new ClienteDTOUpdate
+            {
+                Id = 1,
+                NomeCompleto = "Cliente Editado",
+                Email = "cliente_editado@example.com",
+                RG = 1234567,
+                CPF = 12345678911
+            };
+
+            var content = new StringContent(JsonConvert.SerializeObject(clienteUpdateModel), Encoding.UTF8, "application/json");
+
+            var response = await cliente.PutAsync(url,content);
+            Assert.Equal(HttpStatusCode.MethodNotAllowed, response.StatusCode);
+
+            var errorResponse = await response.Content.ReadAsStringAsync();
+            Assert.Contains("", errorResponse);
+        }
+
+        [Fact]
         public async Task ExcluirClientes_Success()
         {
-            // Arrange
             await using var application = new RentCarSysApplication();
             await ClienteMockData.CreateClientes(application, true);
 
@@ -250,5 +279,22 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
             // Assert
             Assert.NotNull(result);
         }
+
+        [Fact]
+        public async Task ExcluirClientes_Fail()
+        {
+            await using var application = new RentCarSysApplication();
+            await ClienteMockData.CreateClientes(application, true);
+
+            var url = "cliente/excluir/1333"; // Supondo que o cliente com ID 1 existe
+            var cliente = application.CreateClient();
+
+            // Act
+            var response = await cliente.DeleteAsync(url);
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+
+            var errorResponse = await response.Content.ReadAsStringAsync();
+            Assert.Contains("", errorResponse);
+        }        
     }
 }
