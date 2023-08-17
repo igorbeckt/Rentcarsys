@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using RentCarSys.Application.DTO.VeiculosDTOs;
 using RentCarSys.Application.Interfaces;
 using RentCarSys.Application.Models;
-using RentCarSys.Application.Repository;
 using RentCarSys.Application.Services;
+using System.Net;
 
 namespace RentCarSys.Application.Controllers
 {
@@ -21,15 +22,8 @@ namespace RentCarSys.Application.Controllers
         [HttpGet("buscarTodos")]
         public async Task<IActionResult> BuscarVeiculos()
         {
-            try
-            {
-                var result = await _veiculoService.BuscarTodosVeiculos();
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { erro = ex.Message });
-            }
+            var result = await _veiculoService.BuscarTodosVeiculos();
+            return Ok(result);
         }
 
         [HttpGet("buscarPorId/{veiculoid:int}")]
@@ -42,7 +36,7 @@ namespace RentCarSys.Application.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { erro = ex.Message });
+                return StatusCode(404, new { erro = ex.Message });
             }
         }
 
@@ -56,22 +50,15 @@ namespace RentCarSys.Application.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { erro = ex.Message });
+                return StatusCode(404, new { erro = ex.Message });
             }
         }
 
         [HttpPost("cadastrar")]
         public async Task<IActionResult> CriarVeiculo([FromBody] VeiculoDTOCreate model)
         {
-            try
-            {
-                var result = await _veiculoService.CriarVeiculo(model);
-                return Created($"/veiculos/{result.Id}", result);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { erro = ex.Message });
-            }
+            var result = await _veiculoService.CriarVeiculo(model);
+            return Created($"/veiculos/{result.Id}", result);
         }
 
         [HttpPut("alterar/{veiculoid:int}")]
@@ -84,7 +71,7 @@ namespace RentCarSys.Application.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { erro = ex.Message });
+                return StatusCode(405, new { erro = ex.Message });
             }
         }
 
@@ -98,7 +85,7 @@ namespace RentCarSys.Application.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { erro = ex.Message });
+                return StatusCode(404, new { erro = ex.Message });
             }
         }
     }

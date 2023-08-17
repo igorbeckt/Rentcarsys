@@ -17,13 +17,13 @@ namespace RentCarSys.Test.IntegrationTest.MockData
             using (var scope = application.Services.CreateAsyncScope())
             {
                 var provider = scope.ServiceProvider;
-                using (var clienteDbContext = provider.GetRequiredService<Contexto>())
+                using (var reservaDbContext = provider.GetRequiredService<Contexto>())
                 {
-                    await clienteDbContext.Database.EnsureCreatedAsync();
+                    await reservaDbContext.Database.EnsureCreatedAsync();
 
                     if (criar)
                     {
-                        await clienteDbContext.Reservas.AddAsync(new Reserva
+                        await reservaDbContext.Reservas.AddAsync(new Reserva
                         {
                             Id = 1,
                             DataReserva = "DataReserva",
@@ -45,7 +45,7 @@ namespace RentCarSys.Test.IntegrationTest.MockData
                                 }
                         }   });
 
-                        await clienteDbContext.Reservas.AddAsync(new Reserva
+                        await reservaDbContext.Reservas.AddAsync(new Reserva
                         {
                             Id = 2,
                             DataReserva = "DataReserva2",

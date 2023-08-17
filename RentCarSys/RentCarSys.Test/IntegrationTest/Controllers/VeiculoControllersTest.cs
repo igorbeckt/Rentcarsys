@@ -1,40 +1,60 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualBasic;
 using Moq;
+using Newtonsoft.Json;
 using RentCarSys.Application.Controllers;
-using RentCarSys.Application.DTO.ClientesDTOs;
+using RentCarSys.Application.DTO.AutoMapper;
+using RentCarSys.Application.DTO.VeiculosDTOs;
 using RentCarSys.Application.Interfaces;
+using RentCarSys.Application.Models;
+using RentCarSys.Application.Models.Enums;
 using RentCarSys.Application.Services;
 using RentCarSys.Test.IntegrationTest.MockData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http.Json;
 using System.Net;
+using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
-using RentCarSys.Application.DTO.AutoMapper;
-using RentCarSys.Application.DTO.VeiculosDTOs;
-using Newtonsoft.Json;
-using RentCarSys.Application.Models.Enums;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace RentCarSys.Test.IntegrationTest.Controllers
 {
-    public class VeiculoControllerTest
+    public class VeiculoControllersTest
     {
         protected Mock<IVeiculosRepository> veiculosRepository = new Mock<IVeiculosRepository>();
-        protected IMapper mapper;
-        private readonly VeiculoService veiculoService;
+        protected Mock<VeiculoService> veiculoService;
+        protected IMapper mapper;        
         private readonly VeiculoController veiculoController;
 
-        public VeiculoControllerTest()
+        public VeiculoControllersTest()
         {
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile(new EntitiesDTOMappingProfile());
             });
             mapper = config.CreateMapper();
-            veiculoService = new VeiculoService(veiculosRepository.Object, mapper);
-            veiculoController = new VeiculoController(veiculoService);
+
+
+            veiculoService = new Mock<VeiculoService>(veiculosRepository.Object, mapper);
+            veiculoController = new VeiculoController(veiculoService.Object);
+        }
+
+        [Fact]
+        public async Task BuscarTodosVeiculos_Fail()
+        {
+            await using var application = new RentCarSysApplication();
+            await VeiculoMockData.CreateVeiculos(application, true);
+
+            var url = "veiculo/buscarVeiculos";
+            var veiculo = application.CreateClient();
+
+            var response = await veiculo.GetAsync(url);
+
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
 
         [Fact]
@@ -65,7 +85,7 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
             var veiculo = application.CreateClient();
 
             var response = await veiculo.GetAsync(url);
-            Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
 
             var errorResponse = await response.Content.ReadAsStringAsync();
             Assert.Contains("Veiculo não encontrado, verifique se o veiculo já foi cadastrado!", errorResponse);
@@ -97,7 +117,7 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
             var veiculo = application.CreateClient();
 
             var response = await veiculo.GetAsync(url);
-            Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
 
             var errorResponse = await response.Content.ReadAsStringAsync();
             Assert.Contains("Veiculo não encontrado, verifique se a placa está correta!", errorResponse);
@@ -160,27 +180,63 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
         }
 
         [Fact]
+        public async Task CriarVeiculo_Fail()
+        {
+            await using var application = new RentCarSysApplication();
+            var url = "veiculo/cadastrar";
+            var veiculo = application.CreateClient();
+
+            var veiculoCreateModel = new VeiculoDTOCreate
+            {
+                Placa = "",
+                Marca = "",
+                Modelo = "",
+                AnoFabricacao = "",
+                KM = "",
+                QuantidadePortas = -1,
+                Cor = "",
+                Automatico = ""
+            };
+
+            var content = new StringContent(JsonConvert.SerializeObject(veiculoCreateModel), Encoding.UTF8, "application/json");
+
+            var response = await veiculo.PostAsync(url, content);
+
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+
+            var errorResponse = await response.Content.ReadAsStringAsync();
+            Assert.Contains("A Placa deve conter 4 letras e 3 números!", errorResponse);
+            Assert.Contains("O modelo é obrigatório!", errorResponse);
+            Assert.Contains("O ano de fabricação é obrigatório!", errorResponse);
+            Assert.Contains("A quilometragem é obrigatório!", errorResponse);            
+            Assert.Contains("A cor é obrigatório!", errorResponse);
+            Assert.Contains("O tipo é obrigatório!", errorResponse);
+        }        
+
+        [Fact]
         public async Task EditarVeiculo_Sucess()
         {
             await using var application = new RentCarSysApplication();
+            await VeiculoMockData.CreateVeiculos(application, true);
             var url = "veiculo/alterar/1"; 
             var veiculo = application.CreateClient();
 
             var veiculoUpdateModel = new VeiculoDTOUpdate
             {   
-                Placa = "Placaa1",
-                Marca = "Marca1",
-                Modelo = "Modelo1",
-                AnoFabricacao = "Ano1",
-                KM = "KM1",
-                QuantidadePortas = 2,
-                Cor = "Cor1",
-                Automatico = "Automatico1"
+                Id = 1,
+                Placa = "Placaa8",
+                Marca = "Marca8",
+                Modelo = "Modelo9",
+                AnoFabricacao = "Ano8",
+                KM = "KM8",
+                QuantidadePortas = 4,
+                Cor = "Cor8",
+                Automatico = "Automatico8"
             };
 
             var content = new StringContent(JsonConvert.SerializeObject(veiculoUpdateModel), Encoding.UTF8, "application/json");
-            
-            var response = await veiculo.PostAsync(url, content);
+
+            var response = await veiculo.PutAsync(url, content);
            
             response.EnsureSuccessStatusCode();
 
@@ -191,10 +247,25 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
             Assert.Equal(veiculoUpdateModel.Placa, result.Placa);
             Assert.Equal(veiculoUpdateModel.Marca, result.Marca);
             Assert.Equal(veiculoUpdateModel.Modelo, result.Modelo);
-            Assert.Equal(veiculoUpdateModel.KM, result.KM);
-            Assert.Equal(veiculoUpdateModel.QuantidadePortas, result.QuantidadePortas);
+            Assert.Equal(veiculoUpdateModel.KM, result.KM);            
             Assert.Equal(veiculoUpdateModel.Cor, result.Cor);
             Assert.Equal(veiculoUpdateModel.Automatico, result.Automatico);
+        }
+
+        [Fact]
+        public async Task ExcluirClientes_Fail()
+        {
+            await using var application = new RentCarSysApplication();
+            await VeiculoMockData.CreateVeiculos(application, true);
+
+            var url = "veiculo/excluir/111";
+            var veiculo = application.CreateClient();
+
+            var response = await veiculo.DeleteAsync(url);
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+
+            var errorResponse = await response.Content.ReadAsStringAsync();
+            Assert.Contains("", errorResponse);
         }
 
         [Fact]

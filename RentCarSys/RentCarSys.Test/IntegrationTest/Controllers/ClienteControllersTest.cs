@@ -156,18 +156,16 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
             };
 
             var content = new StringContent(JsonConvert.SerializeObject(clienteCreateModel), Encoding.UTF8, "application/json");
-
-            // Act
+      
             var response = await cliente.PostAsync(url, content);
-
-            // Assert
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode); // Verifica se o status code é 400 (BadRequest)
+  
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode); 
 
             var errorResponse = await response.Content.ReadAsStringAsync();
-            Assert.Contains("O nome é obrigatório!", errorResponse); // Verifica se a mensagem de erro é a esperada
-            Assert.Contains("Insira um e-mail válido", errorResponse); // Verifica se a mensagem de erro é a esperada            
-            Assert.Contains("O RG deve conter 7 dígitos!", errorResponse); // Verifica se a mensagem de erro é a esperada            
-            Assert.Contains("O CPF deve conter 11 dígitos!", errorResponse); // Verifica se a mensagem de erro é a esperada
+            Assert.Contains("O nome é obrigatório!", errorResponse); 
+            Assert.Contains("Insira um e-mail válido", errorResponse);             
+            Assert.Contains("O RG deve conter 7 dígitos!", errorResponse);             
+            Assert.Contains("O CPF deve conter 11 dígitos!", errorResponse); 
         }     
 
         [Fact]
@@ -199,6 +197,32 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
             Assert.Equal(clienteCreateModel.Email, result.Email);
             Assert.Equal(clienteCreateModel.RG, result.RG);
             Assert.Equal(clienteCreateModel.CPF, result.CPF);
+        }
+
+        [Fact]
+        public async Task EditarCliente_Fail()
+        {
+            await using var application = new RentCarSysApplication();
+
+            var url = "cliente/alterar/1";
+            var cliente = application.CreateClient();
+
+            var clienteUpdateModel = new ClienteDTOUpdate
+            {
+                Id = 1,
+                NomeCompleto = "Cliente Editado",
+                Email = "cliente_editado@example.com",
+                RG = 1234567,
+                CPF = 12345678911
+            };
+
+            var content = new StringContent(JsonConvert.SerializeObject(clienteUpdateModel), Encoding.UTF8, "application/json");
+
+            var response = await cliente.PutAsync(url, content);
+            Assert.Equal(HttpStatusCode.MethodNotAllowed, response.StatusCode);
+
+            var errorResponse = await response.Content.ReadAsStringAsync();
+            Assert.Contains("", errorResponse);
         }
 
         [Fact]
@@ -236,26 +260,16 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
         }
 
         [Fact]
-        public async Task EditarCliente_Fail()
-        {            
+        public async Task ExcluirClientes_Fail()
+        {
             await using var application = new RentCarSysApplication();
+            await ClienteMockData.CreateClientes(application, true);
 
-            var url = "cliente/alterar/1";
+            var url = "cliente/excluir/1333";
             var cliente = application.CreateClient();
 
-            var clienteUpdateModel = new ClienteDTOUpdate
-            {
-                Id = 1,
-                NomeCompleto = "Cliente Editado",
-                Email = "cliente_editado@example.com",
-                RG = 1234567,
-                CPF = 12345678911
-            };
-
-            var content = new StringContent(JsonConvert.SerializeObject(clienteUpdateModel), Encoding.UTF8, "application/json");
-
-            var response = await cliente.PutAsync(url,content);
-            Assert.Equal(HttpStatusCode.MethodNotAllowed, response.StatusCode);
+            var response = await cliente.DeleteAsync(url);
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
 
             var errorResponse = await response.Content.ReadAsStringAsync();
             Assert.Contains("", errorResponse);
@@ -267,34 +281,15 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
             await using var application = new RentCarSysApplication();
             await ClienteMockData.CreateClientes(application, true);
 
-            var url = "cliente/excluir/1"; // Supondo que o cliente com ID 1 existe
+            var url = "cliente/excluir/1";
             var cliente = application.CreateClient();
-
-            // Act
+            
             var response = await cliente.DeleteAsync(url);
             response.EnsureSuccessStatusCode();
 
             var result = await response.Content.ReadFromJsonAsync<ClienteDTO>();
 
-            // Assert
             Assert.NotNull(result);
-        }
-
-        [Fact]
-        public async Task ExcluirClientes_Fail()
-        {
-            await using var application = new RentCarSysApplication();
-            await ClienteMockData.CreateClientes(application, true);
-
-            var url = "cliente/excluir/1333"; // Supondo que o cliente com ID 1 existe
-            var cliente = application.CreateClient();
-
-            // Act
-            var response = await cliente.DeleteAsync(url);
-            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-
-            var errorResponse = await response.Content.ReadAsStringAsync();
-            Assert.Contains("", errorResponse);
-        }        
+        }          
     }
 }
