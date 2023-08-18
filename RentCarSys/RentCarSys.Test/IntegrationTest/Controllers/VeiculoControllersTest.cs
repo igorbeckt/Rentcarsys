@@ -71,10 +71,8 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
         {
             var veiculo1 = new Veiculo
             { Id = 1, Status = VeiculoStatus.Online, Placa = "Placaa1", Marca = "Marca1", Modelo = "Modelo1", AnoFabricacao = "Ano1", KM = "KM1", QuantidadePortas = 2, Cor = "Cor1", Automatico = "Automatico1" };
-            var veiculo2 = new Veiculo
-            { Id = 2, Status = VeiculoStatus.Online, Placa = "Placaa2", Marca = "Marca2", Modelo = "Modelo2", AnoFabricacao = "Ano2", KM = "KM2", QuantidadePortas = 4, Cor = "Cor2", Automatico = "Automatico2" };
-
-            List<Veiculo> veiculos = new List<Veiculo>() { veiculo1, veiculo2 };
+            
+            List<Veiculo> veiculos = new List<Veiculo>() { veiculo1 };
 
             await VeiculoMockData.CreateVeiculos(application, veiculos);
 
@@ -96,10 +94,8 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
         {
             var veiculo1 = new Veiculo
             { Id = 1, Status = VeiculoStatus.Online, Placa = "Placaa1", Marca = "Marca1", Modelo = "Modelo1", AnoFabricacao = "Ano1", KM = "KM1", QuantidadePortas = 2, Cor = "Cor1", Automatico = "Automatico1" };
-            var veiculo2 = new Veiculo
-            { Id = 2, Status = VeiculoStatus.Online, Placa = "Placaa2", Marca = "Marca2", Modelo = "Modelo2", AnoFabricacao = "Ano2", KM = "KM2", QuantidadePortas = 4, Cor = "Cor2", Automatico = "Automatico2" };
-
-            List<Veiculo> veiculos = new List<Veiculo>() { veiculo1, veiculo2 };
+            
+            List<Veiculo> veiculos = new List<Veiculo>() { veiculo1 };
 
             var url = "veiculo/buscarPorPlaca/Placaa1";
             var veiculo = application.CreateClient();
@@ -116,10 +112,8 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
         {
             var veiculo1 = new Veiculo
             { Id = 1, Status = VeiculoStatus.Online, Placa = "Placaa1", Marca = "Marca1", Modelo = "Modelo1", AnoFabricacao = "Ano1", KM = "KM1", QuantidadePortas = 2, Cor = "Cor1", Automatico = "Automatico1" };
-            var veiculo2 = new Veiculo
-            { Id = 2, Status = VeiculoStatus.Online, Placa = "Placaa2", Marca = "Marca2", Modelo = "Modelo2", AnoFabricacao = "Ano2", KM = "KM2", QuantidadePortas = 4, Cor = "Cor2", Automatico = "Automatico2" };
-
-            List<Veiculo> veiculos = new List<Veiculo>() { veiculo1, veiculo2 };
+           
+            List<Veiculo> veiculos = new List<Veiculo>() { veiculo1 };
 
             await VeiculoMockData.CreateVeiculos(application, veiculos);
 
@@ -139,13 +133,7 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
         [Fact]
         public async Task CriarVeiculo_Fail()
         {
-            var veiculo1 = new Veiculo
-            { Id = 1, Status = VeiculoStatus.Online, Placa = "Placaa1", Marca = "Marca1", Modelo = "Modelo1", AnoFabricacao = "Ano1", KM = "KM1", QuantidadePortas = 2, Cor = "Cor1", Automatico = "Automatico1" };
-            var veiculo2 = new Veiculo
-            { Id = 2, Status = VeiculoStatus.Online, Placa = "Placaa2", Marca = "Marca2", Modelo = "Modelo2", AnoFabricacao = "Ano2", KM = "KM2", QuantidadePortas = 4, Cor = "Cor2", Automatico = "Automatico2" };
-
-            List<Veiculo> veiculos = new List<Veiculo>() { veiculo1, veiculo2 };
-
+            
             var url = "veiculo/cadastrar";
             var veiculo = application.CreateClient();
 
@@ -179,15 +167,6 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
         [Fact]
         public async Task CriarVeiculo_Sucess()
         {
-            var veiculo1 = new Veiculo
-            { Id = 1, Status = VeiculoStatus.Online, Placa = "Placaa1", Marca = "Marca1", Modelo = "Modelo1", AnoFabricacao = "Ano1", KM = "KM1", QuantidadePortas = 2, Cor = "Cor1", Automatico = "Automatico1" };
-            var veiculo2 = new Veiculo
-            { Id = 2, Status = VeiculoStatus.Online, Placa = "Placaa2", Marca = "Marca2", Modelo = "Modelo2", AnoFabricacao = "Ano2", KM = "KM2", QuantidadePortas = 4, Cor = "Cor2", Automatico = "Automatico2" };
-
-            List<Veiculo> veiculos = new List<Veiculo>() { veiculo1, veiculo2 };
-
-            await VeiculoMockData.CreateVeiculos(application, veiculos);
-
             var url = "veiculo/cadastrar";
             var veiculo = application.CreateClient();
 
@@ -222,7 +201,6 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
             Assert.Equal(veiculoCreateModel.Cor, result.Cor);
             Assert.Equal(veiculoCreateModel.Automatico, result.Automatico);
 
-            await VeiculoMockData.DeletarVeiculos(application, veiculos);
         }
 
         [Fact]
@@ -230,10 +208,8 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
         {
             var veiculo1 = new Veiculo
             { Id = 1, Status = VeiculoStatus.Online, Placa = "Placaa1", Marca = "Marca1", Modelo = "Modelo1", AnoFabricacao = "Ano1", KM = "KM1", QuantidadePortas = 2, Cor = "Cor1", Automatico = "Automatico1" };
-            var veiculo2 = new Veiculo
-            { Id = 2, Status = VeiculoStatus.Online, Placa = "Placaa2", Marca = "Marca2", Modelo = "Modelo2", AnoFabricacao = "Ano2", KM = "KM2", QuantidadePortas = 4, Cor = "Cor2", Automatico = "Automatico2" };
-
-            List<Veiculo> veiculos = new List<Veiculo>() { veiculo1, veiculo2 };
+            
+            List<Veiculo> veiculos = new List<Veiculo>() { veiculo1 };
 
             await VeiculoMockData.CreateVeiculos(application, veiculos);
 
@@ -278,10 +254,8 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
         {
             var veiculo1 = new Veiculo
             { Id = 1, Status = VeiculoStatus.Online, Placa = "Placaa1", Marca = "Marca1", Modelo = "Modelo1", AnoFabricacao = "Ano1", KM = "KM1", QuantidadePortas = 2, Cor = "Cor1", Automatico = "Automatico1" };
-            var veiculo2 = new Veiculo
-            { Id = 2, Status = VeiculoStatus.Online, Placa = "Placaa2", Marca = "Marca2", Modelo = "Modelo2", AnoFabricacao = "Ano2", KM = "KM2", QuantidadePortas = 4, Cor = "Cor2", Automatico = "Automatico2" };
-
-            List<Veiculo> veiculos = new List<Veiculo>() { veiculo1, veiculo2 };
+            
+            List<Veiculo> veiculos = new List<Veiculo>() { veiculo1 };
 
             await VeiculoMockData.CreateVeiculos(application, veiculos);
 
@@ -300,10 +274,8 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
         {
             var veiculo1 = new Veiculo
             { Id = 1, Status = VeiculoStatus.Online, Placa = "Placaa1", Marca = "Marca1", Modelo = "Modelo1", AnoFabricacao = "Ano1", KM = "KM1", QuantidadePortas = 2, Cor = "Cor1", Automatico = "Automatico1" };
-            var veiculo2 = new Veiculo
-            { Id = 2, Status = VeiculoStatus.Online, Placa = "Placaa2", Marca = "Marca2", Modelo = "Modelo2", AnoFabricacao = "Ano2", KM = "KM2", QuantidadePortas = 4, Cor = "Cor2", Automatico = "Automatico2" };
-
-            List<Veiculo> veiculos = new List<Veiculo>() { veiculo1, veiculo2 };
+           
+            List<Veiculo> veiculos = new List<Veiculo>() { veiculo1 };
 
             await VeiculoMockData.CreateVeiculos(application, veiculos);
 

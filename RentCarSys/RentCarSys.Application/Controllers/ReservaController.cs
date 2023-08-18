@@ -7,7 +7,7 @@ using RentCarSys.Application.Services;
 namespace RentCarSys.Application.Controllers
 {
     [ApiController]
-    [Route("/v1/reservas")]
+    [Route("reservas")]
     public class ReservaController : ControllerBase
     {
         private readonly ClienteService _clienteService;
@@ -26,15 +26,8 @@ namespace RentCarSys.Application.Controllers
         [HttpGet("buscarTodas")]
         public async Task<IActionResult> BuscarReservas()
         {
-            try
-            {
-                var result = await _reservaService.BuscarTodasReservas();
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { Erro = ex.Message });
-            }
+            var result = await _reservaService.BuscarTodasReservas();
+            return Ok(result);
         }
 
         [HttpGet("buscarPorId/{reservaid:int}")]
@@ -47,22 +40,15 @@ namespace RentCarSys.Application.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Erro = ex.Message });
+                return StatusCode(404, new { Erro = ex.Message });
             }
         }
 
         [HttpPost("cadastrar")]
         public async Task<IActionResult> CriarReservas([FromBody] ReservaDTOCreate model)
         {
-            try
-            {
-                var result = await _reservaService.CriarReserva(model);
-                return Created($"reservas/{result.Id}", result);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { Erro = ex.Message });
-            }
+            var result = await _reservaService.CriarReserva(model);
+            return Created($"reservas/{result.Id}", result);
         }
 
         [HttpPut("alterar/{reservaid:int}")]
@@ -75,7 +61,7 @@ namespace RentCarSys.Application.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Erro = ex.Message });
+                return StatusCode(405, new { Erro = ex.Message });
             }
         }
 
@@ -89,7 +75,7 @@ namespace RentCarSys.Application.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Erro = ex.Message });
+                return StatusCode(405, new { Erro = ex.Message });
             }
         }
     }

@@ -51,10 +51,8 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
         {
             var cliente1 = new Cliente
             { Id = 1, NomeCompleto = "Cliente 1", CPF = 12345678912, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
-            var cliente2 = new Cliente
-            { Id = 2, NomeCompleto = "Cliente 2", CPF = 12345678911, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
-
-            List<Cliente> clientes = new List<Cliente>() { cliente1, cliente2 };
+            
+            List<Cliente> clientes = new List<Cliente>() { cliente1 };
 
             var url = "cliente/buscarPorId/1";
             var cliente = application.CreateClient();
@@ -71,10 +69,8 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
         {
             var cliente1 = new Cliente
             { Id = 1, NomeCompleto = "Cliente 1", CPF = 12345678912, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
-            var cliente2 = new Cliente
-            { Id = 2, NomeCompleto = "Cliente 2", CPF = 12345678911, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
-
-            List<Cliente> clientes = new List<Cliente>() { cliente1, cliente2 };
+            
+            List<Cliente> clientes = new List<Cliente>() { cliente1 };
 
             await ClienteMockData.CreateClientes(application, clientes);
 
@@ -96,10 +92,8 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
         {
             var cliente1 = new Cliente
             { Id = 1, NomeCompleto = "Cliente 1", CPF = 12345678912, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
-            var cliente2 = new Cliente
-            { Id = 2, NomeCompleto = "Cliente 2", CPF = 12345678911, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
-
-            List<Cliente> clientes = new List<Cliente>() { cliente1, cliente2 };
+            
+            List<Cliente> clientes = new List<Cliente>() { cliente1 };
 
             var url = "cliente/buscarPorCpf/98765432109";
             var cliente = application.CreateClient();
@@ -116,10 +110,8 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
         {
             var cliente1 = new Cliente
             { Id = 1, NomeCompleto = "Cliente 1", CPF = 12345678912, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
-            var cliente2 = new Cliente
-            { Id = 2, NomeCompleto = "Cliente 2", CPF = 12345678911, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
-
-            List<Cliente> clientes = new List<Cliente>() { cliente1, cliente2 };
+            
+            List<Cliente> clientes = new List<Cliente>() { cliente1 };
 
             await ClienteMockData.CreateClientes(application, clientes);
 
@@ -138,14 +130,7 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
 
         [Fact]
         public async Task CriarCliente_Fail()
-        {
-            var cliente1 = new Cliente
-            { Id = 1, NomeCompleto = "Cliente 1", CPF = 12345678912, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
-            var cliente2 = new Cliente
-            { Id = 2, NomeCompleto = "Cliente 2", CPF = 12345678911, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
-
-            List<Cliente> clientes = new List<Cliente>() { cliente1, cliente2 };
-
+        {   
             var url = "cliente/cadastrar";
             var cliente = application.CreateClient();
 
@@ -172,16 +157,7 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
 
         [Fact]
         public async Task CriarCliente_Sucess()
-        {
-            var cliente1 = new Cliente
-            { Id = 1, NomeCompleto = "Cliente 1", CPF = 12345678912, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
-            var cliente2 = new Cliente
-            { Id = 2, NomeCompleto = "Cliente 2", CPF = 12345678911, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
-
-            List<Cliente> clientes = new List<Cliente>() { cliente1, cliente2 };
-
-            await ClienteMockData.CreateClientes(application, clientes);
-
+        {            
             var url = "cliente/cadastrar";
             var cliente = application.CreateClient();
 
@@ -206,20 +182,16 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
             Assert.Equal(clienteCreateModel.NomeCompleto, result.NomeCompleto);
             Assert.Equal(clienteCreateModel.Email, result.Email);
             Assert.Equal(clienteCreateModel.RG, result.RG);
-            Assert.Equal(clienteCreateModel.CPF, result.CPF);
-
-            await ClienteMockData.DeletarClientes(application, clientes);
+            Assert.Equal(clienteCreateModel.CPF, result.CPF);            
         }
 
         [Fact]
         public async Task EditarCliente_Fail()
         {
             var cliente1 = new Cliente
-            { Id = 1, NomeCompleto = "Cliente 1", CPF = 12345678912, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
-            var cliente2 = new Cliente
-            { Id = 2, NomeCompleto = "Cliente 2", CPF = 12345678911, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
+            { Id = 1, NomeCompleto = "Cliente 1", CPF = 12345678912, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };            
 
-            List<Cliente> clientes = new List<Cliente>() { cliente1, cliente2 };
+            List<Cliente> clientes = new List<Cliente>() { cliente1 };
 
             var url = "cliente/alterar/1";
             var cliente = application.CreateClient();
@@ -246,11 +218,9 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
         public async Task EditarCliente_Sucess()
         {
             var cliente1 = new Cliente
-            { Id = 1, NomeCompleto = "Cliente 1", CPF = 12345678912, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
-            var cliente2 = new Cliente
-            { Id = 2, NomeCompleto = "Cliente 2", CPF = 12345678911, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
+            { Id = 1, NomeCompleto = "Cliente 1", CPF = 12345678912, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };           
 
-            List<Cliente> clientes = new List<Cliente>() { cliente1, cliente2 };
+            List<Cliente> clientes = new List<Cliente>() { cliente1 };
 
             await ClienteMockData.CreateClientes(application, clientes);
 
@@ -289,11 +259,9 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
         public async Task ExcluirClientes_Fail()
         {
             var cliente1 = new Cliente
-            { Id = 1, NomeCompleto = "Cliente 1", CPF = 12345678912, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
-            var cliente2 = new Cliente
-            { Id = 2, NomeCompleto = "Cliente 2", CPF = 12345678911, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
+            { Id = 1, NomeCompleto = "Cliente 1", CPF = 12345678912, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };            
 
-            List<Cliente> clientes = new List<Cliente>() { cliente1, cliente2 };
+            List<Cliente> clientes = new List<Cliente>() { cliente1 };
 
             await ClienteMockData.CreateClientes(application, clientes);
 
@@ -305,19 +273,15 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
 
             var errorResponse = await response.Content.ReadAsStringAsync();
             Assert.Contains("", errorResponse);
-
-            await ClienteMockData.DeletarClientes(application, clientes);
         }
 
         [Fact]
         public async Task ExcluirClientes_Success()
         {
             var cliente1 = new Cliente
-            { Id = 1, NomeCompleto = "Cliente 1", CPF = 12345678912, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
-            var cliente2 = new Cliente
-            { Id = 2, NomeCompleto = "Cliente 2", CPF = 12345678911, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
+            { Id = 1, NomeCompleto = "Cliente 1", CPF = 12345678912, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };            
 
-            List<Cliente> clientes = new List<Cliente>() { cliente1, cliente2 };
+            List<Cliente> clientes = new List<Cliente>() { cliente1 };
 
             await ClienteMockData.CreateClientes(application, clientes);
 
@@ -330,9 +294,6 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
             var result = await response.Content.ReadFromJsonAsync<ClienteDTO>();
 
             Assert.NotNull(result);
-
-            clientes.Remove(cliente1);
-            await ClienteMockData.DeletarClientes(application, clientes);
         }
     }
 }

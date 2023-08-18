@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using RentCarSys.Application.Data;
+using RentCarSys.Application.DTO.AutoMapper;
 
 namespace RentCarSys.Test.IntegrationTest.MockData
 {
@@ -21,6 +22,8 @@ namespace RentCarSys.Test.IntegrationTest.MockData
 
                 services.AddDbContext<Contexto>(options =>
                     options.UseInMemoryDatabase("RentCarSysDatabase", root).ConfigureWarnings(x => x.Ignore(CoreEventId.ManyServiceProvidersCreatedWarning)));
+
+                services.AddAutoMapper(typeof(EntitiesDTOMappingProfile));
             });
 
             return base.CreateHost(builder);
