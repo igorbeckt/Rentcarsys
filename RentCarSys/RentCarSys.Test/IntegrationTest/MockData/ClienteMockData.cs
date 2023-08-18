@@ -10,23 +10,36 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace RentCarSys.Test.IntegrationTest.MockData
 {
-    public static class ClienteMockData 
-    {   
-        public static async Task CreateClientes(Contexto contexto, IEnumerable<Cliente> clientes)
+    public class ClienteMockData
+    {
+        public static async Task CreateClientes(RentCarSysApplication application, IEnumerable<Cliente> clientes)
         {
-            await contexto.Database.EnsureCreatedAsync();
+            using (var scope = application.Services.CreateAsyncScope())
+            {
+                var provider = scope.ServiceProvider;
+                using (var clienteDbContext = provider.GetRequiredService<Contexto>())
+                {
+                    await clienteDbContext.Database.EnsureCreatedAsync();
 
-            await contexto.Clientes.AddRangeAsync(clientes);
-            await contexto.SaveChangesAsync();
+                    clienteDbContext.Clientes.AddRangeAsync(clientes);
+                    await clienteDbContext.SaveChangesAsync();
+                }
+            }
         }
 
-        public static async Task DeletarClientes(Contexto contexto, IEnumerable<Cliente> clientes)
+        public static async Task DeletarClientes(RentCarSysApplication application, IEnumerable<Cliente> clientes)
         {
-            await contexto.Database.EnsureCreatedAsync();
+            using (var scope = application.Services.CreateScope())
+            {
+                var provider = scope.ServiceProvider;
+                using (var clienteDbContext = provider.GetRequiredService<Contexto>())
+                {
+                    await clienteDbContext.Database.EnsureCreatedAsync();
 
-            contexto.Clientes.RemoveRange(clientes);
-            await contexto.SaveChangesAsync();
+                    clienteDbContext.Clientes.RemoveRange(clientes);
+                    await clienteDbContext.SaveChangesAsync();
+                }
+            }
         }
-        
     }
 }

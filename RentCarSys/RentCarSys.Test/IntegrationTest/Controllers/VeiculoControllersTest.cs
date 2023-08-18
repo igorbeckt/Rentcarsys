@@ -27,7 +27,7 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
     {
         protected Mock<IVeiculosRepository> veiculosRepository = new Mock<IVeiculosRepository>();
         protected Mock<VeiculoService> veiculoService;
-        protected IMapper mapper;        
+        protected IMapper mapper;
         private readonly VeiculoController veiculoController;
 
         public VeiculoControllersTest()
@@ -41,7 +41,7 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
 
             veiculoService = new Mock<VeiculoService>(veiculosRepository.Object, mapper);
             veiculoController = new VeiculoController(veiculoService.Object);
-        }        
+        }
 
         [Fact]
         public async Task BuscarTodosVeiculos_Success()
@@ -55,7 +55,7 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
 
             List<Veiculo> veiculos = new List<Veiculo>() { veiculo1, veiculo2 };
 
-            await VeiculoMockData.CreateVeiculos(application, veiculos);            
+            await VeiculoMockData.CreateVeiculos(application, veiculos);
 
             var url = "veiculo/buscarTodos";
             var veiculo = application.CreateClient();
@@ -263,7 +263,7 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
             await VeiculoMockData.DeletarVeiculos(application, veiculos);
         }
 
-        
+
 
         [Fact]
         public async Task EditarVeiculo_Sucess()
@@ -279,11 +279,11 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
 
             await VeiculoMockData.CreateVeiculos(application, veiculos);
 
-            var url = "veiculo/alterar/1"; 
+            var url = "veiculo/alterar/1";
             var veiculo = application.CreateClient();
 
             var veiculoUpdateModel = new VeiculoDTOUpdate
-            {   
+            {
                 Id = 1,
                 Placa = "Placaa8",
                 Marca = "Marca8",
@@ -298,7 +298,7 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
             var content = new StringContent(JsonConvert.SerializeObject(veiculoUpdateModel), Encoding.UTF8, "application/json");
 
             var response = await veiculo.PutAsync(url, content);
-           
+
             response.EnsureSuccessStatusCode();
 
             var updatedResponse = await response.Content.ReadAsStringAsync();
@@ -308,7 +308,7 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
             Assert.Equal(veiculoUpdateModel.Placa, result.Placa);
             Assert.Equal(veiculoUpdateModel.Marca, result.Marca);
             Assert.Equal(veiculoUpdateModel.Modelo, result.Modelo);
-            Assert.Equal(veiculoUpdateModel.KM, result.KM);            
+            Assert.Equal(veiculoUpdateModel.KM, result.KM);
             Assert.Equal(veiculoUpdateModel.Cor, result.Cor);
             Assert.Equal(veiculoUpdateModel.Automatico, result.Automatico);
 

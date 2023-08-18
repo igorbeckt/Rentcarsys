@@ -1,3 +1,0 @@
-dotnet test --collect:"XPlat Code Coverage"
-
-reportgenerator -reports:"C:\Users\igor.vasconcellos\source\repos\leafcutter.cloud.backend\Leafcutter.Cloud.Tests\TestResults\30be1dee-bda6-49ca-8ee5-69fb2d0413fd\coverage.cobertura.xml" -targetdir:"C:\Users\igor.vasconcellos\source\repos\leafcutter.cloud.backend\Leafcutter.Cloud.Tests\TestResults\Report" -reporttypes:Html

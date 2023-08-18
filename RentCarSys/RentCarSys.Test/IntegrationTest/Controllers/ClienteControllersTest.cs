@@ -1,13 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualBasic;
 using Moq;
 using Newtonsoft.Json;
 using RentCarSys.Application.Controllers;
-using RentCarSys.Application.Data;
 using RentCarSys.Application.DTO.AutoMapper;
 using RentCarSys.Application.DTO.ClientesDTOs;
 using RentCarSys.Application.Interfaces;
@@ -32,14 +29,9 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
         protected Mock<ClienteService> clienteService;
         protected IMapper mapper;
         public readonly ClienteController clienteController;
-        private readonly Contexto contexto;
 
         public ClienteControllersTest()
         {
-            using var rentCarSysApplication = new RentCarSysApplication();
-            using var scope = rentCarSysApplication.Services.CreateAsyncScope();
-            contexto = scope.ServiceProvider.GetRequiredService<Contexto>();
-
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile(new EntitiesDTOMappingProfile());
@@ -48,42 +40,39 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
 
             clienteService = new Mock<ClienteService>(clientesRepository.Object, mapper);
             clienteController = new ClienteController(clienteService.Object);
-        }        
+        }
+
 
         [Fact]
         public async Task BuscarTodosClientes_Success()
-        {          
-            
+        {
+            await using var application = new RentCarSysApplication();
+
             var cliente1 = new Cliente
             { Id = 1, NomeCompleto = "Cliente 1", CPF = 12345678912, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
-            var cliente2 =new Cliente
+            var cliente2 = new Cliente
             { Id = 2, NomeCompleto = "Cliente 2", CPF = 12345678911, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
 
             List<Cliente> clientes = new List<Cliente>() { cliente1, cliente2 };
 
-            await ClienteMockData.CreateClientes(contexto, clientes);
-            //await ClienteMockData.CreateClientes(application, true);
+            await ClienteMockData.CreateClientes(application, clientes);
 
-            //Execução do Teste
             var url = "cliente/buscarTodos";
-            using var application = new RentCarSysApplication();
             var cliente = application.CreateClient();
 
             var response = await cliente.GetAsync(url);
             response.EnsureSuccessStatusCode();
             var result = await response.Content.ReadFromJsonAsync<List<ClienteDTOGetAll>>();
 
-            //Avaliação do Teste
             Assert.NotNull(result);
             Assert.Equal(2, result.Count);
             Assert.Contains(result, c => c.NomeCompleto == "Cliente 1");
             Assert.Contains(result, c => c.NomeCompleto == "Cliente 2");
 
-            //Finalização
-            await ClienteMockData.DeletarClientes(contexto, clientes);
+            await ClienteMockData.DeletarClientes(application, clientes);
         }
 
-        /*[Fact]
+        [Fact]
         public async Task BuscarClientePorId_Fail()
         {
             await using var application = new RentCarSysApplication();
@@ -93,7 +82,7 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
             var cliente2 = new Cliente
             { Id = 2, NomeCompleto = "Cliente 2", CPF = 12345678911, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
 
-            List<Cliente> clientes = new List<Cliente>() { cliente1, cliente2 };            
+            List<Cliente> clientes = new List<Cliente>() { cliente1, cliente2 };
 
             var url = "cliente/buscarPorId/1";
             var cliente = application.CreateClient();
@@ -102,7 +91,7 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
 
             var errorResponse = await response.Content.ReadAsStringAsync();
-            Assert.Contains("Cliente não encontrado, verifique se o cliente já foi cadastrado!", errorResponse);            
+            Assert.Contains("Cliente não encontrado, verifique se o cliente já foi cadastrado!", errorResponse);
         }
 
         [Fact]
@@ -205,17 +194,17 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
             };
 
             var content = new StringContent(JsonConvert.SerializeObject(clienteCreateModel), Encoding.UTF8, "application/json");
-      
+
             var response = await cliente.PostAsync(url, content);
-  
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode); 
+
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
 
             var errorResponse = await response.Content.ReadAsStringAsync();
-            Assert.Contains("O nome é obrigatório!", errorResponse); 
-            Assert.Contains("Insira um e-mail válido", errorResponse);             
-            Assert.Contains("O RG deve conter 7 dígitos!", errorResponse);             
-            Assert.Contains("O CPF deve conter 11 dígitos!", errorResponse); 
-        }     
+            Assert.Contains("O nome é obrigatório!", errorResponse);
+            Assert.Contains("Insira um e-mail válido", errorResponse);
+            Assert.Contains("O RG deve conter 7 dígitos!", errorResponse);
+            Assert.Contains("O CPF deve conter 11 dígitos!", errorResponse);
+        }
 
         [Fact]
         public async Task CriarCliente_Sucess()
@@ -307,7 +296,7 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
 
             await ClienteMockData.CreateClientes(application, clientes);
 
-            var url = "cliente/alterar/1"; 
+            var url = "cliente/alterar/1";
             var cliente = application.CreateClient();
 
             var clienteUpdateModel = new ClienteDTOUpdate
@@ -316,14 +305,14 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
                 NomeCompleto = "Cliente Editado",
                 Email = "cliente_editado@example.com",
                 RG = 1234567,
-                CPF = 12345678911              
-            };            
+                CPF = 12345678911
+            };
 
             var content = new StringContent(JsonConvert.SerializeObject(clienteUpdateModel), Encoding.UTF8, "application/json");
 
-            
+
             var response = await cliente.PutAsync(url, content);
-            
+
             response.EnsureSuccessStatusCode();
 
             var updatedResponse = await response.Content.ReadAsStringAsync();
@@ -380,7 +369,7 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
 
             var url = "cliente/excluir/1";
             var cliente = application.CreateClient();
-            
+
             var response = await cliente.DeleteAsync(url);
             response.EnsureSuccessStatusCode();
 
@@ -389,6 +378,6 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
             Assert.NotNull(result);
 
             //await ClienteMockData.DeletarClientes(application, clientes);
-        } */         
+        }
     }
 }
