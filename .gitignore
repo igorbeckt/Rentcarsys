@@ -1,0 +1,11 @@
+﻿################################################################################
+# Este arquivo .gitignore foi criado automaticamente pelo Microsoft(R) Visual Studio.
+################################################################################
+
+/RentCarSys/RentCarSys.Application/.vs/RentCarSys/FileContentIndex/17d6553d-c9aa-45ed-9834-79793b971ded.vsidx
+/RentCarSys/RentCarSys.Application/.vs/RentCarSys/FileContentIndex/2551bf54-1df4-42ea-9e48-698642fb5c78.vsidx
+*.vsidx
+/RentCarSys/RentCarSys.Application/.vs/RentCarSys/FileContentIndex/95d55ad3-320d-4199-9eef-acd35de424dc.vsidx
+/RentCarSys/RentCarSys.Application/.vs/RentCarSys/FileContentIndex/4f9da420-4b3a-404f-b969-4cca0b1abc32.vsidx
+/RentCarSys/RentCarSys.Application/.vs/RentCarSys/FileContentIndex/aca63994-f3cb-4dfc-a483-e7d62043bed1.vsidx
+/RentCarSys/RentCarSys.Application/.vs/RentCarSys/FileContentIndex/d70db832-379a-4e4d-ba7c-1274ff9c0ff5.vsidx
