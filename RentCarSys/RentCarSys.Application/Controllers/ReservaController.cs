@@ -7,7 +7,7 @@ using RentCarSys.Application.Services;
 namespace RentCarSys.Application.Controllers
 {
     [ApiController]
-    [Route("/v1/reservas")]
+    [Route("reserva")]
     public class ReservaController : ControllerBase
     {
         private readonly ClienteService _clienteService;
@@ -26,15 +26,8 @@ namespace RentCarSys.Application.Controllers
         [HttpGet("buscarTodas")]
         public async Task<IActionResult> BuscarReservas()
         {
-            try
-            {
-                var result = await _reservaService.BuscarTodasReservas();
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { Erro = ex.Message });
-            }
+            var result = await _reservaService.BuscarTodasReservas();
+            return Ok(result);
         }
 
         [HttpGet("buscarPorId/{reservaid:int}")]

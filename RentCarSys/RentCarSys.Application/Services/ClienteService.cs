@@ -21,7 +21,7 @@ namespace RentCarSys.Application.Services
 
         public async Task<List<ClienteDTOGetAll>> BuscarTodosClientes()
         {
-            var clientes = await _repositorioClientes.ObterTodosClientesAsync();
+            var clientes = await _repositorioClientes.ObterTodosClientesAsync();            
 
             var clienteDto = _mapper.Map<List<ClienteDTOGetAll>>(clientes);
             return clienteDto;

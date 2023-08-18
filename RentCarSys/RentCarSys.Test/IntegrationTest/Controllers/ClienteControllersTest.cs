@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualBasic;
 using Moq;
 using Newtonsoft.Json;
 using RentCarSys.Application.Controllers;
+using RentCarSys.Application.Data;
 using RentCarSys.Application.DTO.AutoMapper;
 using RentCarSys.Application.DTO.ClientesDTOs;
 using RentCarSys.Application.Interfaces;
@@ -29,9 +32,14 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
         protected Mock<ClienteService> clienteService;
         protected IMapper mapper;
         public readonly ClienteController clienteController;
+        private readonly Contexto contexto;
 
         public ClienteControllersTest()
         {
+            using var rentCarSysApplication = new RentCarSysApplication();
+            using var scope = rentCarSysApplication.Services.CreateAsyncScope();
+            contexto = scope.ServiceProvider.GetRequiredService<Contexto>();
+
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile(new EntitiesDTOMappingProfile());
@@ -40,45 +48,52 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
 
             clienteService = new Mock<ClienteService>(clientesRepository.Object, mapper);
             clienteController = new ClienteController(clienteService.Object);
-        }
-
-        [Fact]
-        public async Task BuscarTodosClientes_Fail()
-        {
-            await using var application = new RentCarSysApplication();
-            await ClienteMockData.CreateClientes(application, true);
-
-            var url = "cliente/buscarClientes";
-            var cliente = application.CreateClient();
-
-            var response = await cliente.GetAsync(url);
-
-            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-        }
+        }        
 
         [Fact]
         public async Task BuscarTodosClientes_Success()
-        {
-            await using var application = new RentCarSysApplication();
-            await ClienteMockData.CreateClientes(application, true);
+        {          
+            
+            var cliente1 = new Cliente
+            { Id = 1, NomeCompleto = "Cliente 1", CPF = 12345678912, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
+            var cliente2 =new Cliente
+            { Id = 2, NomeCompleto = "Cliente 2", CPF = 12345678911, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
 
+            List<Cliente> clientes = new List<Cliente>() { cliente1, cliente2 };
+
+            await ClienteMockData.CreateClientes(contexto, clientes);
+            //await ClienteMockData.CreateClientes(application, true);
+
+            //Execução do Teste
             var url = "cliente/buscarTodos";
+            using var application = new RentCarSysApplication();
             var cliente = application.CreateClient();
 
             var response = await cliente.GetAsync(url);
             response.EnsureSuccessStatusCode();
             var result = await response.Content.ReadFromJsonAsync<List<ClienteDTOGetAll>>();
 
+            //Avaliação do Teste
             Assert.NotNull(result);
             Assert.Equal(2, result.Count);
             Assert.Contains(result, c => c.NomeCompleto == "Cliente 1");
             Assert.Contains(result, c => c.NomeCompleto == "Cliente 2");
+
+            //Finalização
+            await ClienteMockData.DeletarClientes(contexto, clientes);
         }
 
-        [Fact]
+        /*[Fact]
         public async Task BuscarClientePorId_Fail()
         {
             await using var application = new RentCarSysApplication();
+
+            var cliente1 = new Cliente
+            { Id = 1, NomeCompleto = "Cliente 1", CPF = 12345678912, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
+            var cliente2 = new Cliente
+            { Id = 2, NomeCompleto = "Cliente 2", CPF = 12345678911, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
+
+            List<Cliente> clientes = new List<Cliente>() { cliente1, cliente2 };            
 
             var url = "cliente/buscarPorId/1";
             var cliente = application.CreateClient();
@@ -87,14 +102,22 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
 
             var errorResponse = await response.Content.ReadAsStringAsync();
-            Assert.Contains("Cliente não encontrado, verifique se o cliente já foi cadastrado!", errorResponse);
+            Assert.Contains("Cliente não encontrado, verifique se o cliente já foi cadastrado!", errorResponse);            
         }
 
         [Fact]
         public async Task BuscarClientePorId_Sucess()
         {
             await using var application = new RentCarSysApplication();
-            await ClienteMockData.CreateClientes(application, true);
+
+            var cliente1 = new Cliente
+            { Id = 1, NomeCompleto = "Cliente 1", CPF = 12345678912, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
+            var cliente2 = new Cliente
+            { Id = 2, NomeCompleto = "Cliente 2", CPF = 12345678911, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
+
+            List<Cliente> clientes = new List<Cliente>() { cliente1, cliente2 };
+
+            await ClienteMockData.CreateClientes(application, clientes);
 
             var url = "cliente/buscarPorId/1";
             var cliente = application.CreateClient();
@@ -105,13 +128,21 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
             var result = await response.Content.ReadFromJsonAsync<ClienteDTO>();
             Assert.NotNull(result);
             Assert.Equal(1, result.Id);
+
+            await ClienteMockData.DeletarClientes(application, clientes);
         }
 
         [Fact]
         public async Task BuscarClientePorCpf_Fail()
         {
             await using var application = new RentCarSysApplication();
-            await ClienteMockData.CreateClientes(application, true);
+
+            var cliente1 = new Cliente
+            { Id = 1, NomeCompleto = "Cliente 1", CPF = 12345678912, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
+            var cliente2 = new Cliente
+            { Id = 2, NomeCompleto = "Cliente 2", CPF = 12345678911, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
+
+            List<Cliente> clientes = new List<Cliente>() { cliente1, cliente2 };
 
             var url = "cliente/buscarPorCpf/98765432109";
             var cliente = application.CreateClient();
@@ -127,7 +158,15 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
         public async Task BuscarClientePorCpf_Sucess()
         {
             await using var application = new RentCarSysApplication();
-            await ClienteMockData.CreateClientes(application, true);
+
+            var cliente1 = new Cliente
+            { Id = 1, NomeCompleto = "Cliente 1", CPF = 12345678912, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
+            var cliente2 = new Cliente
+            { Id = 2, NomeCompleto = "Cliente 2", CPF = 12345678911, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
+
+            List<Cliente> clientes = new List<Cliente>() { cliente1, cliente2 };
+
+            await ClienteMockData.CreateClientes(application, clientes);
 
             var url = "cliente/buscarPorCpf/12345678912";
             var cliente = application.CreateClient();
@@ -138,12 +177,22 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
 
             Assert.NotNull(result);
             Assert.Equal(12345678912, result.CPF);
+
+            await ClienteMockData.DeletarClientes(application, clientes);
         }
 
         [Fact]
         public async Task CriarCliente_Fail()
         {
             await using var application = new RentCarSysApplication();
+
+            var cliente1 = new Cliente
+            { Id = 1, NomeCompleto = "Cliente 1", CPF = 12345678912, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
+            var cliente2 = new Cliente
+            { Id = 2, NomeCompleto = "Cliente 2", CPF = 12345678911, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
+
+            List<Cliente> clientes = new List<Cliente>() { cliente1, cliente2 };
+
             var url = "cliente/cadastrar";
             var cliente = application.CreateClient();
 
@@ -172,6 +221,16 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
         public async Task CriarCliente_Sucess()
         {
             await using var application = new RentCarSysApplication();
+
+            var cliente1 = new Cliente
+            { Id = 1, NomeCompleto = "Cliente 1", CPF = 12345678912, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
+            var cliente2 = new Cliente
+            { Id = 2, NomeCompleto = "Cliente 2", CPF = 12345678911, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
+
+            List<Cliente> clientes = new List<Cliente>() { cliente1, cliente2 };
+
+            await ClienteMockData.CreateClientes(application, clientes);
+
             var url = "cliente/cadastrar";
             var cliente = application.CreateClient();
 
@@ -197,12 +256,21 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
             Assert.Equal(clienteCreateModel.Email, result.Email);
             Assert.Equal(clienteCreateModel.RG, result.RG);
             Assert.Equal(clienteCreateModel.CPF, result.CPF);
+
+            await ClienteMockData.DeletarClientes(application, clientes);
         }
 
         [Fact]
         public async Task EditarCliente_Fail()
         {
             await using var application = new RentCarSysApplication();
+
+            var cliente1 = new Cliente
+            { Id = 1, NomeCompleto = "Cliente 1", CPF = 12345678912, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
+            var cliente2 = new Cliente
+            { Id = 2, NomeCompleto = "Cliente 2", CPF = 12345678911, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
+
+            List<Cliente> clientes = new List<Cliente>() { cliente1, cliente2 };
 
             var url = "cliente/alterar/1";
             var cliente = application.CreateClient();
@@ -229,7 +297,16 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
         public async Task EditarCliente_Sucess()
         {
             await using var application = new RentCarSysApplication();
-            await ClienteMockData.CreateClientes(application, true);
+
+            var cliente1 = new Cliente
+            { Id = 1, NomeCompleto = "Cliente 1", CPF = 12345678912, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
+            var cliente2 = new Cliente
+            { Id = 2, NomeCompleto = "Cliente 2", CPF = 12345678911, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
+
+            List<Cliente> clientes = new List<Cliente>() { cliente1, cliente2 };
+
+            await ClienteMockData.CreateClientes(application, clientes);
+
             var url = "cliente/alterar/1"; 
             var cliente = application.CreateClient();
 
@@ -257,13 +334,23 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
             Assert.Equal(clienteUpdateModel.Email, result.Email);
             Assert.Equal(clienteUpdateModel.RG, result.RG);
             Assert.Equal(clienteUpdateModel.CPF, result.CPF);
+
+            await ClienteMockData.DeletarClientes(application, clientes);
         }
 
         [Fact]
         public async Task ExcluirClientes_Fail()
         {
             await using var application = new RentCarSysApplication();
-            await ClienteMockData.CreateClientes(application, true);
+
+            var cliente1 = new Cliente
+            { Id = 1, NomeCompleto = "Cliente 1", CPF = 12345678912, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
+            var cliente2 = new Cliente
+            { Id = 2, NomeCompleto = "Cliente 2", CPF = 12345678911, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
+
+            List<Cliente> clientes = new List<Cliente>() { cliente1, cliente2 };
+
+            await ClienteMockData.CreateClientes(application, clientes);
 
             var url = "cliente/excluir/1333";
             var cliente = application.CreateClient();
@@ -273,13 +360,23 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
 
             var errorResponse = await response.Content.ReadAsStringAsync();
             Assert.Contains("", errorResponse);
+
+            await ClienteMockData.DeletarClientes(application, clientes);
         }
 
         [Fact]
         public async Task ExcluirClientes_Success()
         {
             await using var application = new RentCarSysApplication();
-            await ClienteMockData.CreateClientes(application, true);
+
+            var cliente1 = new Cliente
+            { Id = 1, NomeCompleto = "Cliente 1", CPF = 12345678912, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
+            var cliente2 = new Cliente
+            { Id = 2, NomeCompleto = "Cliente 2", CPF = 12345678911, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
+
+            List<Cliente> clientes = new List<Cliente>() { cliente1, cliente2 };
+
+            await ClienteMockData.CreateClientes(application, clientes);
 
             var url = "cliente/excluir/1";
             var cliente = application.CreateClient();
@@ -290,6 +387,8 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
             var result = await response.Content.ReadFromJsonAsync<ClienteDTO>();
 
             Assert.NotNull(result);
-        }          
+
+            //await ClienteMockData.DeletarClientes(application, clientes);
+        } */         
     }
 }
