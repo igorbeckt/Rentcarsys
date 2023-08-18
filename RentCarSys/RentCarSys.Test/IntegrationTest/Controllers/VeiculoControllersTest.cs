@@ -1,53 +1,27 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualBasic;
-using Moq;
+﻿using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
-using RentCarSys.Application.Controllers;
-using RentCarSys.Application.DTO.AutoMapper;
 using RentCarSys.Application.DTO.VeiculosDTOs;
-using RentCarSys.Application.Interfaces;
 using RentCarSys.Application.Models;
 using RentCarSys.Application.Models.Enums;
-using RentCarSys.Application.Services;
 using RentCarSys.Test.IntegrationTest.MockData;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http.Json;
 using System.Text;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace RentCarSys.Test.IntegrationTest.Controllers
 {
     public class VeiculoControllersTest
     {
-        protected Mock<IVeiculosRepository> veiculosRepository = new Mock<IVeiculosRepository>();
-        protected Mock<VeiculoService> veiculoService;
-        protected IMapper mapper;
-        private readonly VeiculoController veiculoController;
+        protected RentCarSysApplication application;
 
         public VeiculoControllersTest()
         {
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile(new EntitiesDTOMappingProfile());
-            });
-            mapper = config.CreateMapper();
-
-
-            veiculoService = new Mock<VeiculoService>(veiculosRepository.Object, mapper);
-            veiculoController = new VeiculoController(veiculoService.Object);
+            application = new RentCarSysApplication();
         }
 
         [Fact]
         public async Task BuscarTodosVeiculos_Success()
         {
-            await using var application = new RentCarSysApplication();
-
             var veiculo1 = new Veiculo
             { Id = 1, Status = VeiculoStatus.Online, Placa = "Placaa1", Marca = "Marca1", Modelo = "Modelo1", AnoFabricacao = "Ano1", KM = "KM1", QuantidadePortas = 2, Cor = "Cor1", Automatico = "Automatico1" };
             var veiculo2 = new Veiculo
@@ -75,8 +49,6 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
         [Fact]
         public async Task BuscarVeiculoPorId_Fail()
         {
-            await using var application = new RentCarSysApplication();
-
             var veiculo1 = new Veiculo
             { Id = 1, Status = VeiculoStatus.Online, Placa = "Placaa1", Marca = "Marca1", Modelo = "Modelo1", AnoFabricacao = "Ano1", KM = "KM1", QuantidadePortas = 2, Cor = "Cor1", Automatico = "Automatico1" };
             var veiculo2 = new Veiculo
@@ -97,8 +69,6 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
         [Fact]
         public async Task BuscarVeiculoPorId_Sucess()
         {
-            await using var application = new RentCarSysApplication();
-
             var veiculo1 = new Veiculo
             { Id = 1, Status = VeiculoStatus.Online, Placa = "Placaa1", Marca = "Marca1", Modelo = "Modelo1", AnoFabricacao = "Ano1", KM = "KM1", QuantidadePortas = 2, Cor = "Cor1", Automatico = "Automatico1" };
             var veiculo2 = new Veiculo
@@ -124,8 +94,6 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
         [Fact]
         public async Task BuscarVeiculoPorPlaca_Fail()
         {
-            await using var application = new RentCarSysApplication();
-
             var veiculo1 = new Veiculo
             { Id = 1, Status = VeiculoStatus.Online, Placa = "Placaa1", Marca = "Marca1", Modelo = "Modelo1", AnoFabricacao = "Ano1", KM = "KM1", QuantidadePortas = 2, Cor = "Cor1", Automatico = "Automatico1" };
             var veiculo2 = new Veiculo
@@ -146,8 +114,6 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
         [Fact]
         public async Task BuscarVeiculoPorPlaca_Sucess()
         {
-            await using var application = new RentCarSysApplication();
-
             var veiculo1 = new Veiculo
             { Id = 1, Status = VeiculoStatus.Online, Placa = "Placaa1", Marca = "Marca1", Modelo = "Modelo1", AnoFabricacao = "Ano1", KM = "KM1", QuantidadePortas = 2, Cor = "Cor1", Automatico = "Automatico1" };
             var veiculo2 = new Veiculo
@@ -173,8 +139,6 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
         [Fact]
         public async Task CriarVeiculo_Fail()
         {
-            await using var application = new RentCarSysApplication();
-
             var veiculo1 = new Veiculo
             { Id = 1, Status = VeiculoStatus.Online, Placa = "Placaa1", Marca = "Marca1", Modelo = "Modelo1", AnoFabricacao = "Ano1", KM = "KM1", QuantidadePortas = 2, Cor = "Cor1", Automatico = "Automatico1" };
             var veiculo2 = new Veiculo
@@ -215,8 +179,6 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
         [Fact]
         public async Task CriarVeiculo_Sucess()
         {
-            await using var application = new RentCarSysApplication();
-
             var veiculo1 = new Veiculo
             { Id = 1, Status = VeiculoStatus.Online, Placa = "Placaa1", Marca = "Marca1", Modelo = "Modelo1", AnoFabricacao = "Ano1", KM = "KM1", QuantidadePortas = 2, Cor = "Cor1", Automatico = "Automatico1" };
             var veiculo2 = new Veiculo
@@ -263,13 +225,9 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
             await VeiculoMockData.DeletarVeiculos(application, veiculos);
         }
 
-
-
         [Fact]
         public async Task EditarVeiculo_Sucess()
         {
-            await using var application = new RentCarSysApplication();
-
             var veiculo1 = new Veiculo
             { Id = 1, Status = VeiculoStatus.Online, Placa = "Placaa1", Marca = "Marca1", Modelo = "Modelo1", AnoFabricacao = "Ano1", KM = "KM1", QuantidadePortas = 2, Cor = "Cor1", Automatico = "Automatico1" };
             var veiculo2 = new Veiculo
@@ -318,8 +276,6 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
         [Fact]
         public async Task ExcluirVeiculos_Fail()
         {
-            await using var application = new RentCarSysApplication();
-
             var veiculo1 = new Veiculo
             { Id = 1, Status = VeiculoStatus.Online, Placa = "Placaa1", Marca = "Marca1", Modelo = "Modelo1", AnoFabricacao = "Ano1", KM = "KM1", QuantidadePortas = 2, Cor = "Cor1", Automatico = "Automatico1" };
             var veiculo2 = new Veiculo
@@ -342,8 +298,6 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
         [Fact]
         public async Task ExcluirVeiculo_Success()
         {
-            await using var application = new RentCarSysApplication();
-
             var veiculo1 = new Veiculo
             { Id = 1, Status = VeiculoStatus.Online, Placa = "Placaa1", Marca = "Marca1", Modelo = "Modelo1", AnoFabricacao = "Ano1", KM = "KM1", QuantidadePortas = 2, Cor = "Cor1", Automatico = "Automatico1" };
             var veiculo2 = new Veiculo
@@ -363,7 +317,8 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
 
             Assert.NotNull(result);
 
-            //await VeiculoMockData.DeletarVeiculos(application, veiculos);
+            veiculos.Remove(veiculo1);
+            await VeiculoMockData.DeletarVeiculos(application, veiculos);
         }
     }
 }

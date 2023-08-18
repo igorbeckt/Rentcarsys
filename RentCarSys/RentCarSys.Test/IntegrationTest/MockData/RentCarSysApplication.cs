@@ -1,16 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
 using RentCarSys.Application.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RentCarSys.Test.IntegrationTest.MockData
 {
@@ -25,7 +20,7 @@ namespace RentCarSys.Test.IntegrationTest.MockData
                 services.RemoveAll(typeof(DbContextOptions<Contexto>));
 
                 services.AddDbContext<Contexto>(options =>
-                    options.UseInMemoryDatabase("RentCarSysDatabase", root));
+                    options.UseInMemoryDatabase("RentCarSysDatabase", root).ConfigureWarnings(x => x.Ignore(CoreEventId.ManyServiceProvidersCreatedWarning)));
             });
 
             return base.CreateHost(builder);

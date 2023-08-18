@@ -8,74 +8,81 @@ using RentCarSys.Application.Repository;
 using RentCarSys.Application.Services;
 using System.Text.Json.Serialization;
 
-var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
-
-builder.Services.AddControllers().AddJsonOptions(options =>
+public class Program
 {
-    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-    options.JsonSerializerOptions.WriteIndented = true;
-});
-
-
-builder.Services.AddScoped<IClientesRepository, ClientesRepository>();
-builder.Services.AddScoped<IVeiculosRepository, VeiculosRepository>();
-builder.Services.AddScoped<IReservasRepository, ReservasRepository>();
-
-builder.Services.AddScoped<ClienteService>();
-builder.Services.AddScoped<VeiculoService>();
-builder.Services.AddScoped<ReservaService>();
-
-builder.Services.AddAutoMapper(typeof(EntitiesDTOMappingProfile));
-
-
-
-builder.Services.AddEndpointsApiExplorer();
-
-#region Swagger
-builder.Services.AddSwaggerGen(s =>
-{
-    s.SwaggerDoc("v1", new OpenApiInfo { Title = "RentCarSys", Version = "V1" });
-    var securityScheme = new OpenApiSecurityScheme
+    public static void Main(string[] args)
     {
-        Name = "Authorization",
-        Description = "Enter JWT Bearer authorisation token",
-        In = ParameterLocation.Header,
-        Type = SecuritySchemeType.Http,
-        Scheme = "bearer",
-        BearerFormat = "Bearer {token}",
-        Reference = new OpenApiReference
+
+        var builder = WebApplication.CreateBuilder(args);
+
+        // Add services to the container.
+
+
+        builder.Services.AddControllers().AddJsonOptions(options =>
         {
-            Id = JwtBearerDefaults.AuthenticationScheme,
-            Type = ReferenceType.SecurityScheme
+            options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+            options.JsonSerializerOptions.WriteIndented = true;
+        });
+
+
+        builder.Services.AddScoped<IClientesRepository, ClientesRepository>();
+        builder.Services.AddScoped<IVeiculosRepository, VeiculosRepository>();
+        builder.Services.AddScoped<IReservasRepository, ReservasRepository>();
+
+        builder.Services.AddScoped<ClienteService>();
+        builder.Services.AddScoped<VeiculoService>();
+        builder.Services.AddScoped<ReservaService>();
+
+        builder.Services.AddAutoMapper(typeof(EntitiesDTOMappingProfile));
+
+
+
+        builder.Services.AddEndpointsApiExplorer();
+
+        #region Swagger
+        builder.Services.AddSwaggerGen(s =>
+        {
+            s.SwaggerDoc("v1", new OpenApiInfo { Title = "RentCarSys", Version = "V1" });
+            var securityScheme = new OpenApiSecurityScheme
+            {
+                Name = "Authorization",
+                Description = "Enter JWT Bearer authorisation token",
+                In = ParameterLocation.Header,
+                Type = SecuritySchemeType.Http,
+                Scheme = "bearer",
+                BearerFormat = "Bearer {token}",
+                Reference = new OpenApiReference
+                {
+                    Id = JwtBearerDefaults.AuthenticationScheme,
+                    Type = ReferenceType.SecurityScheme
+                }
+            };
+
+            s.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, securityScheme);
+            s.AddSecurityRequirement(new OpenApiSecurityRequirement { { securityScheme, Array.Empty<string>() } });
+        });
+        #endregion
+
+        builder.Services.AddDbContext<Contexto>
+            (options => options.UseSqlServer
+            ("Data Source=DESKTOP-4S977G0;Initial Catalog=RentCarSys;Integrated Security=True; TrustServerCertificate=True"));
+
+        var app = builder.Build();
+
+        // Configure the HTTP request pipeline.
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI();
         }
-    };
 
-    s.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, securityScheme);
-    s.AddSecurityRequirement(new OpenApiSecurityRequirement { { securityScheme, Array.Empty<string>() } });
-});
-#endregion
+        app.UseHttpsRedirection();
 
-builder.Services.AddDbContext<Contexto>
-    (options => options.UseSqlServer
-    ("Data Source=DESKTOP-4S977G0;Initial Catalog=RentCarSys;Integrated Security=True; TrustServerCertificate=True"));
+        app.UseAuthorization();
 
-var app = builder.Build();
+        app.MapControllers();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
+        app.Run();
+    }
 }
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();
-public partial class Program { }

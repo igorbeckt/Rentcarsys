@@ -1,53 +1,27 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualBasic;
-using Moq;
+﻿using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
-using RentCarSys.Application.Controllers;
-using RentCarSys.Application.DTO.AutoMapper;
 using RentCarSys.Application.DTO.ClientesDTOs;
-using RentCarSys.Application.Interfaces;
 using RentCarSys.Application.Models;
 using RentCarSys.Application.Models.Enums;
-using RentCarSys.Application.Services;
 using RentCarSys.Test.IntegrationTest.MockData;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http.Json;
 using System.Text;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace RentCarSys.Test.IntegrationTest.Controllers
 {
     public class ClienteControllersTest
     {
-        protected Mock<IClientesRepository> clientesRepository = new Mock<IClientesRepository>();
-        protected Mock<ClienteService> clienteService;
-        protected IMapper mapper;
-        public readonly ClienteController clienteController;
+        protected RentCarSysApplication application;
 
         public ClienteControllersTest()
         {
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile(new EntitiesDTOMappingProfile());
-            });
-            mapper = config.CreateMapper();
-
-            clienteService = new Mock<ClienteService>(clientesRepository.Object, mapper);
-            clienteController = new ClienteController(clienteService.Object);
+            application = new RentCarSysApplication();
         }
-
 
         [Fact]
         public async Task BuscarTodosClientes_Success()
         {
-            await using var application = new RentCarSysApplication();
-
             var cliente1 = new Cliente
             { Id = 1, NomeCompleto = "Cliente 1", CPF = 12345678912, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
             var cliente2 = new Cliente
@@ -75,8 +49,6 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
         [Fact]
         public async Task BuscarClientePorId_Fail()
         {
-            await using var application = new RentCarSysApplication();
-
             var cliente1 = new Cliente
             { Id = 1, NomeCompleto = "Cliente 1", CPF = 12345678912, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
             var cliente2 = new Cliente
@@ -97,8 +69,6 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
         [Fact]
         public async Task BuscarClientePorId_Sucess()
         {
-            await using var application = new RentCarSysApplication();
-
             var cliente1 = new Cliente
             { Id = 1, NomeCompleto = "Cliente 1", CPF = 12345678912, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
             var cliente2 = new Cliente
@@ -124,8 +94,6 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
         [Fact]
         public async Task BuscarClientePorCpf_Fail()
         {
-            await using var application = new RentCarSysApplication();
-
             var cliente1 = new Cliente
             { Id = 1, NomeCompleto = "Cliente 1", CPF = 12345678912, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
             var cliente2 = new Cliente
@@ -146,8 +114,6 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
         [Fact]
         public async Task BuscarClientePorCpf_Sucess()
         {
-            await using var application = new RentCarSysApplication();
-
             var cliente1 = new Cliente
             { Id = 1, NomeCompleto = "Cliente 1", CPF = 12345678912, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
             var cliente2 = new Cliente
@@ -173,8 +139,6 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
         [Fact]
         public async Task CriarCliente_Fail()
         {
-            await using var application = new RentCarSysApplication();
-
             var cliente1 = new Cliente
             { Id = 1, NomeCompleto = "Cliente 1", CPF = 12345678912, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
             var cliente2 = new Cliente
@@ -209,8 +173,6 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
         [Fact]
         public async Task CriarCliente_Sucess()
         {
-            await using var application = new RentCarSysApplication();
-
             var cliente1 = new Cliente
             { Id = 1, NomeCompleto = "Cliente 1", CPF = 12345678912, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
             var cliente2 = new Cliente
@@ -252,8 +214,6 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
         [Fact]
         public async Task EditarCliente_Fail()
         {
-            await using var application = new RentCarSysApplication();
-
             var cliente1 = new Cliente
             { Id = 1, NomeCompleto = "Cliente 1", CPF = 12345678912, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
             var cliente2 = new Cliente
@@ -285,8 +245,6 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
         [Fact]
         public async Task EditarCliente_Sucess()
         {
-            await using var application = new RentCarSysApplication();
-
             var cliente1 = new Cliente
             { Id = 1, NomeCompleto = "Cliente 1", CPF = 12345678912, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
             var cliente2 = new Cliente
@@ -330,8 +288,6 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
         [Fact]
         public async Task ExcluirClientes_Fail()
         {
-            await using var application = new RentCarSysApplication();
-
             var cliente1 = new Cliente
             { Id = 1, NomeCompleto = "Cliente 1", CPF = 12345678912, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
             var cliente2 = new Cliente
@@ -356,8 +312,6 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
         [Fact]
         public async Task ExcluirClientes_Success()
         {
-            await using var application = new RentCarSysApplication();
-
             var cliente1 = new Cliente
             { Id = 1, NomeCompleto = "Cliente 1", CPF = 12345678912, RG = 12345678911, Email = "aa", Status = ClienteStatus.Online };
             var cliente2 = new Cliente
@@ -377,7 +331,8 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
 
             Assert.NotNull(result);
 
-            //await ClienteMockData.DeletarClientes(application, clientes);
+            clientes.Remove(cliente1);
+            await ClienteMockData.DeletarClientes(application, clientes);
         }
     }
 }
