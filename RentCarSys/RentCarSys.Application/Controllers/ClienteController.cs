@@ -4,12 +4,12 @@ using RentCarSys.Application.DTO.ClientesDTOs;
 using RentCarSys.Application.Interfaces;
 using RentCarSys.Application.Models;
 using RentCarSys.Application.Services;
-using RentCarSys.Application.Services.RentCarSys.Application.Services;
+using System.Net;
 
 namespace RentCarSys.Application.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("cliente")]
     public class ClienteController : ControllerBase
     {
         private readonly ClienteService _clienteService;
@@ -22,15 +22,8 @@ namespace RentCarSys.Application.Controllers
         [HttpGet("buscarTodos")]
         public async Task<IActionResult> BuscarClientes()
         {
-            try
-            {
-                var result = await _clienteService.BuscarTodosClientes();
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { Erro = ex.Message });
-            }
+            var result = await _clienteService.BuscarTodosClientes();
+            return Ok(result);
         }
 
         [HttpGet("buscarPorId/{clienteid:int}")]
@@ -43,7 +36,7 @@ namespace RentCarSys.Application.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Erro = ex.Message });
+                return StatusCode(404, new { Erro = ex.Message });
             }
         }
 
@@ -57,22 +50,15 @@ namespace RentCarSys.Application.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Erro = ex.Message });
+                return StatusCode(404, new { Erro = ex.Message });
             }
         }
 
         [HttpPost("cadastrar")]
         public async Task<IActionResult> CriarClientes([FromBody] ClienteDTOCreate model)
         {
-            try
-            {
-                var result = await _clienteService.CriarCliente(model);
-                return Created($"clientes/{result.Id}", result);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { Erro = ex.Message });
-            }
+            var result = await _clienteService.CriarCliente(model);
+            return Created($"clientes/{result.Id}", result);
         }
 
         [HttpPut("alterar/{clienteid:int}")]
@@ -85,7 +71,7 @@ namespace RentCarSys.Application.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Erro = ex.Message });
+                return StatusCode(405, new { Erro = ex.Message });
             }
         }
 
@@ -99,7 +85,7 @@ namespace RentCarSys.Application.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Erro = ex.Message });
+                return StatusCode(404, new { Erro = ex.Message });
             }
         }
     }
