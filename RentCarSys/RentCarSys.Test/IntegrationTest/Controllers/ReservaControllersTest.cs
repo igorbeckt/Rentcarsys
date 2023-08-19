@@ -94,7 +94,7 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
 
             List<Reserva> reservas = new List<Reserva>() { reserva1 };
 
-            var url = "reserva/buscarPorId/1";
+            var url = "reservas/buscarPorId/1";
             var reserva = application.CreateClient();
 
             var response = await reserva.GetAsync(url);
@@ -350,20 +350,18 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
                 }
             };            
 
-            List<Reserva> reservas = new List<Reserva>() { reserva1 };
-            
+            List<Reserva> reservas = new List<Reserva>() { reserva1 };           
 
             await ReservaMockData.CreateReservas(application, reservas);
 
-            var url = "reservas/alterar/1333";
+            var url = "reservas/excluir/1333";
             var reserva = application.CreateClient();
 
             var response = await reserva.DeleteAsync(url);
             Assert.Equal(HttpStatusCode.MethodNotAllowed, response.StatusCode);
 
             var errorResponse = await response.Content.ReadAsStringAsync();
-            Assert.Contains("", errorResponse);
-            
+            Assert.Contains("", errorResponse);            
         }
 
         [Fact]

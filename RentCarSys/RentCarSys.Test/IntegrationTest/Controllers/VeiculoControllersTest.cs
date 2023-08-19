@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using RentCarSys.Application.DTO.ClientesDTOs;
 using RentCarSys.Application.DTO.VeiculosDTOs;
 using RentCarSys.Application.Models;
 using RentCarSys.Application.Models.Enums;
@@ -201,6 +202,39 @@ namespace RentCarSys.Test.IntegrationTest.Controllers
             Assert.Equal(veiculoCreateModel.Cor, result.Cor);
             Assert.Equal(veiculoCreateModel.Automatico, result.Automatico);
 
+        }
+
+        [Fact]
+        public async Task EditarVeiculo_Fail()
+        {
+            var veiculo1 = new Veiculo
+            { Id = 1, Status = VeiculoStatus.Online, Placa = "Placaa1", Marca = "Marca1", Modelo = "Modelo1", AnoFabricacao = "Ano1", KM = "KM1", QuantidadePortas = 2, Cor = "Cor1", Automatico = "Automatico1" };
+
+            List<Veiculo> veiculos = new List<Veiculo>() { veiculo1 };
+
+            var url = "veiculo/alterar/1";
+            var veiculo = application.CreateClient();
+
+            var veiculoUpdateModel = new VeiculoDTOUpdate
+            {
+                Id = 1,
+                Placa = "Placaa8",
+                Marca = "Marca8",
+                Modelo = "Modelo9",
+                AnoFabricacao = "Ano8",
+                KM = "KM8",
+                QuantidadePortas = 4,
+                Cor = "Cor8",
+                Automatico = "Automatico8"
+            };
+
+            var content = new StringContent(JsonConvert.SerializeObject(veiculoUpdateModel), Encoding.UTF8, "application/json");
+
+            var response = await veiculo.PutAsync(url, content);
+            Assert.Equal(HttpStatusCode.MethodNotAllowed, response.StatusCode);
+
+            var errorResponse = await response.Content.ReadAsStringAsync();
+            Assert.Contains("", errorResponse);
         }
 
         [Fact]
