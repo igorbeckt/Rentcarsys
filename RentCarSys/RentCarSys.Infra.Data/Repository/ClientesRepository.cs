@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RentCarSys.Application.Data;
 using RentCarSys.Application.Interfaces;
 using RentCarSys.Application.Models;
+using RentCarSys.Infra.Data.Context;
 
 namespace RentCarSys.Application.Repository
 {

@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using RentCarSys.Application.Data;
-using RentCarSys.Application.DTO.AutoMapper;
 using RentCarSys.Application.Interfaces;
 using RentCarSys.Application.Repository;
 using RentCarSys.Application.Services;
+using RentCarSys.Infra.Data.Context;
+using RentCarSys.Presentation.API.AutoMapper;
 using System.Text.Json.Serialization;
 
 
@@ -64,9 +64,11 @@ public class Program
         });
         #endregion
 
+        #region Entity Framework 
         builder.Services.AddDbContext<Contexto>
-            (options => options.UseSqlServer
+        (options => options.UseSqlServer
             ("Data Source=DESKTOP-4S977G0;Initial Catalog=RentCarSys;Integrated Security=True; TrustServerCertificate=True"));
+        #endregion
 
         var app = builder.Build();
 

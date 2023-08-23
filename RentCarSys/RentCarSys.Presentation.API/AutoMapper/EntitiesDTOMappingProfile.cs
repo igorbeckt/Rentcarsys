@@ -4,7 +4,7 @@ using RentCarSys.Application.DTO.ReservasDTOs;
 using RentCarSys.Application.DTO.VeiculosDTOs;
 using RentCarSys.Application.Models;
 
-namespace RentCarSys.Application.DTO.AutoMapper
+namespace RentCarSys.Presentation.API.AutoMapper
 {
     public class EntitiesDTOMappingProfile : Profile
     {
@@ -25,9 +25,9 @@ namespace RentCarSys.Application.DTO.AutoMapper
                 .ForMember(dest => dest.Modelo, opt => opt.MapFrom(src => src.Modelo))
                 .ForMember(dest => dest.Placa, opt => opt.MapFrom(src => src.Placa))
                 .ForMember(dest => dest.Marca, opt => opt.MapFrom(src => src.Marca));
-            
+
             CreateMap<Reserva, ReservaDTO>()
-            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))            
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
             .ForMember(dest => dest.Cliente, opt => opt.MapFrom(src => src.Cliente.FirstOrDefault()))
             .ForMember(dest => dest.Veiculo, opt => opt.MapFrom(src => src.Veiculo.FirstOrDefault()));
             CreateMap<Reserva, ReservaDTOGetAll>()
@@ -38,7 +38,7 @@ namespace RentCarSys.Application.DTO.AutoMapper
             .ForMember(dest => dest.ClienteId, opt => opt.MapFrom(src => src.Cliente.FirstOrDefault().Id))
             .ForMember(dest => dest.VeiculoId, opt => opt.MapFrom(src => src.Veiculo.FirstOrDefault().Id));
             CreateMap<Reserva, ReservaDTOUpdate>();
-            CreateMap<Reserva, ReservaDTODelete>(); 
+            CreateMap<Reserva, ReservaDTODelete>();
 
         }
     }

@@ -3,7 +3,7 @@ using RentCarSys.Application.Data.Mappings;
 using RentCarSys.Application.Models;
 using System.Collections.Generic;
 
-namespace RentCarSys.Application.Data
+namespace RentCarSys.Infra.Data.Context
 {
     public class Contexto : DbContext
 

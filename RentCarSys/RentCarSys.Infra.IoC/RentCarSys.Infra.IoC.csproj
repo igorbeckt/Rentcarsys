@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\RentCarSys.Application\RentCarSys.Application.csproj" />
     <ProjectReference Include="..\RentCarSys.Domain\RentCarSys.Domain.csproj" />
+    <ProjectReference Include="..\RentCarSys.Infra.Data\RentCarSys.Infra.Data.csproj" />
   </ItemGroup>
 
 </Project>
