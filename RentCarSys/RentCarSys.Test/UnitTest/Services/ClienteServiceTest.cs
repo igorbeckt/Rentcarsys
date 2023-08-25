@@ -2,12 +2,12 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using RentCarSys.Application.DTO.AutoMapper;
-using RentCarSys.Application.DTO.ClientesDTOs;
-using RentCarSys.Application.Interfaces;
+using RentCarSys.Application.DTOs.ClientesDTO;
 using RentCarSys.Application.Models;
-using RentCarSys.Application.Models.Enums;
 using RentCarSys.Application.Services;
+using RentCarSys.Domain.Enums;
+using RentCarSys.Domain.Interfaces;
+using RentCarSys.Presentation.API.AutoMapper;
 using Xunit;
 
 namespace RentCarSys.Test.UnitTest.Services;

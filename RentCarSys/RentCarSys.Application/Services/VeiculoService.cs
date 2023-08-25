@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using RentCarSys.Application.DTO.VeiculosDTOs;
-using RentCarSys.Application.Interfaces;
+using RentCarSys.Application.DTOs.VeiculosDTO;
 using RentCarSys.Application.Models;
-using RentCarSys.Application.Models.Enums;
-using System.Web.Mvc;
+using RentCarSys.Domain.Enums;
+using RentCarSys.Domain.Interfaces;
 
 namespace RentCarSys.Application.Services
 {

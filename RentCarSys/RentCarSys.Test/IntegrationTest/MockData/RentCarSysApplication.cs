@@ -5,8 +5,9 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
-using RentCarSys.Application.Data;
-using RentCarSys.Application.DTO.AutoMapper;
+using Microsoft.VisualStudio.TestPlatform.TestHost;
+using RentCarSys.Infra.Data.Context;
+using RentCarSys.Presentation.API.AutoMapper;
 
 namespace RentCarSys.Test.IntegrationTest.MockData
 {

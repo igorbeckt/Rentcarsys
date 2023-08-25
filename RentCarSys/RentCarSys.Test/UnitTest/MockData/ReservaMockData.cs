@@ -1,6 +1,4 @@
-﻿using RentCarSys.Application.DTO.ClientesDTOs;
-using RentCarSys.Application.DTO.ReservasDTOs;
-using RentCarSys.Application.DTO.VeiculosDTOs;
+﻿using RentCarSys.Application.DTOs.ReservasDTO;
 using RentCarSys.Application.Models;
 using System;
 using System.Collections.Generic;
@@ -113,7 +111,5 @@ namespace RentCarSys.Test.UnitTest.MockData
                 DataEntrega = "DataEntrega1"
             };
         }
-
-
     }
 }

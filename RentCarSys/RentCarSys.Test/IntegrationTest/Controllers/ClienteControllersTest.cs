@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
-using RentCarSys.Application.DTO.ClientesDTOs;
+using RentCarSys.Application.DTOs.ClientesDTO;
 using RentCarSys.Application.Models;
-using RentCarSys.Application.Models.Enums;
+using RentCarSys.Domain.Enums;
 using RentCarSys.Test.IntegrationTest.MockData;
 using System.Net;
 using System.Net.Http.Json;

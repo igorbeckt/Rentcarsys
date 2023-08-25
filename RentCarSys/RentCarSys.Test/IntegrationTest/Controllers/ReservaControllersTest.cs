@@ -1,6 +1,4 @@
 ﻿using Newtonsoft.Json;
-using RentCarSys.Application.DTO.ClientesDTOs;
-using RentCarSys.Application.Models.Enums;
 using RentCarSys.Application.Models;
 using RentCarSys.Test.IntegrationTest.MockData;
 using System;
@@ -10,7 +8,8 @@ using System.Net.Http.Json;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using RentCarSys.Application.DTO.ReservasDTOs;
+using RentCarSys.Domain.Enums;
+using RentCarSys.Application.DTOs.ReservasDTO;
 
 namespace RentCarSys.Test.IntegrationTest.Controllers
 {
