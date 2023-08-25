@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RentCarSys.Application.Interfaces;
+using RentCarSys.Domain.Interfaces;
 using RentCarSys.Application.Models;
 using RentCarSys.Infra.Data.Context;
 

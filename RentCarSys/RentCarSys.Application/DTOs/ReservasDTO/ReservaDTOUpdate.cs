@@ -1,8 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace RentCarSys.Application.DTO.ReservasDTOs
-{
+namespace RentCarSys.Application.DTOs.ReservasDTO;
     public class ReservaDTOUpdate
     {
         [JsonIgnore]
@@ -18,4 +17,4 @@ namespace RentCarSys.Application.DTO.ReservasDTOs
         [Required(ErrorMessage = "A data de entrega é obrigatório!")]
         public string DataEntrega { get; set; }
     }
-}
+

@@ -1,9 +1,8 @@
-﻿using RentCarSys.Application.DTO.ClientesDTOs;
-using RentCarSys.Application.DTO.VeiculosDTOs;
+﻿using RentCarSys.Application.DTOs.ClientesDTO;
+using RentCarSys.Application.DTOs.VeiculosDTO;
 using System.ComponentModel.DataAnnotations;
 
-namespace RentCarSys.Application.DTO.ReservasDTOs
-{
+namespace RentCarSys.Application.DTOs.ReservasDTO;
     public class ReservaDTOGetAll
     {
         public int Id { get; set; }
@@ -22,4 +21,4 @@ namespace RentCarSys.Application.DTO.ReservasDTOs
 
         public List<VeiculoDTOGetAll> Veiculo { get; set; }
     }
-}
+

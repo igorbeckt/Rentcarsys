@@ -1,6 +1,6 @@
 ﻿using RentCarSys.Application.Models;
 
-namespace RentCarSys.Application.Interfaces
+namespace RentCarSys.Domain.Interfaces
 {
     public interface IClientesRepository
     {

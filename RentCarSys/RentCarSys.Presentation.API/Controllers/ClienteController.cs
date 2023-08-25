@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using RentCarSys.Application.DTO.ClientesDTOs;
-using RentCarSys.Application.Interfaces;
+using RentCarSys.Application.DTOs.ClientesDTO;
 using RentCarSys.Application.Models;
 using RentCarSys.Application.Services;
 using System.Net;

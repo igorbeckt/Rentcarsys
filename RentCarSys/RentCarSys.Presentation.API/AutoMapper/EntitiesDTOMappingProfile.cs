@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using RentCarSys.Application.DTO.ClientesDTOs;
-using RentCarSys.Application.DTO.ReservasDTOs;
-using RentCarSys.Application.DTO.VeiculosDTOs;
+using RentCarSys.Application.DTOs.ClientesDTO;
+using RentCarSys.Application.DTOs.ReservasDTO;
+using RentCarSys.Application.DTOs.VeiculosDTO;
 using RentCarSys.Application.Models;
 
 namespace RentCarSys.Presentation.API.AutoMapper

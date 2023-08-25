@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using RentCarSys.Application.DTO.ReservasDTOs;
-using RentCarSys.Application.Interfaces;
+using RentCarSys.Application.DTOs.ReservasDTO;
+
 using RentCarSys.Application.Services;
 
 namespace RentCarSys.Application.Controllers

@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using RentCarSys.Application.Interfaces;
 using RentCarSys.Application.Repository;
 using RentCarSys.Application.Services;
+using RentCarSys.Domain.Interfaces;
 using RentCarSys.Infra.Data.Context;
 using RentCarSys.Presentation.API.AutoMapper;
 using System.Text.Json.Serialization;

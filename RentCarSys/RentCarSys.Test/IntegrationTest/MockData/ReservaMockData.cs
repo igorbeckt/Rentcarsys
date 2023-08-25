@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using RentCarSys.Application.Data;
-using RentCarSys.Application.Models.Enums;
 using RentCarSys.Application.Models;
+using RentCarSys.Infra.Data.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;

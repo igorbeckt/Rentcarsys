@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace RentCarSys.Application.Models.Enums
+namespace RentCarSys.Domain.Enums
 {
     public enum ReservaStatus
     {

@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using RentCarSys.Application.Models.Enums;
+﻿using RentCarSys.Domain.Enums;
 
 namespace RentCarSys.Application.Models
 {

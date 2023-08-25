@@ -39,7 +39,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RentCarSys.Application\RentCarSys.MVC.csproj" />
+    <ProjectReference Include="..\RentCarSys.Application\RentCarSys.Application.csproj" />
+    <ProjectReference Include="..\RentCarSys.Domain\RentCarSys.Domain.csproj" />
+    <ProjectReference Include="..\RentCarSys.Infra.Data\RentCarSys.Infrastructure.csproj" />
+    <ProjectReference Include="..\RentCarSys.Presentation.API\RentCarSys.Presentation.API.csproj" />
   </ItemGroup>
 
 </Project>

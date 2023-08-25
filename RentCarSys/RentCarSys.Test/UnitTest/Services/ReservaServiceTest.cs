@@ -1,13 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using RentCarSys.Application.DTO.AutoMapper;
-using RentCarSys.Application.DTO.ClientesDTOs;
-using RentCarSys.Application.DTO.ReservasDTOs;
-using RentCarSys.Application.Interfaces;
+using RentCarSys.Application.DTOs.ReservasDTO;
 using RentCarSys.Application.Models;
-using RentCarSys.Application.Models.Enums;
 using RentCarSys.Application.Services;
+using RentCarSys.Domain.Enums;
+using RentCarSys.Domain.Interfaces;
+using RentCarSys.Presentation.API.AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;

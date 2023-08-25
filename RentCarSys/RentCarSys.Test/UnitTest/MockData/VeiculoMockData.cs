@@ -1,5 +1,4 @@
-﻿using RentCarSys.Application.DTO.ClientesDTOs;
-using RentCarSys.Application.DTO.VeiculosDTOs;
+﻿using RentCarSys.Application.DTOs.VeiculosDTO;
 using RentCarSys.Application.Models;
 using System;
 using System.Collections.Generic;
